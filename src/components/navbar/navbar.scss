@@ -1,0 +1,23 @@
+.navbar-wrap{
+    display: flex;
+    padding: 20px;
+    
+    box-shadow: 0 0 5px #cfcfcf;
+        a{
+            color: #000;
+            text-decoration: none;
+            margin-right: 10px;
+            &:last-child{
+                margin-right: 0px;
+            }
+            &:hover{
+                cursor: pointer;
+            }
+            &:active{
+                color: red;
+            }
+            &:visited{
+                color: #000;
+            }
+        }
+}
