@@ -27,7 +27,7 @@ function Login() {
       password,
     };
     axios
-      .post(`${apiPath.devPath}/api/users/login`, objData)
+      .post(`${apiPath.prodPath}/api/users/login`, objData)
       .then((res) => {
         dipatch(storeUser(res.data));
         router.push("/");
