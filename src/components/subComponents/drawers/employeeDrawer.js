@@ -1,0 +1,152 @@
+import { Drawer } from "@mui/material";
+import { Poppins } from "next/font/google";
+import React, { useState, useEffect } from "react";
+import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
+import { Select } from "react-rainbow-components";
+
+import "./style.scss";
+const poppins = Poppins({
+  weight: ["300", "400", "600", "700"],
+  subsets: ["latin"],
+});
+function EmployeeDrawer({ open, onClose, addEmp }) {
+  const [userType, setUserType] = useState("");
+  const [position, setPosition] = useState("");
+  const [vehicle, setVehicle] = useState("");
+  const [tablet, setTablet] = useState("");
+  const [city, setCity] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [personalPhone, setPersonalPhone] = useState("");
+  const [companyPhone, setCompanyPhone] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [AISD, setAISD] = useState({ value: "Yes", label: "Yes" });
+  const [AISDExpDate, setAISDExpDate] = useState(new Date());
+  const handleAddEmployee = (e) => {
+    e.preventDefault();
+    const dataObj = {
+      userType,
+      position,
+      vehicle,
+      tablet,
+      city,
+      fullname,
+      email,
+      personalPhone,
+      companyPhone,
+      username,
+      password,
+    };
+    addEmp(dataObj);
+  };
+  const allBoleanOpt = [
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+  ];
+  return (
+    <Drawer
+      anchor={"right"}
+      open={open}
+      onClose={onClose}
+      className="employeeDrawer"
+    >
+      <div className={`${poppins.className} innerDrawerCon`}>
+        <form onSubmit={handleAddEmployee}>
+          <div className="input-wrap">
+            <label>User Type</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Position</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setPosition(e.target.value)}
+              required={true}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Vehicle</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setVehicle(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Tablet</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setTablet(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>City</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Name</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setFullname(e.target.value)}
+              required={true}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Email</label>
+            <input
+              type="email"
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Personal Phone</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setPersonalPhone(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Company Phone</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setCompanyPhone(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Username</label>
+            <input
+              required={true}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Password</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setPassword(e.target.value)}
+              required={true}
+            />
+          </div>
+
+          <div className="sub-btn-wrap">
+            <input
+              className={`${poppins.className} addEmp`}
+              type="submit"
+              value={"Add Employee"}
+            />
+          </div>
+        </form>
+      </div>
+    </Drawer>
+  );
+}
+
+export default EmployeeDrawer;

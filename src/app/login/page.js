@@ -9,9 +9,7 @@ import "./login.scss";
 import axios from "axios";
 const poppins = Poppins({
   weight: ["400", "700", "600", "900"],
-  style: ["normal", "italic"],
   subsets: ["latin"],
-  display: "swap",
 });
 function Login() {
   const [name, setName] = useState("");

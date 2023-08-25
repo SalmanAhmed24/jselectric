@@ -1,0 +1,13 @@
+.links-wrap{
+    ul{
+        list-style: none;
+        padding: 20px;
+        .simpleLink{
+            font-weight: 300;
+            font-size: 16px;
+        }
+        .activeLink{
+            font-weight: bold;
+        }
+    }
+}
