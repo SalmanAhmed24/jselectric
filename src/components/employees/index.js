@@ -73,7 +73,11 @@ function Employees() {
         </button>
       </div>
       <div className="table-wrap">
-        <EmployeeTable loading={loading} allUsers={allUsers} />
+        <EmployeeTable
+          loading={loading}
+          allUsers={allUsers}
+          refreshData={refreshData}
+        />
       </div>
       <EmployeeDrawer
         addEmp={addEmp}

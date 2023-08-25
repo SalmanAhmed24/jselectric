@@ -11,15 +11,19 @@ import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Image from "next/image";
+import EmployeeDrawer from "../drawers/employeeDrawer";
+import Swal from "sweetalert2";
 const poppins = Poppins({
   weight: ["300", "600", "700"],
   subsets: ["latin"],
 });
-export default function EmployeeTable({ allUsers, loading }) {
+export default function EmployeeTable({ allUsers, loading, refreshData }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [actionFlag, setActionFlag] = useState(false);
   const [empId, setEmpId] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [editData, setEditData] = useState({});
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -28,9 +32,42 @@ export default function EmployeeTable({ allUsers, loading }) {
     setPage(0);
   };
   const handleActions = (id) => {
-    console.log("emp id", id);
     setEmpId(id);
-    setActionFlag(true);
+    setActionFlag(!actionFlag);
+  };
+  const openEmpModal = (data) => {
+    setEditData(data);
+    setOpenModal(!openModal);
+  };
+  const editEmp = (data, id) => {
+    axios
+      .patch(`${apiPath.prodPath}/api/users/${id}`, data)
+      .then((res) => {
+        refreshData();
+        openEmpModal();
+        setActionFlag(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  const deleteEmp = (id) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Are You Sure?",
+      text: "Are you sure you want to delete the employee data? This action is irreversible.",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${apiPath.prodPath}/api/users/${id}`)
+          .then((res) => {
+            refreshData();
+            openEmpModal();
+            setActionFlag(false);
+          })
+          .catch((err) => console.log(err));
+      }
+    });
   };
   return (
     <Paper
@@ -84,8 +121,18 @@ export default function EmployeeTable({ allUsers, loading }) {
                         {actionFlag && i.id == empId ? (
                           <div className="dropdown-div">
                             <p className={poppins.className}>Info Modal</p>
-                            <p className={poppins.className}>Edit</p>
-                            <p className={poppins.className}>Delete</p>
+                            <p
+                              onClick={() => openEmpModal({ ...i })}
+                              className={poppins.className}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => deleteEmp(i.id)}
+                              className={poppins.className}
+                            >
+                              Delete
+                            </p>
                           </div>
                         ) : null}
                       </TableCell>
@@ -94,6 +141,16 @@ export default function EmployeeTable({ allUsers, loading }) {
                 })
               )}
             </TableBody>
+            {openModal && editData ? (
+              <EmployeeDrawer
+                edit={true}
+                open={openModal}
+                onClose={() => openEmpModal()}
+                id={empId}
+                data={editData}
+                editEmp={editEmp}
+              />
+            ) : null}
           </Table>
         </TableContainer>
       )}
