@@ -7,7 +7,7 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
-function AddBadge({ addBadgeFunc }) {
+function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
   const [AISD, setAISD] = useState();
   const [AISDExpDate, setAISDExpDate] = useState(new Date());
   const [COAWaterDep, setCOAWaterDep] = useState();
@@ -20,6 +20,18 @@ function AddBadge({ addBadgeFunc }) {
     { label: "Yes", value: "Yes" },
     { label: "No", value: "No" },
   ];
+  useState(() => {
+    if (editFlag) {
+      setAISD(dataToBeEdited.AISD);
+      setAISDExpDate(dataToBeEdited.AISDExpDate);
+      setCOAWaterDep(dataToBeEdited.COAWaterDep);
+      setCOAWaterDepExpDate(dataToBeEdited.COAWaterDepExpDate);
+      setTFC(dataToBeEdited.TFC);
+      setTFCExpDate(dataToBeEdited.TFCExpDate);
+      setABIA(dataToBeEdited.ABIA);
+      setABIAExpDate(dataToBeEdited.ABIAExpDate);
+    }
+  }, [editFlag]);
   const addBadge = () => {
     const data = {
       AISD,
@@ -32,7 +44,7 @@ function AddBadge({ addBadgeFunc }) {
       ABIAExpDate,
     };
     console.log("this is addBadge", data);
-    addBadgeFunc(data);
+    addBadgeFunc(data, editFlag);
   };
   return (
     <div className={`input-wraps`}>

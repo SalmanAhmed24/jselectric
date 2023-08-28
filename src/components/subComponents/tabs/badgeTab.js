@@ -8,14 +8,23 @@ const poppins = Poppins({
 import AddBadge from "../forms/addBadge";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
+import moment from "moment";
 function BadgeTab({ item, refreshData, closeModal }) {
   const [show, setShow] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
+  const [dataToBeEdited, setDataToBeEdited] = useState();
   const showFields = () => {
     setShow(!show);
   };
-  const addBadgeHandler = (data) => {
+  const addBadgeHandler = (data, editFlag) => {
+    let url;
+    if (editFlag) {
+      url = `${apiPath.prodPath}/api/users/editBadges/${item.id}`;
+    } else {
+      url = `${apiPath.prodPath}/api/users/addBadges/${item.id}`;
+    }
     axios
-      .patch(`${apiPath.prodPath}/api/users/addBadges/${item.id}`, data)
+      .patch(url, data)
       .then((res) => {
         refreshData();
         closeModal();
@@ -24,14 +33,29 @@ function BadgeTab({ item, refreshData, closeModal }) {
   };
   return (
     <div className="badges-tab">
-      {show ? <AddBadge addBadgeFunc={addBadgeHandler} /> : null}
+      {show ? (
+        <AddBadge
+          editFlag={editFlag}
+          dataToBeEdited={dataToBeEdited}
+          addBadgeFunc={addBadgeHandler}
+        />
+      ) : null}
       <div className="main-wrap">
         {item.badges == undefined ? (
           <button className={poppins.className} onClick={showFields}>
             Add Badges
           </button>
         ) : (
-          <button className={poppins.className}>Edit Badges</button>
+          <button
+            onClick={() => {
+              setDataToBeEdited(item.badges);
+              setEditFlag(true);
+              setShow(true);
+            }}
+            className={poppins.className}
+          >
+            Edit Badges
+          </button>
         )}
       </div>
       <div>
@@ -45,7 +69,7 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>AISD Exp Date</label>
-              <p>{item.badges.AISDExpDate}</p>
+              <p>{moment(item.badges.AISDExpDate).format("MM-DD-YY")}</p>
             </div>
             <div className="single-item">
               <label>COA Water Dep</label>
@@ -53,7 +77,7 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>COA Water Dept Exp Date</label>
-              <p>{item.badges.COAWaterDepExpDate}</p>
+              <p>{moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY")}</p>
             </div>
             <div className="single-item">
               <label>TFC</label>
@@ -61,7 +85,7 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>TFC Exp Date</label>
-              <p>{item.badges.TFCExpDate}</p>
+              <p>{moment(item.badges.TFCExpDate).format("MM-DD-YY")}</p>
             </div>
             <div className="single-item">
               <label>ABIA</label>
@@ -69,7 +93,7 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>ABIA Exp Date</label>
-              <p>{item.badges.ABIAExpDate}</p>
+              <p>{moment(item.badges.ABIAExpDate).format("MM-DD-YY")}</p>
             </div>
           </div>
         )}
