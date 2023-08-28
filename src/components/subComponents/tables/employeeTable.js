@@ -12,6 +12,7 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Image from "next/image";
 import EmployeeDrawer from "../drawers/employeeDrawer";
+import EmployeeInfo from "../drawers/employeeInfo";
 import Swal from "sweetalert2";
 const poppins = Poppins({
   weight: ["300", "600", "700"],
@@ -24,20 +25,23 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
   const [empId, setEmpId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState({});
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-  const handleActions = (id) => {
+  const [infoModal, setInfoModal] = useState(false);
+  const [item, setItem] = useState();
+
+  const handleActions = (id, objData) => {
     setEmpId(id);
+    setItem(objData);
     setActionFlag(!actionFlag);
   };
   const openEmpModal = (data) => {
     setEditData(data);
     setOpenModal(!openModal);
+  };
+  const openInfoDrawer = () => {
+    if (infoModal) {
+      setActionFlag(false);
+    }
+    setInfoModal(!infoModal);
   };
   const editEmp = (data, id) => {
     axios
@@ -89,9 +93,7 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                 <TableCell style={{ minWidth: 150 }}>Vehicle</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Tablet</TableCell>
                 <TableCell style={{ minWidth: 150 }}>City</TableCell>
-                <TableCell style={{ minWidth: 150, position: "relative" }}>
-                  Actions
-                </TableCell>
+                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -113,14 +115,19 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                       <TableCell>{i.city}</TableCell>
                       <TableCell style={{ position: "relative" }}>
                         <Image
-                          onClick={() => handleActions(i.id)}
+                          onClick={() => handleActions(i.id, i)}
                           src="/dots.png"
                           width={32}
                           height={32}
                         />
                         {actionFlag && i.id == empId ? (
                           <div className="dropdown-div">
-                            <p className={poppins.className}>Info Modal</p>
+                            <p
+                              onClick={openInfoDrawer}
+                              className={poppins.className}
+                            >
+                              Info Modal
+                            </p>
                             <p
                               onClick={() => openEmpModal({ ...i })}
                               className={poppins.className}
@@ -151,18 +158,17 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                 editEmp={editEmp}
               />
             ) : null}
+            {infoModal ? (
+              <EmployeeInfo
+                open={infoModal}
+                onClose={openInfoDrawer}
+                item={item}
+                refreshData={refreshData}
+              />
+            ) : null}
           </Table>
         </TableContainer>
       )}
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={5}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </Paper>
   );
 }
