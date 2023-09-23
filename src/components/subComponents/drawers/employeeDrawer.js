@@ -24,6 +24,11 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const [password, setPassword] = useState("");
   const [userTypeOpt, setUserTypeOpt] = useState("");
   const [positionOpt, setPositionOpt] = useState("");
+  const dropdown = [
+    { label: "", value: "" },
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+  ];
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/userType/`)
@@ -44,8 +49,8 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     if (edit) {
       setUserType({ label: data.userType, value: data.userType });
       setPosition({ label: data.position, value: data.position });
-      setVehicle(data.vehicle);
-      setTablet(data.tablet);
+      setVehicle({ label: data.vehicle, value: data.vehicle });
+      setTablet({ label: data.tablet, value: data.tablet });
       setCity(data.city);
       setFullname(data.fullname);
       setEmail(data.email);
@@ -61,8 +66,8 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     const dataObj = {
       userType: userType.value,
       position: position.value,
-      vehicle,
-      tablet,
+      vehicle: vehicle.value,
+      tablet: tablet.value,
       city,
       fullname,
       email,
@@ -102,6 +107,12 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const positionHandler = (e) => {
     setPosition(e);
   };
+  const vehicleHandler = (e) => {
+    setVehicle(e);
+  };
+  const tabletHandler = (e) => {
+    setTablet(e);
+  };
   return (
     <Drawer
       anchor={"right"}
@@ -131,18 +142,20 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
           </div>
           <div className="input-wrap">
             <label>Vehicle</label>
-            <input
+            <Select
+              options={dropdown}
+              onChange={vehicleHandler}
+              id="example-select-1"
               value={vehicle}
-              className={`${poppins.className} input-cus`}
-              onChange={(e) => setVehicle(e.target.value)}
             />
           </div>
           <div className="input-wrap">
-            <label>Tablet</label>
-            <input
+            <label>Vehicle</label>
+            <Select
+              options={dropdown}
+              onChange={tabletHandler}
+              id="example-select-1"
               value={tablet}
-              className={`${poppins.className} input-cus`}
-              onChange={(e) => setTablet(e.target.value)}
             />
           </div>
           <div className="input-wrap">
