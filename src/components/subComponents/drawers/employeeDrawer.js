@@ -2,9 +2,10 @@ import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
-import { Select } from "react-rainbow-components";
-
 import "./style.scss";
+import axios from "axios";
+import { apiPath } from "@/utils/routes";
+import Select from "react-select";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
@@ -21,12 +22,28 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const [companyPhone, setCompanyPhone] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [userTypeOpt, setUserTypeOpt] = useState("");
+  const [positionOpt, setPositionOpt] = useState("");
   useEffect(() => {
+    axios
+      .get(`${apiPath.prodPath}/api/userType/`)
+      .then((res) => {
+        setUserTypeOpt(
+          res.data.userTypes.map((i) => ({ label: i.name, value: i.name }))
+        );
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`${apiPath.prodPath}/api/position/`)
+      .then((res) => {
+        setPositionOpt(
+          res.data.positions.map((i) => ({ label: i.name, value: i.name }))
+        );
+      })
+      .catch((err) => console.log(err));
     if (edit) {
-      console.log("here", data);
-      setUserType(data.userType);
-      setPosition(data.position);
+      setUserType({ label: data.userType, value: data.userType });
+      setPosition({ label: data.position, value: data.position });
       setVehicle(data.vehicle);
       setTablet(data.tablet);
       setCity(data.city);
@@ -42,8 +59,8 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const handleAddEmployee = (e) => {
     e.preventDefault();
     const dataObj = {
-      userType,
-      position,
+      userType: userType.value,
+      position: position.value,
       vehicle,
       tablet,
       city,
@@ -78,6 +95,13 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     { value: "Yes", label: "Yes" },
     { value: "No", label: "No" },
   ];
+  const userTypeHandler = (e) => {
+    console.log(e);
+    setUserType(e);
+  };
+  const positionHandler = (e) => {
+    setPosition(e);
+  };
   return (
     <Drawer
       anchor={"right"}
@@ -89,19 +113,20 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
         <form onSubmit={handleAddEmployee}>
           <div className="input-wrap">
             <label>User Type</label>
-            <input
+            <Select
+              options={userTypeOpt}
+              onChange={userTypeHandler}
+              id="example-select-1"
               value={userType}
-              className={`${poppins.className} input-cus`}
-              onChange={(e) => setUserType(e.target.value)}
             />
           </div>
           <div className="input-wrap">
             <label>Position</label>
-            <input
+            <Select
+              options={positionOpt}
+              onChange={positionHandler}
+              id="example-select-2"
               value={position}
-              className={`${poppins.className} input-cus`}
-              onChange={(e) => setPosition(e.target.value)}
-              required={true}
             />
           </div>
           <div className="input-wrap">

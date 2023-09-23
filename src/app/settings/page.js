@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Employees from "../../components/employees";
+
 import "./style.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -18,7 +19,9 @@ export default function Settings() {
       router.push("/login");
     }
   }, [user]);
-  const handleLinks = (e) => {};
+  const handleLinks = (e) => {
+    setActiveLink(e.target.innerText);
+  };
   return (
     <main className={`${poppins.className} home-dashboard`}>
       <section className="links-wrap">

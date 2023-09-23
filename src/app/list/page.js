@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
+import Tools from "../../components/tools";
 import PicklistComp from "../../components/Picklists/picklist";
 import "./list.scss";
 const poppins = Poppins({
@@ -39,6 +40,13 @@ export default function List() {
           >
             Position
           </li>
+          <li
+            className={
+              activeLink == "Tools" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Tools
+          </li>
         </ul>
       </section>
       <section className={`${poppins.className} content-wrap`}>
@@ -48,6 +56,7 @@ export default function List() {
         {activeLink == "Position" ? (
           <PicklistComp picklistName={"Position"} />
         ) : null}
+        {activeLink == "Tools" ? <Tools picklistName={"Tools"} /> : null}
       </section>
     </main>
   );
