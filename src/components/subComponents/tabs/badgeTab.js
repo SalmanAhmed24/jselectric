@@ -10,12 +10,7 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import moment from "moment";
 function BadgeTab({ item, refreshData, closeModal }) {
-  const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
-  const [dataToBeEdited, setDataToBeEdited] = useState();
-  const showFields = () => {
-    setShow(!show);
-  };
   const addBadgeHandler = (data, editFlag) => {
     let url;
     if (editFlag) {
@@ -33,32 +28,12 @@ function BadgeTab({ item, refreshData, closeModal }) {
   };
   return (
     <div className="badges-tab">
-      {show ? (
-        <AddBadge
-          editFlag={editFlag}
-          dataToBeEdited={dataToBeEdited}
-          addBadgeFunc={addBadgeHandler}
-        />
-      ) : null}
-      <div className="main-wrap">
-        {item.badges == undefined ? (
-          <button className={poppins.className} onClick={showFields}>
-            Add Badges
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setDataToBeEdited(item.badges);
-              setEditFlag(true);
-              setShow(true);
-            }}
-            className={poppins.className}
-          >
-            Edit Badges
-          </button>
-        )}
-      </div>
-      <div>
+      <AddBadge
+        editFlag={item.badges == undefined ? false : true}
+        dataToBeEdited={item.badges == undefined ? "" : item.badges}
+        addBadgeFunc={addBadgeHandler}
+      />
+      <div className="content-bottom-main">
         {item.badges == undefined ? (
           <p>No data for badges found</p>
         ) : (

@@ -1,5 +1,5 @@
 import "./style.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { Select, DatePicker } from "react-rainbow-components";
 import { Poppins } from "next/font/google";
 import { apiPath } from "@/utils/routes";
@@ -8,19 +8,20 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
-  const [AISD, setAISD] = useState();
-  const [AISDExpDate, setAISDExpDate] = useState(new Date());
-  const [COAWaterDep, setCOAWaterDep] = useState();
-  const [COAWaterDepExpDate, setCOAWaterDepExpDate] = useState(new Date());
-  const [TFC, setTFC] = useState();
-  const [TFCExpDate, setTFCExpDate] = useState(new Date());
-  const [ABIA, setABIA] = useState();
-  const [ABIAExpDate, setABIAExpDate] = useState(new Date());
+  const [AISD, setAISD] = useState({ label: "", value: "" });
+  const [AISDExpDate, setAISDExpDate] = useState();
+  const [COAWaterDep, setCOAWaterDep] = useState({ label: "", value: "" });
+  const [COAWaterDepExpDate, setCOAWaterDepExpDate] = useState();
+  const [TFC, setTFC] = useState({ label: "", value: "" });
+  const [TFCExpDate, setTFCExpDate] = useState();
+  const [ABIA, setABIA] = useState({ label: "", value: "" });
+  const [ABIAExpDate, setABIAExpDate] = useState();
   const dropdownOpt = [
+    { label: "", value: "" },
     { label: "Yes", value: "Yes" },
     { label: "No", value: "No" },
   ];
-  useState(() => {
+  useEffect(() => {
     if (editFlag) {
       setAISD(dataToBeEdited.AISD);
       setAISDExpDate(dataToBeEdited.AISDExpDate);
@@ -31,7 +32,7 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
       setABIA(dataToBeEdited.ABIA);
       setABIAExpDate(dataToBeEdited.ABIAExpDate);
     }
-  }, [editFlag]);
+  }, []);
   const addBadge = () => {
     const data = {
       AISD,
