@@ -44,7 +44,12 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>AISD Exp Date</label>
-              <p>{moment(item.badges.AISDExpDate).format("MM-DD-YY")}</p>
+              <p>
+                {moment(item.badges.AISDExpDate).format("MM-DD-YY") ==
+                "Invalid date"
+                  ? ""
+                  : moment(item.badges.AISDExpDate).format("MM-DD-YY")}
+              </p>
             </div>
             <div className="single-item">
               <label>COA Water Dep</label>
@@ -52,7 +57,12 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>COA Water Dept Exp Date</label>
-              <p>{moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY")}</p>
+              <p>
+                {moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY") ==
+                "Invalid date"
+                  ? ""
+                  : moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY")}
+              </p>
             </div>
             <div className="single-item">
               <label>TFC</label>
@@ -60,7 +70,12 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>TFC Exp Date</label>
-              <p>{moment(item.badges.TFCExpDate).format("MM-DD-YY")}</p>
+              <p>
+                {moment(item.badges.TFCExpDate).format("MM-DD-YY") ==
+                "Invalid date"
+                  ? ""
+                  : moment(item.badges.TFCExpDate).format("MM-DD-YY")}
+              </p>
             </div>
             <div className="single-item">
               <label>ABIA</label>
@@ -68,7 +83,12 @@ function BadgeTab({ item, refreshData, closeModal }) {
             </div>
             <div className="single-item">
               <label>ABIA Exp Date</label>
-              <p>{moment(item.badges.ABIAExpDate).format("MM-DD-YY")}</p>
+              <p>
+                {moment(item.badges.ABIAExpDate).format("MM-DD-YY") ==
+                "Invalid date"
+                  ? ""
+                  : moment(item.badges.ABIAExpDate).format("MM-DD-YY")}
+              </p>
             </div>
           </div>
         )}

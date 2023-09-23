@@ -36,15 +36,16 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
   const addBadge = () => {
     const data = {
       AISD,
-      AISDExpDate,
+      AISDExpDate: AISDExpDate == undefined ? "" : AISDExpDate,
       COAWaterDep,
-      COAWaterDepExpDate,
+      COAWaterDepExpDate:
+        COAWaterDepExpDate == undefined ? "" : COAWaterDepExpDate,
       TFC,
-      TFCExpDate,
+      TFCExpDate: TFCExpDate == undefined ? "" : TFCExpDate,
       ABIA,
-      ABIAExpDate,
+      ABIAExpDate: ABIAExpDate == undefined ? "" : ABIAExpDate,
     };
-    console.log("this is addBadge", data);
+    // console.log("this is addBadge", data);
     addBadgeFunc(data, editFlag);
   };
   return (
