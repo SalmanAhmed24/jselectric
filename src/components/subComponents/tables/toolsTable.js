@@ -86,10 +86,12 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell style={{ minWidth: 80 }}>Tool#</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Category</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Sub-Category</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Description</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Tech Assigned</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Location</TableCell>
+                <TableCell style={{ minWidth: 120 }}>Tech Assigned</TableCell>
+                <TableCell style={{ minWidth: 120 }}>Location</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -102,7 +104,9 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
                 allTools.map((i) => {
                   return (
                     <TableRow key={i.id}>
+                      <TableCell>{i.toolNumber}</TableCell>
                       <TableCell>{i.category}</TableCell>
+                      <TableCell>{i.subCategory}</TableCell>
                       <TableCell>{i.description}</TableCell>
                       <TableCell>{i.techAssigned}</TableCell>
                       <TableCell>{i.location}</TableCell>

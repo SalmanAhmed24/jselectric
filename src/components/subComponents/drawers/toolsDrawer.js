@@ -16,7 +16,16 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [techAssigned, setTechAssigned] = useState("");
   const [location, setLocation] = useState("");
   const [categoryOpt, setCategoryOpt] = useState("");
+  const [allSubCatOpt, setAllSubCatOpt] = useState("");
   const [techAssignOpt, setTechAssignOpt] = useState("");
+  const [subCatOpt, setSubCatOpt] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [employee, setEmployee] = useState("");
+  const [project, setProject] = useState("");
+  const [lastPurchasePrice, setLastPurchasePrice] = useState("");
+  const [pictureUpload, setPictureUpload] = useState("");
+  const [toolNumber, setToolNumber] = useState("");
+  const [serial, setSerial] = useState("");
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/toolCategory/`)
@@ -24,6 +33,20 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         setCategoryOpt(
           res.data.toolCategory.map((i) => ({ label: i.name, value: i.name }))
         );
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`${apiPath.prodPath}/api/subtoolCategory/`)
+      .then((res) => {
+        const data =
+          res.data &&
+          res.data.subtoolCategorys &&
+          res.data.subtoolCategorys.map((i) => ({
+            label: i.name,
+            value: i.name,
+            parentCategory: i.parentCategory,
+          }));
+        setSubCatOpt(data);
       })
       .catch((err) => console.log(err));
     axios
@@ -40,21 +63,34 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       })
       .catch((err) => console.log(err));
     if (edit) {
-      console.log(data.description);
       setCategory({ label: data.category, value: data.category });
       setDescription(data.description);
       setTechAssigned({ label: data.techAssigned, value: data.techAssigned });
       setLocation(data.location);
+      setSubCategory({ label: data.subCategory, value: data.subCategory });
+      setEmployee({ label: data.employee, value: data.employee });
+      setProject(data.project);
+      setPictureUpload(data.picture);
+      setToolNumber(data.toolNumber);
+      setSerial(data.serial);
+      setLastPurchasePrice(data.lastPurchasePrice);
     }
   }, []);
 
   const handleAddTool = (e) => {
     e.preventDefault();
     const dataObj = {
+      toolNumber,
       category: category.value,
       description,
       techAssigned: techAssigned.value,
       location,
+      subCategory: subCategory.value,
+      employee: employee.value,
+      project,
+      lastPurchasePrice,
+      picture: pictureUpload,
+      serial,
     };
     if (edit) {
       editTool(dataObj, id);
@@ -68,14 +104,41 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
     setDescription("");
     setTechAssigned("");
     setLocation("");
+    setEmployee("");
+    setLastPurchasePrice("");
+    setSubCategory("");
+    setPictureUpload("");
+    setToolNumber("");
+    setProject("");
+    setSerial("");
   };
   const categoryHandler = (e) => {
-    console.log(e);
+    setSubCategory("");
     setCategory(e);
+    const filteredSubOpt = subCatOpt.filter((i) => i.parentCategory == e.value);
+    setSubCatOpt(filteredSubOpt);
   };
   const techAssignedHandler = (e) => {
     console.log(e);
     setTechAssigned(e);
+  };
+  const handleUpload = (e) => {
+    getBase64(e.target.files[0]);
+  };
+  const getBase64 = (file) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      setPictureUpload(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+  };
+  const handleDigitCheck = (e) => {
+    if (e.target.value.length <= 6) {
+      setToolNumber(e.target.value);
+    }
   };
   return (
     <Drawer
@@ -87,12 +150,29 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       <div className={`${poppins.className} innerDrawerCon`}>
         <form onSubmit={handleAddTool}>
           <div className="input-wrap">
+            <label>Tool #</label>
+            <input
+              value={toolNumber}
+              className={`${poppins.className} input-cus`}
+              type="number"
+              onChange={handleDigitCheck}
+            />
+          </div>
+          <div className="input-wrap">
             <label>Category</label>
             <Select
               options={categoryOpt}
               onChange={categoryHandler}
               id="example-select-1"
               value={category}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Sub Category</label>
+            <Select
+              options={subCatOpt}
+              onChange={(e) => setSubCategory(e)}
+              value={subCategory}
             />
           </div>
           <div className="input-wrap">
@@ -120,6 +200,51 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               className={`${poppins.className} input-cus`}
               onChange={(e) => setLocation(e.target.value)}
             />
+          </div>
+          <div className="input-wrap">
+            <label>Employee</label>
+            <Select
+              options={techAssignOpt}
+              onChange={(e) => setEmployee(e)}
+              value={employee}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Projects</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              type="text"
+              onChange={(e) => setProject(e.target.value)}
+              value={project}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Serial #</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              type="text"
+              onChange={(e) => setSerial(e.target.value)}
+              value={serial}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Last Purchase Price</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              type="number"
+              onChange={(e) => setLastPurchasePrice(e.target.value)}
+              value={lastPurchasePrice}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Picture</label>
+            <input
+              className={`${poppins.className} input-cus`}
+              type="file"
+              onChange={handleUpload}
+              accept="image/png,image/jpeg"
+            />
+            <img src={pictureUpload} style={{ width: "30%" }} />
           </div>
           <div className="sub-btn-wrap">
             <input

@@ -63,8 +63,13 @@
             display: flex;
             flex-wrap: wrap;
                 .singleInfo{
+                    display: flex;
+                    flex-direction: column;
                     width: 200px;
                     padding: 20px;
+                    img{
+                        width: 30%;
+                    }
                         label{
                             display: inline-block;
                             font-weight: 600;

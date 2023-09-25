@@ -58,6 +58,24 @@ export default function Settings() {
             >
               Position
             </li>
+            <li
+              className={
+                activeLink == "Tool Category"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Tool Category
+            </li>
+            <li
+              className={
+                activeLink == "Tool Sub-Category"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Tool Sub-Category
+            </li>
           </ul>
         ) : null}
       </section>
@@ -68,6 +86,12 @@ export default function Settings() {
         ) : null}
         {activeLink == "Position" ? (
           <PicklistComp picklistName={"Position"} />
+        ) : null}
+        {activeLink == "Tool Category" ? (
+          <PicklistComp picklistName={"Tool Category"} />
+        ) : null}
+        {activeLink == "Tool Sub-Category" ? (
+          <PicklistComp picklistName={"Tool Sub-Category"} />
         ) : null}
       </section>
     </main>

@@ -46,6 +46,12 @@ export default function PicklistTable({
     if (picklistName == "Position") {
       apiUrl = `${apiPath.prodPath}/api/position/${id}`;
     }
+    if (picklistName == "Tool Category") {
+      apiUrl = `${apiPath.prodPath}/api/toolCategory/${id}`;
+    }
+    if (picklistName == "Tool Sub-Category") {
+      apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
+    }
     axios
       .patch(apiUrl, data)
       .then((res) => {
@@ -71,6 +77,12 @@ export default function PicklistTable({
         if (picklistName == "Position") {
           apiUrl = `${apiPath.prodPath}/api/position/${id}`;
         }
+        if (picklistName == "Tool Category") {
+          apiUrl = `${apiPath.prodPath}/api/toolCategory/${id}`;
+        }
+        if (picklistName == "Tool Sub-Category") {
+          apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
+        }
         axios
           .delete(apiUrl)
           .then((res) => {
@@ -95,7 +107,13 @@ export default function PicklistTable({
             <TableHead>
               <TableRow>
                 <TableCell style={{ minWidth: 150 }}>Name</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
+                {picklistName == "Tool Sub-Category" ? (
+                  <TableCell style={{ minWidth: 150 }}>
+                    Parent Category
+                  </TableCell>
+                ) : (
+                  <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
+                )}
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -109,7 +127,12 @@ export default function PicklistTable({
                   return (
                     <TableRow key={i.id}>
                       <TableCell>{i.name}</TableCell>
-                      <TableCell>{i.shortCode}</TableCell>
+                      {picklistName == "Tool Sub-Category" ? (
+                        <TableCell>{i.parentCategory}</TableCell>
+                      ) : (
+                        <TableCell>{i.shortCode}</TableCell>
+                      )}
+
                       <TableCell style={{ position: "relative" }}>
                         <Image
                           onClick={() => handleActions(i.id)}

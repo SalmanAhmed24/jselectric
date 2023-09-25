@@ -23,6 +23,12 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Position") {
       apiUrl = `${apiPath.prodPath}/api/position/`;
     }
+    if (picklistName == "Tool Category") {
+      apiUrl = `${apiPath.prodPath}/api/toolCategory/`;
+    }
+    if (picklistName == "Tool Sub-Category") {
+      apiUrl = `${apiPath.prodPath}/api/subtoolCategory/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -32,6 +38,12 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Position") {
           setPicklistData(res.data.positions);
+        }
+        if (picklistName == "Tool Category") {
+          setPicklistData(res.data.toolCategory);
+        }
+        if (picklistName == "Tool Sub-Category") {
+          setPicklistData(res.data.subtoolCategorys);
         }
         setLoading(false);
       })
@@ -51,6 +63,12 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Position") {
       url = `${apiPath.prodPath}/api/position/addposition`;
+    }
+    if (picklistName == "Tool Category") {
+      url = `${apiPath.prodPath}/api/toolCategory/addtoolCategory`;
+    }
+    if (picklistName == "Tool Sub-Category") {
+      url = `${apiPath.prodPath}/api/subtoolCategory/addsubtoolCategory`;
     }
     axios
       .post(url, data)
@@ -77,7 +95,12 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Position") {
       url = `${apiPath.prodPath}/api/position/`;
     }
-    console.log("url", url);
+    if (picklistName == "Tool Category") {
+      url = `${apiPath.prodPath}/api/toolCategory/`;
+    }
+    if (picklistName == "Tool Sub-Category") {
+      url = `${apiPath.prodPath}/api/subtoolCategory/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -86,8 +109,13 @@ function PicklistComp({ picklistName }) {
           setPicklistData(res.data.userTypes);
         }
         if (picklistName == "Position") {
-          console.log("herhe", res.data);
           setPicklistData(res.data.positions);
+        }
+        if (picklistName == "Tool Category") {
+          setPicklistData(res.data.toolCategory);
+        }
+        if (picklistName == "Tool Sub-Category") {
+          setPicklistData(res.data.subtoolCategorys);
         }
         setLoading(false);
       })
