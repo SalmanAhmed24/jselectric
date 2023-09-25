@@ -49,3 +49,13 @@
                 }
         }
 }
+.clear-value{
+    font-size: 13px;
+    color: red;
+    margin-top: 10px;
+    border-bottom: 1px solid red;
+    width: fit-content;
+    &:hover{
+        cursor: pointer;
+    }
+}

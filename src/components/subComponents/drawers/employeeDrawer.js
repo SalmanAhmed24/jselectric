@@ -150,7 +150,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
             />
           </div>
           <div className="input-wrap">
-            <label>Vehicle</label>
+            <label>Tablet</label>
             <Select
               options={dropdown}
               onChange={tabletHandler}

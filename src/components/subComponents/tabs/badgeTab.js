@@ -9,8 +9,26 @@ import AddBadge from "../forms/addBadge";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import moment from "moment";
-function BadgeTab({ item, refreshData, closeModal }) {
+function BadgeTab({ refreshData, closeModal, item }) {
   const [editFlag, setEditFlag] = useState(false);
+  const [infoData, setInfoData] = useState("");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/users`)
+      .then((res) => {
+        const currentUser = res.data.allUsers.find(
+          (i) => i.id == item.id
+        ).badges;
+        setInfoData(currentUser);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
   const addBadgeHandler = (data, editFlag) => {
     let url;
     if (editFlag) {
@@ -21,73 +39,76 @@ function BadgeTab({ item, refreshData, closeModal }) {
     axios
       .patch(url, data)
       .then((res) => {
-        refreshData();
-        closeModal();
+        setInfoData(res.data.userInd.badges);
       })
       .catch((error) => console.log(error));
   };
-  return (
+  return loading ? (
+    <section>
+      <h1>Loading...</h1>
+    </section>
+  ) : (
     <div className="badges-tab">
       <AddBadge
-        editFlag={item.badges == undefined ? false : true}
-        dataToBeEdited={item.badges == undefined ? "" : item.badges}
+        editFlag={infoData == undefined ? false : true}
+        dataToBeEdited={infoData == undefined ? "" : infoData}
         addBadgeFunc={addBadgeHandler}
       />
       <div className="content-bottom-main">
-        {item.badges == undefined ? (
+        {infoData == undefined ? (
           <p>No data for badges found</p>
         ) : (
           <div className="badgeInfo-data">
             <div className="single-item">
               <label>AISD</label>
-              <p>{item.badges.AISD}</p>
+              <p>{infoData.AISD}</p>
             </div>
             <div className="single-item">
               <label>AISD Exp Date</label>
               <p>
-                {moment(item.badges.AISDExpDate).format("MM-DD-YY") ==
+                {moment(infoData.AISDExpDate).format("MM-DD-YY") ==
                 "Invalid date"
                   ? ""
-                  : moment(item.badges.AISDExpDate).format("MM-DD-YY")}
+                  : moment(infoData.AISDExpDate).format("MM-DD-YY")}
               </p>
             </div>
             <div className="single-item">
               <label>COA Water Dep</label>
-              <p>{item.badges.COAWaterDep}</p>
+              <p>{infoData.COAWaterDep}</p>
             </div>
             <div className="single-item">
               <label>COA Water Dept Exp Date</label>
               <p>
-                {moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY") ==
+                {moment(infoData.COAWaterDepExpDate).format("MM-DD-YY") ==
                 "Invalid date"
                   ? ""
-                  : moment(item.badges.COAWaterDepExpDate).format("MM-DD-YY")}
+                  : moment(infoData.COAWaterDepExpDate).format("MM-DD-YY")}
               </p>
             </div>
             <div className="single-item">
               <label>TFC</label>
-              <p>{item.badges.TFC}</p>
+              <p>{infoData.TFC}</p>
             </div>
             <div className="single-item">
               <label>TFC Exp Date</label>
               <p>
-                {moment(item.badges.TFCExpDate).format("MM-DD-YY") ==
+                {moment(infoData.TFCExpDate).format("MM-DD-YY") ==
                 "Invalid date"
                   ? ""
-                  : moment(item.badges.TFCExpDate).format("MM-DD-YY")}
+                  : moment(infoData.TFCExpDate).format("MM-DD-YY")}
               </p>
             </div>
             <div className="single-item">
               <label>ABIA</label>
-              <p>{item.badges.ABIA}</p>
+              <p>{infoData.ABIA}</p>
             </div>
             <div className="single-item">
               <label>ABIA Exp Date</label>
               <p>
-                {moment(item.badges.ABIAExpDate).format("MM-DD-YY") ==
+                {moment(infoData.ABIAExpDate).format("MM-DD-YY") ==
                 "Invalid date"
                   ? ""
-                  : moment(item.badges.ABIAExpDate).format("MM-DD-YY")}
+                  : moment(infoData.ABIAExpDate).format("MM-DD-YY")}
               </p>
             </div>
           </div>

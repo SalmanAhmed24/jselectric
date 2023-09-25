@@ -53,8 +53,11 @@ function Navbar() {
           >
             Reports
           </Link>
-          <Link href={"/link"} className={path == "/link" ? "activeTop" : ""}>
-            Link
+          <Link
+            href={"/pics&files"}
+            className={path == "/pics&files" ? "activeTop" : ""}
+          >
+            Pic / Files
           </Link>
           <Link
             href={"/settings"}

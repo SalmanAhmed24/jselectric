@@ -45,7 +45,6 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
       ABIA,
       ABIAExpDate: ABIAExpDate == undefined ? "" : ABIAExpDate,
     };
-    // console.log("this is addBadge", data);
     addBadgeFunc(data, editFlag);
   };
   return (
@@ -67,6 +66,11 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
           onChange={(value) => setAISDExpDate(value)}
           locale={"en-US"}
         />
+        {AISDExpDate !== "" ? (
+          <p onClick={() => setAISDExpDate("")} className="clear-value">
+            Clear
+          </p>
+        ) : null}
       </div>
       <div className="single-inp">
         <label>COA Water Dept</label>
@@ -85,6 +89,11 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
           onChange={(value) => setCOAWaterDepExpDate(value)}
           locale={"en-US"}
         />
+        {COAWaterDepExpDate !== "" ? (
+          <p onClick={() => setCOAWaterDepExpDate("")} className="clear-value">
+            Clear
+          </p>
+        ) : null}
       </div>
       <div className="single-inp">
         <label>TFC</label>
@@ -103,6 +112,11 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
           onChange={(value) => setTFCExpDate(value)}
           locale={"en-US"}
         />
+        {TFCExpDate !== "" ? (
+          <p onClick={() => setTFCExpDate("")} className="clear-value">
+            Clear
+          </p>
+        ) : null}
       </div>
       <div className="single-inp">
         <label>ABIA</label>
@@ -121,6 +135,11 @@ function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
           onChange={(value) => setABIAExpDate(value)}
           locale={"en-US"}
         />
+        {ABIAExpDate !== "" ? (
+          <p onClick={() => setABIAExpDate("")} className="clear-value">
+            Clear
+          </p>
+        ) : null}
       </div>
       <div className="single-inp">
         <button onClick={addBadge}>Save</button>
