@@ -16,7 +16,7 @@ export default function Settings() {
   const [activeLink, setActiveLink] = useState("Employees");
   const [showPick, setShowPick] = useState(false);
   useEffect(() => {
-    if (user.user == null) {
+    if (user.user == null || user.user.error) {
       router.push("/login");
     }
   }, [user]);

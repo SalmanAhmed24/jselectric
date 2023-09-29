@@ -12,7 +12,7 @@ export default function Home() {
   const user = useSelector((state) => state.user);
   const router = useRouter();
   useEffect(() => {
-    if (user.user == null) {
+    if (user.user == null || user.user.error) {
       router.push("/login");
     }
   }, [user]);

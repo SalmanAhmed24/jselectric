@@ -24,7 +24,7 @@ function Navbar() {
   };
   return (
     <>
-      {user.user == null ? null : (
+      {user.user == null || user.user.error ? null : (
         <div className={`${poppins.className} navbar-wrap`}>
           <Link href={"/"} className={path == "/" ? "activeTop" : ""}>
             Dashboard

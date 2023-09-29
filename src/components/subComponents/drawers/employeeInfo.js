@@ -5,6 +5,7 @@ import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
 import { Select } from "react-rainbow-components";
 import TopInfo from "../../topInfo/topInfo";
 import BadgeTab from "../tabs/badgeTab";
+import Notes from "../../notes/notes";
 import "./style.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
@@ -41,10 +42,10 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 2" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "Notes" ? "activeTab simpleTab" : "simple Tab"
             }
           >
-            Link 2
+            Notes
           </li>
           <li
             onClick={tabHandler}
@@ -72,7 +73,7 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
             refreshData={refreshData}
           />
         ) : null}
-        {activeTab == "Link 2" ? <p>this is Link 2 tab</p> : null}
+        {activeTab == "Notes" ? <Notes userId={item.id} /> : null}
         {activeTab == "Link 3" ? <p>this is Link 3 tab</p> : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
       </div>
