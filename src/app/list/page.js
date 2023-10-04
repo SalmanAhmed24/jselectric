@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Tools from "../../components/tools";
+import Devices from "../../components/devices";
 import "./list.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -32,10 +33,20 @@ export default function List() {
           >
             Tools
           </li>
+          <li
+            className={
+              activeLink == "Devices" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Devices
+          </li>
         </ul>
       </section>
       <section className={`${poppins.className} content-wrap`}>
         {activeLink == "Tools" ? <Tools picklistName={"Tools"} /> : null}
+      </section>
+      <section className={`${poppins.className} content-wrap`}>
+        {activeLink == "Devices" ? <Devices picklistName={"Tools"} /> : null}
       </section>
     </main>
   );

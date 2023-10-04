@@ -76,6 +76,15 @@ export default function Settings() {
             >
               Tool Sub-Category
             </li>
+            <li
+              className={
+                activeLink == "Device Category"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Device Category
+            </li>
           </ul>
         ) : null}
       </section>
@@ -92,6 +101,9 @@ export default function Settings() {
         ) : null}
         {activeLink == "Tool Sub-Category" ? (
           <PicklistComp picklistName={"Tool Sub-Category"} />
+        ) : null}
+        {activeLink == "Device Category" ? (
+          <PicklistComp picklistName={"Device Category"} />
         ) : null}
       </section>
     </main>

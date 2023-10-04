@@ -11,52 +11,41 @@ import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Image from "next/image";
-import EmployeeDrawer from "../drawers/employeeDrawer";
+// import EmployeeDrawer from "../drawers/employeeDrawer";
 import Swal from "sweetalert2";
-import PicklistDrawer from "../drawers/picklistDrawer";
+import DeviceDrawer from "../drawers/deviceDrawer";
 const poppins = Poppins({
   weight: ["300", "600", "700"],
   subsets: ["latin"],
 });
-export default function PicklistTable({
-  picklistData,
-  picklistName,
-  loading,
-  refreshData,
-}) {
+export default function DeviceTable({ allDevices, loading, refreshData }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [actionFlag, setActionFlag] = useState(false);
-  const [picklistId, setpicklistId] = useState("");
+  const [deviceId, setDeviceId] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [editData, setEditData] = useState({});
-  const handleActions = (id) => {
-    setpicklistId(id);
+  const [infoModal, setInfoModal] = useState(false);
+  const [item, setItem] = useState();
+
+  const handleActions = (id, objData) => {
+    setDeviceId(id);
+    setItem(objData);
     setActionFlag(!actionFlag);
   };
   const openEmpModal = (data) => {
     setEditData(data);
     setOpenModal(!openModal);
   };
-  const editEmp = (data, id) => {
-    let apiUrl;
-    if (picklistName == "User Type") {
-      apiUrl = `${apiPath.prodPath}/api/userType/${id}`;
+  const openInfoDrawer = () => {
+    if (infoModal) {
+      setActionFlag(false);
     }
-    if (picklistName == "Position") {
-      apiUrl = `${apiPath.prodPath}/api/position/${id}`;
-    }
-    if (picklistName == "Tool Category") {
-      apiUrl = `${apiPath.prodPath}/api/toolCategory/${id}`;
-    }
-    if (picklistName == "Device Category") {
-      apiUrl = `${apiPath.prodPath}/api/deviceCategory/${id}`;
-    }
-    if (picklistName == "Tool Sub-Category") {
-      apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
-    }
+    setInfoModal(!infoModal);
+  };
+  const editDevice = (data, id) => {
     axios
-      .patch(apiUrl, data)
+      .patch(`${apiPath.prodPath}/api/devices/${id}`, data)
       .then((res) => {
         refreshData();
         openEmpModal();
@@ -64,33 +53,17 @@ export default function PicklistTable({
       })
       .catch((err) => console.log(err));
   };
-  const deleteEmp = (id) => {
+  const deleteDevices = (id) => {
     Swal.fire({
       icon: "warning",
       title: "Are You Sure?",
-      text: "Are you sure you want to delete the employee data? This action is irreversible.",
+      text: "Are you sure you want to delete the devices data? This action is irreversible.",
       confirmButtonText: "Delete",
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        let apiUrl;
-        if (picklistName == "User Type") {
-          apiUrl = `${apiPath.prodPath}/api/userType/${id}`;
-        }
-        if (picklistName == "Position") {
-          apiUrl = `${apiPath.prodPath}/api/position/${id}`;
-        }
-        if (picklistName == "Tool Category") {
-          apiUrl = `${apiPath.prodPath}/api/toolCategory/${id}`;
-        }
-        if (picklistName == "Tool Category") {
-          apiUrl = `${apiPath.prodPath}/api/deviceCategory/${id}`;
-        }
-        if (picklistName == "Tool Sub-Category") {
-          apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
-        }
         axios
-          .delete(apiUrl)
+          .delete(`${apiPath.prodPath}/api/devices/${id}`)
           .then((res) => {
             refreshData();
             openEmpModal();
@@ -112,43 +85,44 @@ export default function PicklistTable({
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ minWidth: 150 }}>Name</TableCell>
-                {picklistName == "Tool Sub-Category" ? (
-                  <TableCell style={{ minWidth: 150 }}>
-                    Parent Category
-                  </TableCell>
-                ) : (
-                  <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
-                )}
+                <TableCell style={{ minWidth: 150 }}>Category</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Billing Account</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Phone No</TableCell>
+                <TableCell style={{ minWidth: 120 }}>Username</TableCell>
+                <TableCell style={{ minWidth: 120 }}>Make/Model</TableCell>
+                <TableCell style={{ minWidth: 120 }}>Upgrade Date</TableCell>
+                <TableCell style={{ minWidth: 150 }}>
+                  Usage Last Month
+                </TableCell>
+
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {picklistData.length == 0 ? (
+              {allDevices.length == 0 ? (
                 <TableRow>
-                  <p className={poppins.className}>No {picklistName} Found</p>
+                  <p className={poppins.className}>No Devices Data Found</p>
                 </TableRow>
               ) : (
-                picklistData.map((i) => {
+                allDevices.map((i) => {
                   return (
                     <TableRow key={i.id}>
-                      <TableCell>{i.name}</TableCell>
-                      {picklistName == "Tool Sub-Category" ? (
-                        <TableCell>{i.parentCategory}</TableCell>
-                      ) : (
-                        <TableCell>{i.shortCode}</TableCell>
-                      )}
-
+                      <TableCell>{i.category}</TableCell>
+                      <TableCell>{i.billingAccount}</TableCell>
+                      <TableCell>{i.phoneNo}</TableCell>
+                      <TableCell>{i.username}</TableCell>
+                      <TableCell>{i.make}</TableCell>
+                      <TableCell>{i.upgradeDate}</TableCell>
+                      <TableCell>{i.usageLastMonth}</TableCell>
                       <TableCell style={{ position: "relative" }}>
                         <Image
-                          onClick={() => handleActions(i.id)}
+                          onClick={() => handleActions(i.id, i)}
                           src="/dots.png"
                           width={32}
                           height={32}
                         />
-                        {actionFlag && i.id == picklistId ? (
+                        {actionFlag && i.id == deviceId ? (
                           <div className="dropdown-div">
-                            {/* <p className={poppins.className}>Info Modal</p> */}
                             <p
                               onClick={() => openEmpModal({ ...i })}
                               className={poppins.className}
@@ -156,7 +130,7 @@ export default function PicklistTable({
                               Edit
                             </p>
                             <p
-                              onClick={() => deleteEmp(i.id)}
+                              onClick={() => deleteDevices(i.id)}
                               className={poppins.className}
                             >
                               Delete
@@ -170,14 +144,13 @@ export default function PicklistTable({
               )}
             </TableBody>
             {openModal && editData ? (
-              <PicklistDrawer
+              <DeviceDrawer
                 edit={true}
                 open={openModal}
                 onClose={() => openEmpModal()}
-                id={picklistId}
+                id={deviceId}
                 data={editData}
-                picklistName={picklistName}
-                editPicklist={editEmp}
+                editDevice={editDevice}
               />
             ) : null}
           </Table>

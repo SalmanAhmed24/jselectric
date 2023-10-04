@@ -1,8 +1,7 @@
 import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
-import { Select } from "react-rainbow-components";
+import PicFile from "../../picFile";
 import TopInfo from "../../topInfo/topInfo";
 import BadgeTab from "../tabs/badgeTab";
 import Notes from "../../notes/notes";
@@ -50,10 +49,10 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 3" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "Pic/Files" ? "activeTab simpleTab" : "simple Tab"
             }
           >
-            Link 3
+            Pic/Files
           </li>
           <li
             onClick={tabHandler}
@@ -74,7 +73,7 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
           />
         ) : null}
         {activeTab == "Notes" ? <Notes userId={item.id} /> : null}
-        {activeTab == "Link 3" ? <p>this is Link 3 tab</p> : null}
+        {activeTab == "Pic/Files" ? <PicFile userId={item.id} /> : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
       </div>
     </Drawer>

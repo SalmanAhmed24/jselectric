@@ -29,6 +29,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Tool Sub-Category") {
       apiUrl = `${apiPath.prodPath}/api/subtoolCategory/`;
     }
+    if (picklistName == "Device Category") {
+      apiUrl = `${apiPath.prodPath}/api/deviceCategory/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -44,6 +47,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Tool Sub-Category") {
           setPicklistData(res.data.subtoolCategorys);
+        }
+        if (picklistName == "Device Category") {
+          setPicklistData(res.data.deviceCategory);
         }
         setLoading(false);
       })
@@ -66,6 +72,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Tool Category") {
       url = `${apiPath.prodPath}/api/toolCategory/addtoolCategory`;
+    }
+    if (picklistName == "Device Category") {
+      url = `${apiPath.prodPath}/api/deviceCategory/adddeviceCategory`;
     }
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/addsubtoolCategory`;
@@ -98,6 +107,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Tool Category") {
       url = `${apiPath.prodPath}/api/toolCategory/`;
     }
+    if (picklistName == "Device Category") {
+      url = `${apiPath.prodPath}/api/deviceCategory/`;
+    }
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/`;
     }
@@ -113,6 +125,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Tool Category") {
           setPicklistData(res.data.toolCategory);
+        }
+        if (picklistName == "Device Category") {
+          setPicklistData(res.data.deviceCategory);
         }
         if (picklistName == "Tool Sub-Category") {
           setPicklistData(res.data.subtoolCategorys);
