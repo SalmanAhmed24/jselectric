@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Tools from "../../components/tools";
 import Devices from "../../components/devices";
+import Vehicles from "../../components/vehicles";
 import "./list.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -40,6 +41,13 @@ export default function List() {
           >
             Devices
           </li>
+          <li
+            className={
+              activeLink == "Vehicles" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Vehicles
+          </li>
         </ul>
       </section>
       <section className={`${poppins.className} content-wrap`}>
@@ -47,6 +55,11 @@ export default function List() {
       </section>
       <section className={`${poppins.className} content-wrap`}>
         {activeLink == "Devices" ? <Devices picklistName={"Tools"} /> : null}
+      </section>
+      <section className={`${poppins.className} content-wrap`}>
+        {activeLink == "Vehicles" ? (
+          <Vehicles picklistName={"Vehicles"} />
+        ) : null}
       </section>
     </main>
   );
