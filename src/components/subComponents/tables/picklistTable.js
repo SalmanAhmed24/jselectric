@@ -100,6 +100,7 @@ export default function PicklistTable({
       }
     });
   };
+  const sortedArr = picklistData.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <Paper
       className={poppins.className}
@@ -124,12 +125,12 @@ export default function PicklistTable({
               </TableRow>
             </TableHead>
             <TableBody>
-              {picklistData.length == 0 ? (
+              {sortedArr.length == 0 ? (
                 <TableRow>
                   <p className={poppins.className}>No {picklistName} Found</p>
                 </TableRow>
               ) : (
-                picklistData.map((i) => {
+                sortedArr.map((i) => {
                   return (
                     <TableRow key={i.id}>
                       <TableCell>{i.name}</TableCell>
