@@ -86,6 +86,7 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Full name</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Position</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Personal Phone</TableCell>
@@ -94,7 +95,6 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                 <TableCell style={{ minWidth: 150 }}>Vehicle</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Tablet</TableCell>
                 <TableCell style={{ minWidth: 150 }}>City</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,14 +106,6 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                 allUsers.map((i) => {
                   return (
                     <TableRow key={i.id}>
-                      <TableCell>{i.fullname}</TableCell>
-                      <TableCell>{i.position}</TableCell>
-                      <TableCell>{i.personalPhone}</TableCell>
-                      <TableCell>{i.companyPhone}</TableCell>
-                      <TableCell>{i.email}</TableCell>
-                      <TableCell>{i.vehicle}</TableCell>
-                      <TableCell>{i.tablet}</TableCell>
-                      <TableCell>{i.city}</TableCell>
                       <TableCell style={{ position: "relative" }}>
                         <Image
                           onClick={() => handleActions(i.id, i)}
@@ -144,6 +136,14 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                           </div>
                         ) : null}
                       </TableCell>
+                      <TableCell>{i.fullname}</TableCell>
+                      <TableCell>{i.position}</TableCell>
+                      <TableCell>{i.personalPhone}</TableCell>
+                      <TableCell>{i.companyPhone}</TableCell>
+                      <TableCell>{i.email}</TableCell>
+                      <TableCell>{i.vehicle}</TableCell>
+                      <TableCell>{i.tablet}</TableCell>
+                      <TableCell>{i.city}</TableCell>
                     </TableRow>
                   );
                 })

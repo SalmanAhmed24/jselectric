@@ -14,6 +14,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const [userType, setUserType] = useState("");
   const [position, setPosition] = useState("");
   const [vehicle, setVehicle] = useState("");
+  const [creditCard, setCreditCard] = useState("");
   const [tablet, setTablet] = useState("");
   const [city, setCity] = useState("");
   const [fullname, setFullname] = useState("");
@@ -58,6 +59,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       setCompanyPhone(data.companyPhone);
       setUsername(data.username);
       setPassword(data.password);
+      setCreditCard(data.creditCard);
     }
   }, []);
 
@@ -70,6 +72,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       tablet: tablet.value,
       city,
       fullname,
+      creditCard,
       email,
       personalPhone,
       companyPhone,
@@ -94,6 +97,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     setPersonalPhone("");
     setCompanyPhone("");
     setUsername("");
+    setCreditCard("");
     setPassword("");
   };
   const allBoleanOpt = [
@@ -198,6 +202,14 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
               value={companyPhone}
               className={`${poppins.className} input-cus`}
               onChange={(e) => setCompanyPhone(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Credit Card</label>
+            <input
+              value={creditCard}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setCreditCard(e.target.value)}
             />
           </div>
           <div className="input-wrap">

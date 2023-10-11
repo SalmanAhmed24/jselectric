@@ -80,6 +80,7 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Vehicle #</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Driver/WEX Pin</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Vin #</TableCell>
@@ -96,7 +97,6 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
                   Tracking Installed
                 </TableCell>
                 <TableCell style={{ minWidth: 120 }}>Geo Tab</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,6 +108,30 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
                 allVehicles.map((i) => {
                   return (
                     <TableRow key={i.id}>
+                      <TableCell style={{ position: "relative" }}>
+                        <Image
+                          onClick={() => handleActions(i.id, i)}
+                          src="/dots.png"
+                          width={32}
+                          height={32}
+                        />
+                        {actionFlag && i.id == vehicleId ? (
+                          <div className="dropdown-div">
+                            <p
+                              onClick={() => openEmpModal({ ...i })}
+                              className={poppins.className}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => deleteVehicle(i.id)}
+                              className={poppins.className}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        ) : null}
+                      </TableCell>
                       <TableCell style={{ minWidth: 150 }}>
                         {i.vehicleNo}
                       </TableCell>
@@ -141,30 +165,6 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
                       </TableCell>
                       <TableCell style={{ minWidth: 120 }}>
                         {i.geoTab}
-                      </TableCell>
-                      <TableCell style={{ position: "relative" }}>
-                        <Image
-                          onClick={() => handleActions(i.id, i)}
-                          src="/dots.png"
-                          width={32}
-                          height={32}
-                        />
-                        {actionFlag && i.id == vehicleId ? (
-                          <div className="dropdown-div">
-                            <p
-                              onClick={() => openEmpModal({ ...i })}
-                              className={poppins.className}
-                            >
-                              Edit
-                            </p>
-                            <p
-                              onClick={() => deleteVehicle(i.id)}
-                              className={poppins.className}
-                            >
-                              Delete
-                            </p>
-                          </div>
-                        ) : null}
                       </TableCell>
                     </TableRow>
                   );

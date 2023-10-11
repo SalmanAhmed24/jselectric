@@ -73,7 +73,9 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
           />
         ) : null}
         {activeTab == "Notes" ? <Notes userId={item.id} /> : null}
-        {activeTab == "Pic/Files" ? <PicFile userId={item.id} /> : null}
+        {activeTab == "Pic/Files" ? (
+          <PicFile userId={item.id} attachments={item.attachments} />
+        ) : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
       </div>
     </Drawer>

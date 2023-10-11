@@ -1,0 +1,48 @@
+.row{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    .single-item{
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+        margin-right: 20px;
+        label{
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+    }
+    .attach-wrap{
+        width: 80%;
+        display: flex;
+        margin-right: 20px;
+        flex-direction: column;
+        position: relative;
+        button{
+            align-self: flex-start;
+            background-color: #1F3F49;
+            border:1px solid #1F3F49;
+            color: #fff;
+            font-size: 16px;
+        }
+        label{
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .thumbmail-wrap{
+            display: flex;
+            margin-top: 15px;
+            .image-wrap{
+                display: flex;
+                width: 150px;
+                margin-left: 10px;
+                box-shadow: 0px 0px 10px #a2a2a2;
+                img{
+                    width:150px;
+                    height: 150px;
+                }
+            }
+        }
+    }
+
+}

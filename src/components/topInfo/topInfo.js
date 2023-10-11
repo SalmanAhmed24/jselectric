@@ -41,6 +41,10 @@ function TopInfo({ item }) {
         <label>Position</label>
         <p>{item.position}</p>
       </div>
+      <div className="singleInfo">
+        <label>Credit Card</label>
+        <p>{item.creditCard}</p>
+      </div>
     </div>
   );
 }

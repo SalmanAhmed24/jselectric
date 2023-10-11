@@ -85,6 +85,7 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Category</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Billing Account</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Phone No</TableCell>
@@ -94,8 +95,6 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
                 <TableCell style={{ minWidth: 150 }}>
                   Usage Last Month
                 </TableCell>
-
-                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -107,13 +106,6 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
                 allDevices.map((i) => {
                   return (
                     <TableRow key={i.id}>
-                      <TableCell>{i.category}</TableCell>
-                      <TableCell>{i.billingAccount}</TableCell>
-                      <TableCell>{i.phoneNo}</TableCell>
-                      <TableCell>{i.username}</TableCell>
-                      <TableCell>{i.make}</TableCell>
-                      <TableCell>{i.upgradeDate}</TableCell>
-                      <TableCell>{i.usageLastMonth}</TableCell>
                       <TableCell style={{ position: "relative" }}>
                         <Image
                           onClick={() => handleActions(i.id, i)}
@@ -138,6 +130,13 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
                           </div>
                         ) : null}
                       </TableCell>
+                      <TableCell>{i.category}</TableCell>
+                      <TableCell>{i.billingAccount}</TableCell>
+                      <TableCell>{i.phoneNo}</TableCell>
+                      <TableCell>{i.username}</TableCell>
+                      <TableCell>{i.make}</TableCell>
+                      <TableCell>{i.upgradeDate}</TableCell>
+                      <TableCell>{i.usageLastMonth}</TableCell>
                     </TableRow>
                   );
                 })
