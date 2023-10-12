@@ -32,8 +32,21 @@
         .thumbmail-wrap{
             display: flex;
             margin-top: 15px;
+        }
+    }
+
+}
+.picModal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+        .inner-wrap{
+            padding: 20px;
+            background-color: #fff;
+            width: 90vw;
+            display: flex;
             .image-wrap{
-                display: flex;
                 width: 150px;
                 margin-left: 10px;
                 box-shadow: 0px 0px 10px #a2a2a2;
@@ -43,6 +56,18 @@
                 }
             }
         }
-    }
+}
+.outer-wrap{
+    padding: 30px 20px;
+    h1{
+        font-weight: 700;
+        margin-bottom: 25px;
 
+    }
+    p{
+        font-size: 20px;
+        &:hover{
+            cursor: pointer;
+        }
+    }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
 import { useSelector } from "react-redux";
 import PicInfo from "./picInfo";
+import PicInfoTable from "./picInfotable";
 import moment from "moment";
 import axios from "axios";
 const poppins = Poppins({
@@ -95,7 +96,8 @@ function PicFile({ userId, attachments }) {
           There are no Pictures / Files not found
         </p>
       ) : (
-        <PicInfo attachments={attachments} />
+        // <PicInfo attachments={attachments} />
+        <PicInfoTable attachments={attachments} />
       )}
     </section>
   );
