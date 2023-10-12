@@ -22,9 +22,9 @@ function PicInfo({ attachments }) {
   };
   return (
     <section className="attachments-wrap">
-      {attachments.map((i) => {
+      {attachments.map((i, ind) => {
         return (
-          <section className="row">
+          <section key={ind} className="row">
             <div className="single-item">
               <label>Notes</label>
               <p>{i.note}</p>
