@@ -5,6 +5,7 @@ import PicInfo from "./picInfo";
 import PicInfoTable from "./picInfotable";
 import moment from "moment";
 import axios from "axios";
+import { apiPath } from "@/utils/routes";
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
@@ -34,7 +35,7 @@ function PicFile({ userId, attachments }) {
     // };
     axios({
       method: "patch",
-      url: `http://localhost:9000/api/users/addFiles/${userId}`,
+      url: `${apiPath.prodPath}/api/users/addFiles/${userId}`,
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     })
