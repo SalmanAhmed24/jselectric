@@ -196,8 +196,10 @@ function PicFile({ userId, attachments }) {
           />
 
           {oldFiles.length && editFlag
-            ? oldFiles.map((i) => (
-                <p style={{ fontSize: "14px" }}>{i.filename}</p>
+            ? oldFiles.map((i, ind) => (
+                <p key={`${i.filename}${i.ind}`} style={{ fontSize: "14px" }}>
+                  {i.filename}
+                </p>
               ))
             : null}
         </div>
