@@ -176,14 +176,7 @@ function PicFile({ userId, attachments }) {
     });
   };
   return loading ? (
-    <iframe
-      src="https://giphy.com/embed/xTk9ZvMnbIiIew7IpW"
-      width="100"
-      height="100"
-      frameBorder="0"
-      class="giphy-embed"
-      allowFullScreen
-    ></iframe>
+    <p>Loading...</p>
   ) : (
     <section>
       <form
