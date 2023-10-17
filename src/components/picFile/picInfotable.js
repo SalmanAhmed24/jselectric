@@ -15,7 +15,7 @@ const poppins = Poppins({
   weight: ["300", "600", "700"],
   subsets: ["latin"],
 });
-function PicInfoTable({ attachments }) {
+function PicInfoTable({ attachments, openEdit, deleteTool }) {
   const [actionFlag, setActionFlag] = useState(false);
   const [attachmentId, setAttachmentId] = useState("");
   const [item, setItem] = useState();
@@ -74,13 +74,13 @@ function PicInfoTable({ attachments }) {
                       {actionFlag && i.id == attachmentId ? (
                         <div className="dropdown-div">
                           <p
-                            onClick={() => openEmpModal({ ...i })}
+                            onClick={() => openEdit(i)}
                             className={poppins.className}
                           >
                             Edit
                           </p>
                           <p
-                            onClick={() => deleteTool(i.id)}
+                            onClick={() => deleteTool(i)}
                             className={poppins.className}
                           >
                             Delete

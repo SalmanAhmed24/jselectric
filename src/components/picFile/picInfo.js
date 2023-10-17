@@ -8,18 +8,18 @@ const poppins = Poppins({
 });
 function PicInfo({ attachments }) {
   const [view, setView] = useState(false);
-  const viewPic = (file) => {
-    var newTab = window.open();
-    newTab.document.body.innerHTML = `<img src="data:${file.fileType};base64,${file.file}" width="auto" height="auto">`;
-  };
-  const viewFile = (file) => {
-    let pdfWindow = window.open("");
-    pdfWindow.document.write(
-      "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
-        encodeURI(file.file) +
-        "'></iframe>"
-    );
-  };
+  // const viewPic = (file) => {
+  //   var newTab = window.open();
+  //   newTab.document.body.innerHTML = `<img src="data:${file.fileType};base64,${file.file}" width="auto" height="auto">`;
+  // };
+  // const viewFile = (file) => {
+  //   let pdfWindow = window.open("");
+  //   pdfWindow.document.write(
+  //     "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
+  //       encodeURI(file.file) +
+  //       "'></iframe>"
+  //   );
+  // };
   return (
     <section className="attachments-wrap">
       {attachments.map((i, ind) => {

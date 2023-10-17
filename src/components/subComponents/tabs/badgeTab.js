@@ -55,7 +55,7 @@ function BadgeTab({ refreshData, closeModal, item }) {
         addBadgeFunc={addBadgeHandler}
       />
       <div className="content-bottom-main">
-        {infoData == undefined ? (
+        {infoData == undefined || infoData == "" ? (
           <p>No data for badges found</p>
         ) : (
           <div className="badgeInfo-data">

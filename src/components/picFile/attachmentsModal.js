@@ -7,18 +7,38 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 function AttachmentModal({ files, openFlag, closeModal }) {
+  const [modifiedFile, setModifiedFile] = useState("");
+  useEffect(() => {
+    const customObj = files.map((i) => {
+      return {
+        ...i,
+        mimeType:
+          i.filename.split(".").pop() == "png"
+            ? "image/png"
+            : i.filename.split(".").pop() == "jpg"
+            ? "image/jpeg"
+            : i.filename.split(".").pop() == "pdf"
+            ? "application/pdf"
+            : "image/jpeg",
+      };
+    });
+    setModifiedFile(customObj);
+  }, [openFlag]);
   const viewPic = (file) => {
-    var newTab = window.open();
-    newTab.document.body.innerHTML = `<img src="data:${file.fileType};base64,${file.file}" width="auto" height="auto">`;
-  };
-  const viewFile = (file) => {
-    let pdfWindow = window.open("");
-    pdfWindow.document.write(
-      "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
-        encodeURI(file.file) +
-        "'></iframe>"
+    window.open(
+      file.fileUrl,
+      "Image",
+      "width=largeImage.stylewidth,height=largeImage.style.height,resizable=1"
     );
   };
+  const viewFile = (file) => {
+    window.open(
+      file.fileUrl,
+      "Application",
+      "width=largeImage.stylewidth,height=largeImage.style.height,resizable=1"
+    );
+  };
+  console.log("!!!!", modifiedFile);
   return (
     <Modal
       open={openFlag}
@@ -37,27 +57,53 @@ function AttachmentModal({ files, openFlag, closeModal }) {
         </p>
         <h1 className={poppins.className}>Attachments</h1>
         <div className="inner-wrap">
-          {files.map((file, ind) => {
-            return (
-              <div key={ind} className="image-wrap">
-                {file.fileType == "image/png" ||
-                file.fileType == "image/jpg" ? (
-                  <img
-                    src={`data:${file.fileType};base64,${file.file}`}
-                    className="attach-img"
-                    onClick={() => viewPic(file)}
-                  />
-                ) : (
-                  <img
-                    src={`/pdf.png`}
-                    width={150}
-                    height={150}
-                    onClick={() => viewFile(file)}
-                  />
-                )}
-              </div>
-            );
-          })}
+          {modifiedFile &&
+            modifiedFile.map((file, ind) => {
+              return (
+                <div key={ind} className="image-wrap">
+                  {file.mimeType == "image/png" ||
+                  file.mimeType == "image/jpg" ||
+                  file.mimeType == "image/jpeg" ? (
+                    <div>
+                      <img
+                        src={file.fileUrl}
+                        className="attach-img"
+                        onClick={() => viewPic(file)}
+                      />
+                      <p
+                        className={poppins.className}
+                        style={{
+                          fontSize: 14,
+                          textAlign: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        {file.filename}
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <img
+                        src={`/pdf.png`}
+                        width={150}
+                        height={150}
+                        onClick={() => viewFile(file)}
+                      />
+                      <p
+                        className={poppins.className}
+                        style={{
+                          fontSize: 14,
+                          textAlign: "center",
+                          marginTop: 10,
+                        }}
+                      >
+                        {file.filename}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
     </Modal>

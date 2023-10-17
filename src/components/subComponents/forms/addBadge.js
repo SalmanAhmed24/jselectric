@@ -9,13 +9,13 @@ const poppins = Poppins({
 });
 function AddBadge({ addBadgeFunc, editFlag, dataToBeEdited }) {
   const [AISD, setAISD] = useState({ label: "", value: "" });
-  const [AISDExpDate, setAISDExpDate] = useState();
+  const [AISDExpDate, setAISDExpDate] = useState("");
   const [COAWaterDep, setCOAWaterDep] = useState({ label: "", value: "" });
-  const [COAWaterDepExpDate, setCOAWaterDepExpDate] = useState();
+  const [COAWaterDepExpDate, setCOAWaterDepExpDate] = useState("");
   const [TFC, setTFC] = useState({ label: "", value: "" });
-  const [TFCExpDate, setTFCExpDate] = useState();
+  const [TFCExpDate, setTFCExpDate] = useState("");
   const [ABIA, setABIA] = useState({ label: "", value: "" });
-  const [ABIAExpDate, setABIAExpDate] = useState();
+  const [ABIAExpDate, setABIAExpDate] = useState("");
   const dropdownOpt = [
     { label: "", value: "" },
     { label: "Yes", value: "Yes" },
