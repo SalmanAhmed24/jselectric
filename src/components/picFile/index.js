@@ -55,6 +55,7 @@ function PicFile({ userId, attachments }) {
         method: "patch",
         url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
         data: formData,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((res) => {
@@ -78,6 +79,7 @@ function PicFile({ userId, attachments }) {
         method: "patch",
         url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
         data: formData,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((res) => {
@@ -101,6 +103,7 @@ function PicFile({ userId, attachments }) {
         method: "patch",
         url: `${apiPath.prodPath}/api/users/addFiles/${userId}`,
         data: formData,
+        withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then((res) => {
@@ -157,15 +160,18 @@ function PicFile({ userId, attachments }) {
         const dataObj = {
           oldFiles: data.files,
         };
-        axios
-          .patch(
-            `${apiPath.prodPath}/api/users/delFiles/${userId}&&${data.id}`,
-            dataObj
-          )
+        axios({
+          method: "patch",
+          url: `${apiPath.prodPath}/api/users/delFiles/${userId}&&${data.id}`,
+          data: dataObj,
+          withCredentials: false,
+          headers: { "Content-Type": "multipart/form-data" },
+        })
           .then((res) => {
             setLoading(false);
             loadUser();
-          });
+          })
+          .catch((err) => console.log(err));
       }
     });
   };
