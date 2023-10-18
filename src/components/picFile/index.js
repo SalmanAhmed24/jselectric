@@ -53,7 +53,7 @@ function PicFile({ userId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
+        url: `${apiPath.devPath}/api/users/editFiles/${userId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +77,7 @@ function PicFile({ userId, attachments }) {
       formData.append("id", attachmentId);
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
+        url: `${apiPath.devPath}/api/users/editFiles/${userId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -101,7 +101,7 @@ function PicFile({ userId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/addFiles/${userId}`,
+        url: `${apiPath.devPath}/api/users/addFiles/${userId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -162,7 +162,7 @@ function PicFile({ userId, attachments }) {
         };
         axios({
           method: "patch",
-          url: `${apiPath.prodPath}/api/users/delFiles/${userId}&&${data.id}`,
+          url: `${apiPath.devPath}/api/users/delFiles/${userId}&&${data.id}`,
           data: dataObj,
           withCredentials: false,
           headers: { "Content-Type": "multipart/form-data" },
