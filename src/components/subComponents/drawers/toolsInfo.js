@@ -59,7 +59,11 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
       </div>
       <div className={`${poppins.className} innerTabsWrap`}>
         {activeTab == "Parts / Items" ? (
-          <PartsItems parts={item.parts} />
+          <PartsItems
+            parts={item.parts}
+            refreshData={refreshData}
+            toolId={item.id}
+          />
         ) : null}
         {activeTab == "Link 3" ? <p>this is Link 3 tab</p> : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}

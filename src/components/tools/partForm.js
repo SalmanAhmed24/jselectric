@@ -7,21 +7,27 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-function PartsItemsForm({ addParts, editFlag, data }) {
+function PartsItemsForm({ addParts, editFlag, part }) {
   const [partNo, setPartNo] = useState("");
   const [description, setDescription] = useState("");
   useEffect(() => {
     if (editFlag) {
-      setPartNo(data.partNo);
-      setDescription(data.description);
+      setPartNo(part.partNo);
+      setDescription(part.description);
     }
-  }, []);
-  const handleParts = () => {
+  }, [editFlag]);
+  const handleParts = (e) => {
+    e.preventDefault();
     const dataObj = {
       partNo,
       description,
     };
     addParts(dataObj);
+    clearValues();
+  };
+  const clearValues = () => {
+    setPartNo("");
+    setDescription("");
   };
   return (
     <section>
