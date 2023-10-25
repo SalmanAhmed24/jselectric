@@ -16,9 +16,10 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [techAssigned, setTechAssigned] = useState("");
   const [location, setLocation] = useState("");
   const [categoryOpt, setCategoryOpt] = useState("");
-  const [allSubCatOpt, setAllSubCatOpt] = useState("");
+  // const [allSubCatOpt, setAllSubCatOpt] = useState("");
   const [techAssignOpt, setTechAssignOpt] = useState("");
   const [subCatOpt, setSubCatOpt] = useState("");
+  const [filteredCatOpt, setFilteredCatOpt] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [employee, setEmployee] = useState("");
   const [project, setProject] = useState("");
@@ -115,11 +116,16 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const categoryHandler = (e) => {
     setSubCategory("");
     setCategory(e);
-    const filteredSubOpt = subCatOpt.filter((i) => i.parentCategory == e.value);
-    setSubCatOpt(filteredSubOpt);
+
+    let filteredSubOpt;
+    if (e.value == "Ladder") {
+      filteredSubOpt = subCatOpt.filter((i) => i.parentCategory == "ladder");
+    } else {
+      filteredSubOpt = subCatOpt.filter((i) => i.parentCategory == e.value);
+    }
+    setFilteredCatOpt(filteredSubOpt);
   };
   const techAssignedHandler = (e) => {
-    console.log(e);
     setTechAssigned(e);
   };
   const handleUpload = (e) => {
@@ -170,7 +176,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
           <div className="input-wrap">
             <label>Sub Category</label>
             <Select
-              options={subCatOpt}
+              options={filteredCatOpt}
               onChange={(e) => setSubCategory(e)}
               value={subCategory}
             />

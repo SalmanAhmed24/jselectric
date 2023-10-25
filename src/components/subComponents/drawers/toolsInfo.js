@@ -2,6 +2,7 @@ import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import TopInfoTools from "../../topInfo/topInfoTools";
+import PartsItems from "../../tools/parts-items";
 import "./style.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
@@ -31,10 +32,12 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 2" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "Parts / Items"
+                ? "activeTab simpleTab"
+                : "simple Tab"
             }
           >
-            Link 2
+            Parts / Items
           </li>
           <li
             onClick={tabHandler}
@@ -55,7 +58,9 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
         </ul>
       </div>
       <div className={`${poppins.className} innerTabsWrap`}>
-        {activeTab == "Link 2" ? <p>this is Link 2 tab</p> : null}
+        {activeTab == "Parts / Items" ? (
+          <PartsItems parts={item.parts} />
+        ) : null}
         {activeTab == "Link 3" ? <p>this is Link 3 tab</p> : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
       </div>
