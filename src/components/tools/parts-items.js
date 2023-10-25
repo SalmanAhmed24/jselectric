@@ -33,7 +33,7 @@ function PartsItems({ data, toolId }) {
   const loadUser = () => {
     setLoading(true);
     axios
-      .get(`${apiPath.devPath}/api/tools/`)
+      .get(`${apiPath.prodPath}/api/tools/`)
       .then((res) => {
         if (res.data.allTools.length) {
           const filteredParts = res.data.allTools.find((i) => i.id == toolId);
@@ -48,9 +48,9 @@ function PartsItems({ data, toolId }) {
   const addParts = (dataObj) => {
     let url;
     if (editFlag) {
-      url = `${apiPath.devPath}/api/tools/editPartsItems/${toolId}&&${partId}`;
+      url = `${apiPath.prodPath}/api/tools/editPartsItems/${toolId}&&${partId}`;
     } else {
-      url = `${apiPath.devPath}/api/tools/addPartsItems/${toolId}`;
+      url = `${apiPath.prodPath}/api/tools/addPartsItems/${toolId}`;
     }
     if (editFlag) {
       axios
@@ -92,7 +92,7 @@ function PartsItems({ data, toolId }) {
       if (result.isConfirmed) {
         axios
           .delete(
-            `${apiPath.devPath}/api/tools/deletePartsItems/${toolId}&&${id}`
+            `${apiPath.prodPath}/api/tools/deletePartsItems/${toolId}&&${id}`
           )
           .then((res) => {
             loadUser();
