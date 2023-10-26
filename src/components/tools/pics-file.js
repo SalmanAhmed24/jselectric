@@ -7,6 +7,7 @@ import moment from "moment";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
+import "./style.scss";
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
@@ -29,10 +30,10 @@ function PicsFiles({ toolsId, attachments }) {
   const loadUser = async () => {
     setLoading(true);
     const allUsers = await axios
-      .get(`${apiPath.prodPath}/api/users/`)
+      .get(`${apiPath.prodPath}/api/tools/`)
       .then((res) => {
         setLoading(false);
-        return res.data.allUsers;
+        return res.data.allTools;
       });
     setAllAttachments(allUsers.find((i) => i.id == toolsId).attachments);
   };
@@ -53,7 +54,7 @@ function PicsFiles({ toolsId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
+        url: `${apiPath.devPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +78,7 @@ function PicsFiles({ toolsId, attachments }) {
       formData.append("id", attachmentId);
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
+        url: `${apiPath.devPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -101,7 +102,7 @@ function PicsFiles({ toolsId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/tools/addFiles/${toolsId}`,
+        url: `${apiPath.devPath}/api/tools/addFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -162,7 +163,7 @@ function PicsFiles({ toolsId, attachments }) {
         };
         axios({
           method: "patch",
-          url: `${apiPath.prodPath}/api/tools/delFiles/${toolsId}&&${data.id}`,
+          url: `${apiPath.devPath}/api/tools/delFiles/${toolsId}&&${data.id}`,
           data: dataObj,
           withCredentials: false,
           headers: { "Content-Type": "multipart/form-data" },
@@ -212,7 +213,7 @@ function PicsFiles({ toolsId, attachments }) {
             onChange={(e) => setNote(e.target.value)}
           />
         </div>
-        <div className="input-wrap">
+        <div className="input-wrap btn-wrap">
           {editFlag ? (
             <input
               className={`${poppins.className} submit-btn`}

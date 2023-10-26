@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Poppins } from "next/font/google";
-
 const poppins = Poppins({
   weight: ["300", "500", "600", "700"],
   style: ["normal"],

@@ -180,7 +180,7 @@ function PicFile({ userId, attachments }) {
   ) : (
     <section>
       <form
-        className="file-form"
+        className=""
         onSubmit={handleFilesData}
         encType="multipart/form-data"
       >
