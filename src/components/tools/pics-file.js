@@ -28,6 +28,7 @@ function PicsFiles({ toolsId, attachments }) {
     setEditFlag(false);
     loadUser();
   }, []);
+  console.log("this is currentUser in pics/file", currentUser);
   const loadUser = async () => {
     setLoading(true);
     const allUsers = await axios

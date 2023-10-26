@@ -12,14 +12,14 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 export default function List() {
-  const user = useSelector((state) => state.user.user);
+  const currentUser = useSelector((state) => state.user.user);
   const router = useRouter();
   const [activeLink, setActiveLink] = useState("Tools");
   useEffect(() => {
-    if (user && user.userInfo == null) {
+    if (currentUser && currentUser.userInfo && currentUser.userInfo == null) {
       router.push("/login");
     }
-  }, [user]);
+  }, [currentUser]);
   const handleLinks = (e) => {
     setActiveLink(e.target.innerText);
   };
