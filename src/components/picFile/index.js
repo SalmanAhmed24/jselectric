@@ -19,7 +19,7 @@ function PicFile({ userId, attachments }) {
   const [editFlag, setEditFlag] = useState(false);
   const [attachmentId, setAttachmentId] = useState("");
   const [newFileFlag, setNewFileFlag] = useState(false);
-  const currentUser = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user.user);
   const [oldFiles, setOldFiles] = useState("");
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -45,7 +45,7 @@ function PicFile({ userId, attachments }) {
       formData.append("time", moment(new Date()).format("hh:mm A"));
       formData.append("note", note);
       formData.append("id", attachmentId);
-      formData.append("user", currentUser.user.userInfo.fullname);
+      formData.append("user", currentUser && currentUser.userInfo.fullname);
       formData.append("newFileFlag", newFileFlag);
       formData.append("oldFiles", JSON.stringify(oldFiles));
       for (let i = 0; i < fileUpload.length; i++) {
@@ -70,7 +70,7 @@ function PicFile({ userId, attachments }) {
       formData.append("date", moment(new Date()).format("MM-DD-YYYY"));
       formData.append("time", moment(new Date()).format("hh:mm A"));
       formData.append("note", note);
-      formData.append("user", currentUser.user.userInfo.fullname);
+      formData.append("user", currentUser && currentUser.userInfo.fullname);
       formData.append("newFileFlag", newFileFlag);
       formData.append("editFlag", editFlag);
       formData.append("oldFiles", JSON.stringify(oldFiles));
@@ -94,7 +94,7 @@ function PicFile({ userId, attachments }) {
       formData.append("date", moment(new Date()).format("MM-DD-YYYY"));
       formData.append("time", moment(new Date()).format("hh:mm A"));
       formData.append("note", note);
-      formData.append("user", currentUser.user.userInfo.fullname);
+      formData.append("user", currentUser && currentUser.userInfo.fullname);
       // formData.append("files", fileUpload);
       for (let i = 0; i < fileUpload.length; i++) {
         formData.append("files", fileUpload[i]);
