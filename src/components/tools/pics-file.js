@@ -54,7 +54,7 @@ function PicsFiles({ toolsId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.devPath}/api/tools/editFiles/${toolsId}`,
+        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -78,7 +78,7 @@ function PicsFiles({ toolsId, attachments }) {
       formData.append("id", attachmentId);
       axios({
         method: "patch",
-        url: `${apiPath.devPath}/api/tools/editFiles/${toolsId}`,
+        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -102,7 +102,7 @@ function PicsFiles({ toolsId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.devPath}/api/tools/addFiles/${toolsId}`,
+        url: `${apiPath.prodPath}/api/tools/addFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -163,7 +163,7 @@ function PicsFiles({ toolsId, attachments }) {
         };
         axios({
           method: "patch",
-          url: `${apiPath.devPath}/api/tools/delFiles/${toolsId}&&${data.id}`,
+          url: `${apiPath.prodPath}/api/tools/delFiles/${toolsId}&&${data.id}`,
           data: dataObj,
           withCredentials: false,
           headers: { "Content-Type": "multipart/form-data" },
