@@ -13,7 +13,7 @@ const poppins = Poppins({
 });
 
 function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
-  const currentUser = useSelector((state) => state.user.user.userInfo);
+  const currentUser = useSelector((state) => state.user.user);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [techAssigned, setTechAssigned] = useState("");
@@ -25,8 +25,8 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [filteredCatOpt, setFilteredCatOpt] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [employee, setEmployee] = useState({
-    label: currentUser.fullname,
-    value: currentUser.fullname,
+    label: currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
+    value: currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
   });
   const [project, setProject] = useState("");
   const [lastPurchasePrice, setLastPurchasePrice] = useState("");
