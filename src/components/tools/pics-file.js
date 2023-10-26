@@ -11,7 +11,7 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
-function PicFile({ userId, attachments }) {
+function PicsFiles({ toolsId, attachments }) {
   const [fileUpload, setFileUpload] = useState([]);
   const [note, setNote] = useState("");
   const [data, setData] = useState("");
@@ -34,7 +34,7 @@ function PicFile({ userId, attachments }) {
         setLoading(false);
         return res.data.allUsers;
       });
-    setAllAttachments(allUsers.find((i) => i.id == userId).attachments);
+    setAllAttachments(allUsers.find((i) => i.id == toolsId).attachments);
   };
   const handleFilesData = (e) => {
     setLoading(true);
@@ -53,7 +53,7 @@ function PicFile({ userId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
+        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -77,7 +77,7 @@ function PicFile({ userId, attachments }) {
       formData.append("id", attachmentId);
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/editFiles/${userId}`,
+        url: `${apiPath.prodPath}/api/tools/editFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -101,7 +101,7 @@ function PicFile({ userId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/users/addFiles/${userId}`,
+        url: `${apiPath.prodPath}/api/tools/addFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
@@ -162,7 +162,7 @@ function PicFile({ userId, attachments }) {
         };
         axios({
           method: "patch",
-          url: `${apiPath.prodPath}/api/users/delFiles/${userId}&&${data.id}`,
+          url: `${apiPath.prodPath}/api/tools/delFiles/${toolsId}&&${data.id}`,
           data: dataObj,
           withCredentials: false,
           headers: { "Content-Type": "multipart/form-data" },
@@ -244,4 +244,4 @@ function PicFile({ userId, attachments }) {
   );
 }
 
-export default PicFile;
+export default PicsFiles;

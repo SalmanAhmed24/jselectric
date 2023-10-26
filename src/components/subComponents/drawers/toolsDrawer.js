@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
 import "./style.scss";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Select from "react-select";
@@ -10,7 +11,9 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
+
 function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
+  const currentUser = useSelector((state) => state.user.user.userInfo);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [techAssigned, setTechAssigned] = useState("");
@@ -21,7 +24,10 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [subCatOpt, setSubCatOpt] = useState("");
   const [filteredCatOpt, setFilteredCatOpt] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const [employee, setEmployee] = useState("");
+  const [employee, setEmployee] = useState({
+    label: currentUser.fullname,
+    value: currentUser.fullname,
+  });
   const [project, setProject] = useState("");
   const [lastPurchasePrice, setLastPurchasePrice] = useState("");
   const [pictureUpload, setPictureUpload] = useState("");
@@ -213,6 +219,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               options={techAssignOpt}
               onChange={(e) => setEmployee(e)}
               value={employee}
+              isDisabled={true}
             />
           </div>
           <div className="input-wrap">

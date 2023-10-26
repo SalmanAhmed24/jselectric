@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import TopInfoTools from "../../topInfo/topInfoTools";
 import PartsItems from "../../tools/parts-items";
 import "./style.scss";
+import PicsFiles from "../../tools/pics-file";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
 function ToolsInfo({ open, onClose, item, refreshData }) {
-  const [activeTab, setActiveTab] = useState("Badges");
+  const [activeTab, setActiveTab] = useState("Parts / Items");
   const tabHandler = (e) => {
     setActiveTab(e.target.innerText);
   };
@@ -42,10 +43,10 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 3" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "Pics / Files" ? "activeTab simpleTab" : "simple Tab"
             }
           >
-            Link 3
+            Pics / Files
           </li>
           <li
             onClick={tabHandler}
@@ -65,7 +66,9 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
             toolId={item.id}
           />
         ) : null}
-        {activeTab == "Link 3" ? <p>this is Link 3 tab</p> : null}
+        {activeTab == "Pics / Files" ? (
+          <PicsFiles toolsId={item.id} attachments={item.attachments} />
+        ) : null}
         {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
       </div>
     </Drawer>
