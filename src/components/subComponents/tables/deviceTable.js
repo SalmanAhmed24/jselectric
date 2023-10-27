@@ -73,6 +73,9 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
       }
     });
   };
+  const sortedDevices = allDevices.sort((a, b) =>
+    a.category.localeCompare(b.category)
+  );
   return (
     <Paper
       className={poppins.className}
@@ -81,7 +84,7 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -98,12 +101,12 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allDevices.length == 0 ? (
+              {sortedDevices.length == 0 ? (
                 <TableRow>
                   <p className={poppins.className}>No Devices Data Found</p>
                 </TableRow>
               ) : (
-                allDevices.map((i) => {
+                sortedDevices.map((i) => {
                   return (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>

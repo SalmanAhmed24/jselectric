@@ -74,6 +74,9 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
       }
     });
   };
+  const sortedUser = allUsers.sort((a, b) =>
+    a.fullname.localeCompare(b.fullname)
+  );
   return (
     <Paper
       className={poppins.className}
@@ -82,7 +85,7 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -98,12 +101,12 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allUsers.length == 0 ? (
+              {sortedUser.length == 0 ? (
                 <TableRow>
                   <p className={poppins.className}>No Employee Data Found</p>
                 </TableRow>
               ) : (
-                allUsers.map((i) => {
+                sortedUser.map((i) => {
                   return (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>

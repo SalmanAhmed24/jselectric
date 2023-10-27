@@ -68,6 +68,10 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
       }
     });
   };
+  const sortedVehicles = allVehicles.sort(
+    (a, b) => parseFloat(a.vehicleNo) - parseFloat(b.vehicleNo)
+  );
+
   return (
     <Paper
       className={poppins.className}
@@ -76,7 +80,7 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -100,12 +104,12 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allVehicles.length == 0 ? (
+              {sortedVehicles.length == 0 ? (
                 <TableRow>
                   <p className={poppins.className}>No Vehicles Data Found</p>
                 </TableRow>
               ) : (
-                allVehicles.map((i) => {
+                sortedVehicles.map((i) => {
                   return (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>

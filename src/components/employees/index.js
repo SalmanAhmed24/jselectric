@@ -15,6 +15,7 @@ function Employees() {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     setLoading(true);
     axios
@@ -61,6 +62,34 @@ function Employees() {
         setLoading(false);
       });
   };
+  const handleSearch = (e) => {
+    setLoading(true);
+    e.preventDefault();
+    if (search == "") {
+      return false;
+    }
+    axios
+      .get(`${apiPath.prodPath}/api/users/${search}`)
+      .then((res) => {
+        setAllUsers(res.data.allUsers);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleClear = () => {
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/users/`)
+      .then((res) => {
+        setAllUsers(res.data.allUsers);
+        setLoading(false);
+        setSearch("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -71,6 +100,31 @@ function Employees() {
         >
           Add Employee
         </button>
+      </div>
+      <div className="search-wrap">
+        <form onSubmit={handleSearch}>
+          <input
+            className={poppins.className}
+            type="text"
+            placeholder="Search by Name"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <input
+            className={`${poppins.className} search-btn`}
+            type="submit"
+            value={"Search"}
+          />
+          {search == "" ? null : (
+            <p
+              onClick={handleClear}
+              className={`${poppins.className} clear-btn`}
+              style={{ color: "red" }}
+            >
+              Clear
+            </p>
+          )}
+        </form>
       </div>
       <div className="table-wrap">
         <EmployeeTable

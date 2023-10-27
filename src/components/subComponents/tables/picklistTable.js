@@ -109,10 +109,11 @@ export default function PicklistTable({
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
+                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Name</TableCell>
                 {picklistName == "Tool Sub-Category" ? (
                   <TableCell style={{ minWidth: 150 }}>
@@ -121,7 +122,6 @@ export default function PicklistTable({
                 ) : (
                   <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
                 )}
-                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -133,13 +133,6 @@ export default function PicklistTable({
                 sortedArr.map((i) => {
                   return (
                     <TableRow key={i.id}>
-                      <TableCell>{i.name}</TableCell>
-                      {picklistName == "Tool Sub-Category" ? (
-                        <TableCell>{i.parentCategory}</TableCell>
-                      ) : (
-                        <TableCell>{i.shortCode}</TableCell>
-                      )}
-
                       <TableCell style={{ position: "relative" }}>
                         <Image
                           onClick={() => handleActions(i.id)}
@@ -165,6 +158,12 @@ export default function PicklistTable({
                           </div>
                         ) : null}
                       </TableCell>
+                      <TableCell>{i.name}</TableCell>
+                      {picklistName == "Tool Sub-Category" ? (
+                        <TableCell>{i.parentCategory}</TableCell>
+                      ) : (
+                        <TableCell>{i.shortCode}</TableCell>
+                      )}
                     </TableRow>
                   );
                 })

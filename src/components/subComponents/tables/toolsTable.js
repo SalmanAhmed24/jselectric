@@ -74,6 +74,9 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
       }
     });
   };
+  const sortedTools = allTools.sort((a, b) =>
+    a.toolNumber.localeCompare(b.toolNumber)
+  );
   return (
     <Paper
       className={poppins.className}
@@ -96,12 +99,12 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allTools.length == 0 ? (
+              {sortedTools.length == 0 ? (
                 <TableRow>
                   <p className={poppins.className}>No Tools Data Found</p>
                 </TableRow>
               ) : (
-                allTools.map((i) => {
+                sortedTools.map((i) => {
                   return (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>
