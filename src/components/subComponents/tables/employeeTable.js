@@ -122,7 +122,7 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                               onClick={openInfoDrawer}
                               className={poppins.className}
                             >
-                              Info Modal
+                              Open
                             </p>
                             <p
                               onClick={() => openEmpModal({ ...i })}
