@@ -55,6 +55,21 @@ export default function PicklistTable({
     if (picklistName == "Tool Sub-Category") {
       apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
     }
+    if (picklistName == "Customer Type") {
+      apiUrl = `${apiPath.prodPath}/api/customerType/${id}`;
+    }
+    if (picklistName == "Customer Term") {
+      apiUrl = `${apiPath.prodPath}/api/customerTerm/${id}`;
+    }
+    if (picklistName == "Tax Code") {
+      apiUrl = `${apiPath.prodPath}/api/taxCode/${id}`;
+    }
+    if (picklistName == "Material Level") {
+      apiUrl = `${apiPath.prodPath}/api/materialLevel/${id}`;
+    }
+    if (picklistName == "Labor Level") {
+      apiUrl = `${apiPath.prodPath}/api/laborLevel/${id}`;
+    }
     axios
       .patch(apiUrl, data)
       .then((res) => {
@@ -89,6 +104,21 @@ export default function PicklistTable({
         if (picklistName == "Tool Sub-Category") {
           apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
         }
+        if (picklistName == "Customer Type") {
+          apiUrl = `${apiPath.prodPath}/api/customerType/${id}`;
+        }
+        if (picklistName == "Customer Term") {
+          apiUrl = `${apiPath.prodPath}/api/customerTerm/${id}`;
+        }
+        if (picklistName == "Tax Code") {
+          apiUrl = `${apiPath.prodPath}/api/taxCode/${id}`;
+        }
+        if (picklistName == "Material Level") {
+          apiUrl = `${apiPath.prodPath}/api/materialLevel/${id}`;
+        }
+        if (picklistName == "Labor Level") {
+          apiUrl = `${apiPath.prodPath}/api/laborLevel/${id}`;
+        }
         axios
           .delete(apiUrl)
           .then((res) => {
@@ -112,17 +142,32 @@ export default function PicklistTable({
         <TableContainer sx={{ minHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
-                <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Name</TableCell>
-                {picklistName == "Tool Sub-Category" ? (
-                  <TableCell style={{ minWidth: 150 }}>
-                    Parent Category
-                  </TableCell>
-                ) : (
-                  <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
-                )}
-              </TableRow>
+              {picklistName == "Customer Term" ? (
+                <TableRow>
+                  <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
+                  <TableCell>Days</TableCell>
+                  <TableCell>Description</TableCell>
+                </TableRow>
+              ) : picklistName == "Customer Type" ||
+                picklistName == "Material Level" ||
+                picklistName == "Labor Level" ? (
+                <TableRow>
+                  <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
+                  <TableCell>{picklistName}</TableCell>
+                </TableRow>
+              ) : (
+                <TableRow>
+                  <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
+                  <TableCell style={{ minWidth: 150 }}>Name</TableCell>
+                  {picklistName == "Tool Sub-Category" ? (
+                    <TableCell style={{ minWidth: 150 }}>
+                      Parent Category
+                    </TableCell>
+                  ) : (
+                    <TableCell style={{ minWidth: 150 }}>Shortcode</TableCell>
+                  )}
+                </TableRow>
+              )}
             </TableHead>
             <TableBody>
               {sortedArr.length == 0 ? (
@@ -131,7 +176,76 @@ export default function PicklistTable({
                 </TableRow>
               ) : (
                 sortedArr.map((i) => {
-                  return (
+                  return picklistName == "Customer Term" ? (
+                    <TableRow key={i.id}>
+                      <TableCell style={{ position: "relative" }}>
+                        <Image
+                          onClick={() => handleActions(i.id)}
+                          src="/dots.png"
+                          width={32}
+                          height={32}
+                        />
+                        {actionFlag && i.id == picklistId ? (
+                          <div className="dropdown-div">
+                            {/* <p className={poppins.className}>Info Modal</p> */}
+                            <p
+                              onClick={() => openEmpModal({ ...i })}
+                              className={poppins.className}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => deleteEmp(i.id)}
+                              className={poppins.className}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        ) : null}
+                      </TableCell>
+                      <TableCell>{i.days}</TableCell>
+                      <TableCell>{i.description}</TableCell>
+                    </TableRow>
+                  ) : picklistName == "Customer Type" ||
+                    picklistName == "Material Level" ||
+                    picklistName == "Labor Level" ? (
+                    <TableRow key={i.id}>
+                      <TableCell style={{ position: "relative" }}>
+                        <Image
+                          onClick={() => handleActions(i.id)}
+                          src="/dots.png"
+                          width={32}
+                          height={32}
+                        />
+                        {actionFlag && i.id == picklistId ? (
+                          <div className="dropdown-div">
+                            {/* <p className={poppins.className}>Info Modal</p> */}
+                            <p
+                              onClick={() => openEmpModal({ ...i })}
+                              className={poppins.className}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              onClick={() => deleteEmp(i.id)}
+                              className={poppins.className}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        ) : null}
+                      </TableCell>
+                      <TableCell>
+                        {picklistName == "Customer Type"
+                          ? i.customerType
+                          : picklistName == "Material Level"
+                          ? i.materialLevel
+                          : picklistName == "Labor Level"
+                          ? i.laborLevel
+                          : null}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>
                         <Image

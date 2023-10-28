@@ -32,6 +32,21 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Device Category") {
       apiUrl = `${apiPath.prodPath}/api/deviceCategory/`;
     }
+    if (picklistName == "Customer Type") {
+      apiUrl = `${apiPath.prodPath}/api/customerType/`;
+    }
+    if (picklistName == "Customer Term") {
+      apiUrl = `${apiPath.prodPath}/api/customerTerm/`;
+    }
+    if (picklistName == "Tax Code") {
+      apiUrl = `${apiPath.prodPath}/api/taxCode/`;
+    }
+    if (picklistName == "Material Level") {
+      apiUrl = `${apiPath.prodPath}/api/materialLevel/`;
+    }
+    if (picklistName == "Labor Level") {
+      apiUrl = `${apiPath.prodPath}/api/laborLevel/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -50,6 +65,21 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Device Category") {
           setPicklistData(res.data.deviceCategory);
+        }
+        if (picklistName == "Customer Type") {
+          setPicklistData(res.data.customerTypes);
+        }
+        if (picklistName == "Customer Term") {
+          setPicklistData(res.data.customerTerms);
+        }
+        if (picklistName == "Tax Code") {
+          setPicklistData(res.data.taxCodes);
+        }
+        if (picklistName == "Material Level") {
+          setPicklistData(res.data.materialLevels);
+        }
+        if (picklistName == "Labor Level") {
+          setPicklistData(res.data.laborLevels);
         }
         setLoading(false);
       })
@@ -78,6 +108,21 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/addsubtoolCategory`;
+    }
+    if (picklistName == "Customer Type") {
+      url = `${apiPath.prodPath}/api/customerType/addCustomerType`;
+    }
+    if (picklistName == "Customer Term") {
+      url = `${apiPath.prodPath}/api/customerTerm/addCustomerTerm`;
+    }
+    if (picklistName == "Tax Code") {
+      url = `${apiPath.prodPath}/api/taxCode/addtaxCode`;
+    }
+    if (picklistName == "Material Level") {
+      url = `${apiPath.prodPath}/api/materialLevel/addmaterialLevel`;
+    }
+    if (picklistName == "Labor Level") {
+      url = `${apiPath.prodPath}/api/laborLevel/addlaborLevel`;
     }
     axios
       .post(url, data)
@@ -113,6 +158,21 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/`;
     }
+    if (picklistName == "Customer Type") {
+      url = `${apiPath.prodPath}/api/customerType/`;
+    }
+    if (picklistName == "Customer Term") {
+      url = `${apiPath.prodPath}/api/customerTerm/`;
+    }
+    if (picklistName == "Tax Code") {
+      url = `${apiPath.prodPath}/api/taxCode/`;
+    }
+    if (picklistName == "Material Level") {
+      url = `${apiPath.prodPath}/api/materialLevel/`;
+    }
+    if (picklistName == "Labor Level") {
+      url = `${apiPath.prodPath}/api/laborLevel/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -131,6 +191,21 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Tool Sub-Category") {
           setPicklistData(res.data.subtoolCategorys);
+        }
+        if (picklistName == "Customer Type") {
+          setPicklistData(res.data.customerTypes);
+        }
+        if (picklistName == "Customer Term") {
+          setPicklistData(res.data.customerTerms);
+        }
+        if (picklistName == "Tax Code") {
+          setPicklistData(res.data.taxCodes);
+        }
+        if (picklistName == "Material Level") {
+          setPicklistData(res.data.materialLevels);
+        }
+        if (picklistName == "Labor Level") {
+          setPicklistData(res.data.laborLevels);
         }
         setLoading(false);
       })

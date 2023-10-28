@@ -25,6 +25,9 @@ function PicklistDrawer({
   const [shortCode, setShortCode] = useState("");
   const [parentCategoryOpt, setParentCategoryOpt] = useState("");
   const [parentCategory, setParentCategory] = useState("");
+  const [picklistValue, setPicklistValue] = useState("");
+  const [days, setDays] = useState("");
+  const [description, setDescription] = useState("");
   useEffect(() => {
     if (picklistName == "Tool Sub-Category") {
       axios
@@ -41,6 +44,24 @@ function PicklistDrawer({
         .catch((err) => console.log(err));
     }
     if (edit) {
+      if (
+        picklistName == "Customer Type" ||
+        (picklistName == "Material Level") | (picklistName == "Labor Level")
+      ) {
+        setPicklistValue(
+          picklistName == "Material Level"
+            ? data.materialLevel
+            : picklistName == "Customer Type"
+            ? data.customerType
+            : picklistName == "Labor Level"
+            ? data.laborLevel
+            : ""
+        );
+      }
+      if (picklistName == "Customer Term") {
+        setDays(data.days);
+        setDescription(data.description);
+      }
       if (picklistName == "Tool Sub-Category") {
         setName(data.name);
         setParentCategory({
@@ -57,10 +78,27 @@ function PicklistDrawer({
   const handleAddPicklist = (e) => {
     e.preventDefault();
     let dataObj;
-    if (picklistName == "Tool Sub-Category") {
+    if (picklistName == "Customer Term") {
+      dataObj = {
+        days,
+        description,
+      };
+    } else if (picklistName == "Tool Sub-Category") {
       dataObj = {
         name,
         parentCategory: parentCategory.value,
+      };
+    } else if (picklistName == "Customer Type") {
+      dataObj = {
+        customerType: picklistValue,
+      };
+    } else if (picklistName == "Material Level") {
+      dataObj = {
+        materialLevel: picklistValue,
+      };
+    } else if (picklistName == "Labor Level") {
+      dataObj = {
+        laborLevel: picklistValue,
       };
     } else {
       dataObj = {
@@ -78,6 +116,7 @@ function PicklistDrawer({
   const dataEntryRefresh = () => {
     setName("");
     setShortCode("");
+    setPicklistValue("");
   };
   return (
     <Drawer
@@ -87,45 +126,95 @@ function PicklistDrawer({
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
-        <form onSubmit={handleAddPicklist}>
-          <div className="input-wrap">
-            <label>Name</label>
-            <input
-              value={name}
-              className={`${poppins.className} input-cus`}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          {picklistName == "Tool Sub-Category" ? (
+        {picklistName == "Customer Type" ||
+        picklistName == "Material Level" ||
+        picklistName == "Labor Level" ? (
+          <form onSubmit={handleAddPicklist}>
             <div className="input-wrap">
-              <label>Parent Category</label>
-              <Select
-                value={parentCategory}
-                className={`${poppins.className}`}
-                onChange={(e) => setParentCategory(e)}
-                required={true}
-                options={parentCategoryOpt}
-              />
-            </div>
-          ) : (
-            <div className="input-wrap">
-              <label>Shortcode</label>
+              <label>{picklistName}</label>
               <input
-                value={shortCode}
+                value={picklistValue}
                 className={`${poppins.className} input-cus`}
-                onChange={(e) => setShortCode(e.target.value)}
+                onChange={(e) => setPicklistValue(e.target.value)}
                 required={true}
               />
             </div>
-          )}
-          <div className="sub-btn-wrap">
-            <input
-              className={`${poppins.className} addEmp`}
-              type="submit"
-              value={edit ? `Edit ${picklistName}` : `Add ${picklistName}`}
-            />
-          </div>
-        </form>
+            <div className="sub-btn-wrap">
+              <input
+                className={`${poppins.className} addEmp`}
+                type="submit"
+                value={edit ? `Edit ${picklistName}` : `Add ${picklistName}`}
+              />
+            </div>
+          </form>
+        ) : picklistName == "Customer Term" ? (
+          <form onSubmit={handleAddPicklist}>
+            <div className="input-wrap">
+              <label>Days</label>
+              <input
+                value={days}
+                className={`${poppins.className} input-cus`}
+                onChange={(e) => setDays(e.target.value)}
+              />
+            </div>
+            <div className="input-wrap">
+              <label>Description</label>
+              <input
+                value={description}
+                className={`${poppins.className} input-cus`}
+                onChange={(e) => setDescription(e.target.value)}
+                required={true}
+              />
+            </div>
+            <div className="sub-btn-wrap">
+              <input
+                className={`${poppins.className} addEmp`}
+                type="submit"
+                value={edit ? `Edit ${picklistName}` : `Add ${picklistName}`}
+              />
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handleAddPicklist}>
+            <div className="input-wrap">
+              <label>Name</label>
+              <input
+                value={name}
+                className={`${poppins.className} input-cus`}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            {picklistName == "Tool Sub-Category" ? (
+              <div className="input-wrap">
+                <label>Parent Category</label>
+                <Select
+                  value={parentCategory}
+                  className={`${poppins.className}`}
+                  onChange={(e) => setParentCategory(e)}
+                  required={true}
+                  options={parentCategoryOpt}
+                />
+              </div>
+            ) : (
+              <div className="input-wrap">
+                <label>Shortcode</label>
+                <input
+                  value={shortCode}
+                  className={`${poppins.className} input-cus`}
+                  onChange={(e) => setShortCode(e.target.value)}
+                  required={true}
+                />
+              </div>
+            )}
+            <div className="sub-btn-wrap">
+              <input
+                className={`${poppins.className} addEmp`}
+                type="submit"
+                value={edit ? `Edit ${picklistName}` : `Add ${picklistName}`}
+              />
+            </div>
+          </form>
+        )}
       </div>
     </Drawer>
   );

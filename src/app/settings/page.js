@@ -85,6 +85,51 @@ export default function Settings() {
             >
               Device Category
             </li>
+            <li
+              className={
+                activeLink == "Customer Type"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Customer Type
+            </li>
+            <li
+              className={
+                activeLink == "Customer Term"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Customer Term
+            </li>
+            <li
+              className={
+                activeLink == "Tax Code"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Tax Code
+            </li>
+            <li
+              className={
+                activeLink == "Material Level"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Material Level
+            </li>
+            <li
+              className={
+                activeLink == "Labor Level"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Labor Level
+            </li>
           </ul>
         ) : null}
       </section>
@@ -104,6 +149,21 @@ export default function Settings() {
         ) : null}
         {activeLink == "Device Category" ? (
           <PicklistComp picklistName={"Device Category"} />
+        ) : null}
+        {activeLink == "Customer Type" ? (
+          <PicklistComp picklistName={"Customer Type"} />
+        ) : null}
+        {activeLink == "Customer Term" ? (
+          <PicklistComp picklistName={"Customer Term"} />
+        ) : null}
+        {activeLink == "Tax Code" ? (
+          <PicklistComp picklistName={"Tax Code"} />
+        ) : null}
+        {activeLink == "Material Level" ? (
+          <PicklistComp picklistName={"Material Level"} />
+        ) : null}
+        {activeLink == "Labor Level" ? (
+          <PicklistComp picklistName={"Labor Level"} />
         ) : null}
       </section>
     </main>
