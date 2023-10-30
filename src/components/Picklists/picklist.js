@@ -47,6 +47,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Labor Level") {
       apiUrl = `${apiPath.prodPath}/api/laborLevel/`;
     }
+    if (picklistName == "Salesperson Code") {
+      apiUrl = `${apiPath.prodPath}/api/salesPersonCode/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -80,6 +83,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Labor Level") {
           setPicklistData(res.data.laborLevels);
+        }
+        if (picklistName == "Salesperson Code") {
+          setPicklistData(res.data.salesPersonCodes);
         }
         setLoading(false);
       })
@@ -123,6 +129,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Labor Level") {
       url = `${apiPath.prodPath}/api/laborLevel/addlaborLevel`;
+    }
+    if (picklistName == "Salesperson Code") {
+      url = `${apiPath.prodPath}/api/salesPersonCode/addsalesPersonCode`;
     }
     axios
       .post(url, data)
@@ -173,6 +182,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Labor Level") {
       url = `${apiPath.prodPath}/api/laborLevel/`;
     }
+    if (picklistName == "Salesperson Code") {
+      url = `${apiPath.prodPath}/api/salesPersonCode/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -206,6 +218,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Labor Level") {
           setPicklistData(res.data.laborLevels);
+        }
+        if (picklistName == "Salesperson Code") {
+          setPicklistData(res.data.salesPersonCodes);
         }
         setLoading(false);
       })

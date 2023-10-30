@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Tools from "../../components/tools";
 import Devices from "../../components/devices";
 import Vehicles from "../../components/vehicles";
+import Clients from "../../components/clients";
 import "./list.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -48,6 +49,13 @@ export default function List() {
           >
             Vehicles
           </li>
+          <li
+            className={
+              activeLink == "Clients" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Clients
+          </li>
         </ul>
       </section>
       <section className={`${poppins.className} content-wrap`}>
@@ -60,6 +68,9 @@ export default function List() {
         {activeLink == "Vehicles" ? (
           <Vehicles picklistName={"Vehicles"} />
         ) : null}
+      </section>
+      <section className={`${poppins.className} content-wrap`}>
+        {activeLink == "Clients" ? <Clients picklistName={"Clients"} /> : null}
       </section>
     </main>
   );

@@ -130,6 +130,15 @@ export default function Settings() {
             >
               Labor Level
             </li>
+            <li
+              className={
+                activeLink == "Salesperson Code"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Salesperson Code
+            </li>
           </ul>
         ) : null}
       </section>
@@ -164,6 +173,9 @@ export default function Settings() {
         ) : null}
         {activeLink == "Labor Level" ? (
           <PicklistComp picklistName={"Labor Level"} />
+        ) : null}
+        {activeLink == "Salesperson Code" ? (
+          <PicklistComp picklistName={"Salesperson Code"} />
         ) : null}
       </section>
     </main>

@@ -70,6 +70,9 @@ export default function PicklistTable({
     if (picklistName == "Labor Level") {
       apiUrl = `${apiPath.prodPath}/api/laborLevel/${id}`;
     }
+    if (picklistName == "Salesperson Code") {
+      apiUrl = `${apiPath.prodPath}/api/salesPersonCode/${id}`;
+    }
     axios
       .patch(apiUrl, data)
       .then((res) => {
@@ -119,6 +122,9 @@ export default function PicklistTable({
         if (picklistName == "Labor Level") {
           apiUrl = `${apiPath.prodPath}/api/laborLevel/${id}`;
         }
+        if (picklistName == "Salesperson Code") {
+          apiUrl = `${apiPath.prodPath}/api/salesPersonCode/${id}`;
+        }
         axios
           .delete(apiUrl)
           .then((res) => {
@@ -150,7 +156,8 @@ export default function PicklistTable({
                 </TableRow>
               ) : picklistName == "Customer Type" ||
                 picklistName == "Material Level" ||
-                picklistName == "Labor Level" ? (
+                picklistName == "Labor Level" ||
+                picklistName == "Salesperson Code" ? (
                 <TableRow>
                   <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                   <TableCell>{picklistName}</TableCell>
@@ -208,7 +215,8 @@ export default function PicklistTable({
                     </TableRow>
                   ) : picklistName == "Customer Type" ||
                     picklistName == "Material Level" ||
-                    picklistName == "Labor Level" ? (
+                    picklistName == "Labor Level" ||
+                    picklistName == "Salesperson Code" ? (
                     <TableRow key={i.id}>
                       <TableCell style={{ position: "relative" }}>
                         <Image
@@ -242,6 +250,8 @@ export default function PicklistTable({
                           ? i.materialLevel
                           : picklistName == "Labor Level"
                           ? i.laborLevel
+                          : picklistName == "Labor Level"
+                          ? i.salesPersonCode
                           : null}
                       </TableCell>
                     </TableRow>

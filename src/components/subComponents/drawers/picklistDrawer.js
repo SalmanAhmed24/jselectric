@@ -46,7 +46,9 @@ function PicklistDrawer({
     if (edit) {
       if (
         picklistName == "Customer Type" ||
-        (picklistName == "Material Level") | (picklistName == "Labor Level")
+        picklistName == "Material Level" ||
+        picklistName == "Labor Level" ||
+        picklistName == "Salesperson Code"
       ) {
         setPicklistValue(
           picklistName == "Material Level"
@@ -55,6 +57,8 @@ function PicklistDrawer({
             ? data.customerType
             : picklistName == "Labor Level"
             ? data.laborLevel
+            : picklistName == "Salesperson Code"
+            ? data.salesPersonCode
             : ""
         );
       }
@@ -100,6 +104,10 @@ function PicklistDrawer({
       dataObj = {
         laborLevel: picklistValue,
       };
+    } else if (picklistName == "Salesperson Code") {
+      dataObj = {
+        salesPersonCode: picklistValue,
+      };
     } else {
       dataObj = {
         name,
@@ -128,7 +136,8 @@ function PicklistDrawer({
       <div className={`${poppins.className} innerDrawerCon`}>
         {picklistName == "Customer Type" ||
         picklistName == "Material Level" ||
-        picklistName == "Labor Level" ? (
+        picklistName == "Labor Level" ||
+        picklistName == "Salesperson Code" ? (
           <form onSubmit={handleAddPicklist}>
             <div className="input-wrap">
               <label>{picklistName}</label>
