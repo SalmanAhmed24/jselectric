@@ -43,7 +43,10 @@ function TopInfoTools({ item }) {
       </div>
       <div className="singleInfo">
         <label>Picture</label>
-        <img src={item.picture} className="tool-picture" />
+        <img
+          src={item.picture && item.picture.fileUrl}
+          className="tool-picture"
+        />
       </div>
     </div>
   );

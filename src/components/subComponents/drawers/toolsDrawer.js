@@ -24,15 +24,14 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [subCatOpt, setSubCatOpt] = useState("");
   const [filteredCatOpt, setFilteredCatOpt] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const [employee, setEmployee] = useState({
-    label: currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
-    value: currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
-  });
+  const [employee, setEmployee] = useState("");
   const [project, setProject] = useState("");
   const [lastPurchasePrice, setLastPurchasePrice] = useState("");
   const [pictureUpload, setPictureUpload] = useState("");
   const [toolNumber, setToolNumber] = useState("");
   const [serial, setSerial] = useState("");
+  const [newFileFlag, setNewFileFlag] = useState(false);
+  const [oldFile, setOldFile] = useState("");
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/toolCategory/`)
@@ -68,6 +67,12 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         );
       })
       .catch((err) => console.log(err));
+    setEmployee({
+      label:
+        currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
+      value:
+        currentUser && currentUser.userInfo && currentUser.userInfo.fullname,
+    });
     if (edit) {
       setCategory({ label: data.category, value: data.category });
       setDescription(data.description);
@@ -77,31 +82,67 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       setEmployee({ label: data.employee, value: data.employee });
       setProject(data.project);
       setPictureUpload(data.picture);
+      setOldFile(data.picture);
       setToolNumber(data.toolNumber);
       setSerial(data.serial);
       setLastPurchasePrice(data.lastPurchasePrice);
     }
-  }, []);
+  }, [open]);
 
   const handleAddTool = (e) => {
     e.preventDefault();
-    const dataObj = {
-      toolNumber,
-      category: category.value,
-      description,
-      techAssigned: techAssigned.value,
-      location,
-      subCategory: subCategory.value,
-      employee: employee.value,
-      project,
-      lastPurchasePrice,
-      picture: pictureUpload,
-      serial,
-    };
+    // const dataObj = {
+    //   toolNumber,
+    //   category: category.value,
+    //   description,
+    //   techAssigned: techAssigned.value,
+    //   location,
+    //   subCategory: subCategory.value,
+    //   employee: employee.value,
+    //   project,
+    //   lastPurchasePrice,
+    //   picture: pictureUpload,
+    //   serial,
+    // };
     if (edit) {
-      editTool(dataObj, id);
+      console.log("here in editFlag in handler", edit);
+      const formData = new FormData();
+      formData.append("toolNumber", toolNumber);
+      formData.append("category", category.value);
+      formData.append("description", description);
+      formData.append("techAssigned", techAssigned.value);
+      formData.append("location", location);
+      formData.append("subCategory", subCategory.value);
+      formData.append("employee", employee.value);
+      formData.append("project", project);
+      formData.append("lastPurchasePrice", lastPurchasePrice);
+      formData.append("editFlag", "true");
+      if (newFileFlag) {
+        console.log("here in newFileFlag");
+        formData.append("picture", pictureUpload);
+        formData.append("oldFiles", JSON.stringify(oldFile));
+      } else {
+        console.log(pictureUpload);
+        formData.append("pictureObj", JSON.stringify(pictureUpload));
+      }
+      formData.append("serial", serial);
+      formData.append("newFileFlag", newFileFlag);
+      editTool(formData, id);
     } else {
-      addTool(dataObj);
+      const formData = new FormData();
+      formData.append("toolNumber", toolNumber);
+      formData.append("category", category.value);
+      formData.append("description", description);
+      formData.append("techAssigned", techAssigned.value);
+      formData.append("location", location);
+      formData.append("subCategory", subCategory.value);
+      formData.append("employee", employee.value);
+      formData.append("project", project);
+      formData.append("lastPurchasePrice", lastPurchasePrice);
+      formData.append("picture", pictureUpload);
+      formData.append("serial", serial);
+      formData.append("newFileFlag", newFileFlag);
+      addTool(formData);
       dataEntryRefresh();
     }
   };
@@ -134,17 +175,12 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
     setTechAssigned(e);
   };
   const handleUpload = (e) => {
-    getBase64(e.target.files[0]);
-  };
-  const getBase64 = (file) => {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      setPictureUpload(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
+    if (edit) {
+      setNewFileFlag(true);
+      setPictureUpload(e.target.files[0]);
+    } else {
+      setPictureUpload(e.target.files[0]);
+    }
   };
   const handleDigitCheck = (e) => {
     if (e.target.value.length <= 6) {
@@ -251,12 +287,15 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
           <div className="input-wrap">
             <label>Picture</label>
             <input
+              name="picture"
               className={`${poppins.className} input-cus`}
               type="file"
               onChange={handleUpload}
               accept="image/png,image/jpeg"
             />
-            <img src={pictureUpload} style={{ width: "30%" }} />
+            {edit ? (
+              <img src={pictureUpload.fileUrl} style={{ width: "30%" }} />
+            ) : null}
           </div>
           <div className="sub-btn-wrap">
             <input

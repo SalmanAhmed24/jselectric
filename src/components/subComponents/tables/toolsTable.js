@@ -53,7 +53,8 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
       })
       .catch((err) => console.log(err));
   };
-  const deleteTool = (id) => {
+  const deleteTool = (id, fileObj) => {
+    const file = JSON.stringify(fileObj);
     setActionFlag(false);
     Swal.fire({
       icon: "warning",
@@ -64,7 +65,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${apiPath.prodPath}/api/tools/${id}`)
+          .put(`${apiPath.prodPath}/api/tools/${id}`, { file })
           .then((res) => {
             refreshData();
             openEmpModal();
@@ -129,7 +130,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
                               Edit
                             </p>
                             <p
-                              onClick={() => deleteTool(i.id)}
+                              onClick={() => deleteTool(i.id, i.picture)}
                               className={poppins.className}
                             >
                               Delete
