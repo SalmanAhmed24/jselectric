@@ -58,20 +58,11 @@ export default function List() {
           </li>
         </ul>
       </section>
-      <section className={`${poppins.className} content-wrap`}>
-        {activeLink == "Tools" ? <Tools picklistName={"Tools"} /> : null}
-      </section>
-      <section className={`${poppins.className} content-wrap`}>
-        {activeLink == "Devices" ? <Devices picklistName={"Tools"} /> : null}
-      </section>
-      <section className={`${poppins.className} content-wrap`}>
-        {activeLink == "Vehicles" ? (
-          <Vehicles picklistName={"Vehicles"} />
-        ) : null}
-      </section>
-      <section className={`${poppins.className} content-wrap`}>
-        {activeLink == "Clients" ? <Clients picklistName={"Clients"} /> : null}
-      </section>
+
+      {activeLink == "Tools" ? <Tools picklistName={"Tools"} /> : null}
+      {activeLink == "Devices" ? <Devices picklistName={"Tools"} /> : null}
+      {activeLink == "Vehicles" ? <Vehicles picklistName={"Vehicles"} /> : null}
+      {activeLink == "Clients" ? <Clients picklistName={"Clients"} /> : null}
     </main>
   );
 }
