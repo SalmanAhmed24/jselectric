@@ -37,12 +37,11 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
   const openEmpModal = (data) => {
     setEditData(data);
     setOpenModal(!openModal);
+    setActionFlag(false);
   };
   const openInfoDrawer = () => {
-    if (infoModal) {
-      setActionFlag(false);
-    }
     setInfoModal(!infoModal);
+    setActionFlag(false);
   };
   const editTool = (data, id) => {
     axios
@@ -55,6 +54,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
       .catch((err) => console.log(err));
   };
   const deleteTool = (id) => {
+    setActionFlag(false);
     Swal.fire({
       icon: "warning",
       title: "Are You Sure?",
@@ -85,7 +85,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ minHeight: 440 }}>
+        <TableContainer sx={{ height: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

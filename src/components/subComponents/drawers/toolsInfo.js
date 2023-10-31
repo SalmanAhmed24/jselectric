@@ -5,6 +5,7 @@ import TopInfoTools from "../../topInfo/topInfoTools";
 import PartsItems from "../../tools/parts-items";
 import "./style.scss";
 import PicsFiles from "../../tools/pics-file";
+import HistoryTab from "../../tools/history";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
@@ -51,10 +52,10 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 4" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "History" ? "activeTab simpleTab" : "simple Tab"
             }
           >
-            Link 4
+            History
           </li>
         </ul>
       </div>
@@ -69,7 +70,7 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
         {activeTab == "Pics / Files" ? (
           <PicsFiles toolsId={item.id} attachments={item.attachments} />
         ) : null}
-        {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
+        {activeTab == "History" ? <HistoryTab /> : null}
       </div>
     </Drawer>
   );

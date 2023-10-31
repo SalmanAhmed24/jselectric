@@ -51,7 +51,7 @@ table {
     display: flex;
     flex-direction: row;
         .links-wrap{
-            min-width: 150px;
+            min-width: 250px;
             background-color: #6AB187;
             width: 15%;
             display: flex;
@@ -63,7 +63,8 @@ table {
             }
         }
         .content-wrap{
-            width: 88%;
+            width: 85%;
+            max-width: 1080px;
             .inner-content{
                 padding: 20px;
             }

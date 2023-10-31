@@ -13,12 +13,13 @@ import { apiPath } from "@/utils/routes";
 import Image from "next/image";
 // import EmployeeDrawer from "../drawers/employeeDrawer";
 import Swal from "sweetalert2";
+import ClientDrawer from "../drawers/clientDrawer";
 // import DeviceDrawer from "../drawers/deviceDrawer";
 const poppins = Poppins({
   weight: ["300", "600", "700"],
   subsets: ["latin"],
 });
-export default function DeviceTable({ allClients, loading, refreshData }) {
+export default function ClientTable({ allClients, loading, refreshData }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [actionFlag, setActionFlag] = useState(false);
@@ -29,13 +30,14 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
   const [item, setItem] = useState();
 
   const handleActions = (id, objData) => {
-    setDeviceId(id);
+    setClientId(id);
     setItem(objData);
     setActionFlag(!actionFlag);
   };
   const openEmpModal = (data) => {
     setEditData(data);
     setOpenModal(!openModal);
+    setActionFlag(false);
   };
   const openInfoDrawer = () => {
     if (infoModal) {
@@ -43,38 +45,39 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
     }
     setInfoModal(!infoModal);
   };
-  const editDevice = (data, id) => {
-    // axios
-    //   .patch(`${apiPath.prodPath}/api/devices/${id}`, data)
-    //   .then((res) => {
-    //     refreshData();
-    //     openEmpModal();
-    //     setActionFlag(false);
-    //   })
-    //   .catch((err) => console.log(err));
+  const editClient = (data, id) => {
+    axios
+      .patch(`${apiPath.prodPath}/api/clients/${id}`, data)
+      .then((res) => {
+        refreshData();
+        openEmpModal();
+        setActionFlag(false);
+      })
+      .catch((err) => console.log(err));
   };
-  const deleteDevices = (id) => {
-    // Swal.fire({
-    //   icon: "warning",
-    //   title: "Are You Sure?",
-    //   text: "Are you sure you want to delete the devices data? This action is irreversible.",
-    //   confirmButtonText: "Delete",
-    //   cancelButtonText: "Cancel",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     axios
-    //       .delete(`${apiPath.prodPath}/api/devices/${id}`)
-    //       .then((res) => {
-    //         refreshData();
-    //         openEmpModal();
-    //         setActionFlag(false);
-    //       })
-    //       .catch((err) => console.log(err));
-    //   }
-    // });
+  const deleteClient = (id) => {
+    setActionFlag(false);
+    Swal.fire({
+      icon: "warning",
+      title: "Are You Sure?",
+      text: "Are you sure you want to delete the Client data? This action is irreversible.",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${apiPath.prodPath}/api/clients/${id}`)
+          .then((res) => {
+            refreshData();
+            openEmpModal();
+            setActionFlag(false);
+          })
+          .catch((err) => console.log(err));
+      }
+    });
   };
   const sortedClients = allClients.sort((a, b) =>
-    a.category.localeCompare(b.category)
+    a.customerCode.localeCompare(b.customerCode)
   );
   return (
     <Paper
@@ -84,7 +87,7 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ minHeight: 440 }}>
+        <TableContainer sx={{ height: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -115,7 +118,7 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
                           width={32}
                           height={32}
                         />
-                        {actionFlag && i.id == deviceId ? (
+                        {actionFlag && i.id == clientId ? (
                           <div className="dropdown-div">
                             <p
                               onClick={() => openEmpModal({ ...i })}
@@ -124,7 +127,7 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
                               Edit
                             </p>
                             <p
-                              onClick={() => deleteDevices(i.id)}
+                              onClick={() => deleteClient(i.id)}
                               className={poppins.className}
                             >
                               Delete
@@ -132,19 +135,27 @@ export default function DeviceTable({ allClients, loading, refreshData }) {
                           </div>
                         ) : null}
                       </TableCell>
+                      <TableCell>{i.customerCode}</TableCell>
+                      <TableCell>{i.customerName}</TableCell>
+                      <TableCell>{i.customerType}</TableCell>
+                      <TableCell>{i.alphaCode}</TableCell>
+                      <TableCell>{i.address}</TableCell>
+                      <TableCell>{i.city}</TableCell>
+                      <TableCell>{i.state}</TableCell>
+                      <TableCell>{i.zipCode}</TableCell>
                     </TableRow>
                   );
                 })
               )}
             </TableBody>
             {openModal && editData ? (
-              <DeviceDrawer
+              <ClientDrawer
                 edit={true}
                 open={openModal}
                 onClose={() => openEmpModal()}
-                id={deviceId}
+                id={clientId}
                 data={editData}
-                editDevice={editDevice}
+                editClient={editClient}
               />
             ) : null}
           </Table>

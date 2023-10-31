@@ -136,7 +136,24 @@ export default function PicklistTable({
       }
     });
   };
-  const sortedArr = picklistData.sort((a, b) => a.name.localeCompare(b.name));
+  const sortedArr =
+    picklistName == "Customer Type"
+      ? picklistData.sort((a, b) =>
+          a.customerType.localeCompare(b.customerType)
+        )
+      : picklistName == "Material Level"
+      ? picklistData.sort((a, b) =>
+          a.materialLevel.localeCompare(b.materialLevel)
+        )
+      : picklistName == "Labor Level"
+      ? picklistData.sort((a, b) => a.laborLevel.localeCompare(b.laborLevel))
+      : picklistName == "Salesperson Code"
+      ? picklistData.sort((a, b) =>
+          a.salesPersonCode.localeCompare(b.salesPersonCode)
+        )
+      : picklistName == "Customer Term"
+      ? picklistData.sort((a, b) => a.days.localeCompare(b.days))
+      : picklistData.sort((a, b) => a.name.localeCompare(b.name));
   return (
     <Paper
       className={poppins.className}
@@ -145,7 +162,7 @@ export default function PicklistTable({
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ minHeight: 440 }}>
+        <TableContainer sx={{ height: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               {picklistName == "Customer Term" ? (
@@ -250,7 +267,7 @@ export default function PicklistTable({
                           ? i.materialLevel
                           : picklistName == "Labor Level"
                           ? i.laborLevel
-                          : picklistName == "Labor Level"
+                          : picklistName == "Salesperson Code"
                           ? i.salesPersonCode
                           : null}
                       </TableCell>

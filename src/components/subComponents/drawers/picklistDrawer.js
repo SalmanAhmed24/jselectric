@@ -125,6 +125,8 @@ function PicklistDrawer({
     setName("");
     setShortCode("");
     setPicklistValue("");
+    setDays("");
+    setDescription("");
   };
   return (
     <Drawer

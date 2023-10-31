@@ -60,12 +60,11 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       .get(`${apiPath.prodPath}/api/users/`)
       .then((res) => {
         setTechAssignOpt(
-          res.data.allUsers
-            .filter((i) => i.userType == "foreman")
-            .map((i) => ({
-              label: i.fullname,
-              value: i.fullname,
-            }))
+          res.data.allUsers.map((i) => ({
+            label: i.fullname,
+            value: i.fullname,
+          }))
+          // .filter((i) => i.userType == "foreman")
         );
       })
       .catch((err) => console.log(err));
@@ -180,7 +179,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             />
           </div>
           <div className="input-wrap">
-            <label>Sub Category</label>
+            <label>Tools</label>
             <Select
               options={filteredCatOpt}
               onChange={(e) => setSubCategory(e)}

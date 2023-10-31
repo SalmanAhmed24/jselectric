@@ -84,7 +84,7 @@ export default function DeviceTable({ allDevices, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ minHeight: 440 }}>
+        <TableContainer sx={{ height: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

@@ -122,3 +122,20 @@
             }
         }
 }
+.clientDrawer{
+    
+    .MuiPaper-root{
+        width: 90vw;
+        .innerDrawerCon{
+            width: 100%;
+            form{
+                width: 90%;
+                display: flex;
+                flex-wrap: wrap;
+                    .input-wrap{
+                        width: 30%;
+                    }
+            }
+        }
+    }
+}
