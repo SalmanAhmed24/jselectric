@@ -1,6 +1,6 @@
 import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DatePicker } from "react-rainbow-components";
 import "./style.scss";
 import axios from "axios";
@@ -53,7 +53,9 @@ function ClientDrawer({
   const [salesPersonCodeOpt, setSalesPersonCodeOpt] = useState("");
   const [materialLevelOpt, setMaterialLevelOpt] = useState("");
   const [laborLevelOpt, setLaborLevelOpt] = useState("");
-
+  const dataObj = useMemo(() => {
+    return data;
+  }, []);
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/customerType`)
@@ -116,43 +118,49 @@ function ClientDrawer({
       })
       .catch((err) => console.log(err));
     if (edit) {
-      setCustomerCode(data.customerCode);
-      setCustomerName(data.customerName);
-      setAlphaCode(data.alphaCode);
-      setAddress(data.address);
-      setCity(data.city);
-      setCusState(data.state);
-      setZipCode(data.zipCode);
-      setPhone(data.phone);
-      setFax(data.fax);
-      setPrimaryContact(data.primaryContact);
-      setCustomerType({ label: data.customerType, value: data.customerType });
-      setBalance(data.balance);
-      setTaxable({ label: data.taxable, value: data.taxable });
-      setStatus({ label: data.status, value: data.status });
-      setCustomerTerm({ label: data.customerTerm, value: data.customerTerm });
-      setTaxCode({ label: data.taxCode, value: data.taxCode });
-      setRetailCertificate(data.retailCertificate);
-      setResaleExpDate(data.resaleExpDate);
+      setCustomerCode(dataObj.customerCode);
+      setCustomerName(dataObj.customerName);
+      setAlphaCode(dataObj.alphaCode);
+      setAddress(dataObj.address);
+      setCity(dataObj.city);
+      setCusState(dataObj.state);
+      setZipCode(dataObj.zipCode);
+      setPhone(dataObj.phone);
+      setFax(dataObj.fax);
+      setPrimaryContact(dataObj.primaryContact);
+      setCustomerType({
+        label: dataObj.customerType,
+        value: dataObj.customerType,
+      });
+      setBalance(dataObj.balance);
+      setTaxable({ label: dataObj.taxable, value: dataObj.taxable });
+      setStatus({ label: dataObj.status, value: dataObj.status });
+      setCustomerTerm({
+        label: dataObj.customerTerm,
+        value: dataObj.customerTerm,
+      });
+      setTaxCode({ label: dataObj.taxCode, value: dataObj.taxCode });
+      setRetailCertificate(dataObj.retailCertificate);
+      setResaleExpDate(dataObj.resaleExpDate);
       setSalesPersonCode({
-        label: data.salesPersonCode,
-        value: data.salesPersonCode,
+        label: dataObj.salesPersonCode,
+        value: dataObj.salesPersonCode,
       });
       setReceiveStatements({
-        label: data.receiveStatements,
-        value: data.receiveStatements,
+        label: dataObj.receiveStatements,
+        value: dataObj.receiveStatements,
       });
-      setFinanceCharge(data.financeCharge);
-      setRetention(data.retention);
-      setLastDateBilled(data.lastDateBilled);
-      setLastDatePaid(data.lastDatePaid);
-      setDateEstablished(data.dateEstablished);
-      setCreditLimit(data.creditLimit);
+      setFinanceCharge(dataObj.financeCharge);
+      setRetention(dataObj.retention);
+      setLastDateBilled(dataObj.lastDateBilled);
+      setLastDatePaid(dataObj.lastDatePaid);
+      setDateEstablished(dataObj.dateEstablished);
+      setCreditLimit(dataObj.creditLimit);
       setMaterialLevel({
-        label: data.materialLevel,
-        value: data.materialLevel,
+        label: dataObj.materialLevel,
+        value: dataObj.materialLevel,
       });
-      setLaborLevel({ label: data.laborLevel, value: data.laborLevel });
+      setLaborLevel({ label: dataObj.laborLevel, value: dataObj.laborLevel });
     }
   }, []);
   function validatePhoneNumber(input_str) {
