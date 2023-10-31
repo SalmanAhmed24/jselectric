@@ -37,7 +37,9 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       .get(`${apiPath.prodPath}/api/toolCategory/`)
       .then((res) => {
         setCategoryOpt(
-          res.data.toolCategory.map((i) => ({ label: i.name, value: i.name }))
+          res.data.toolCategory
+            .map((i) => ({ label: i.name, value: i.name }))
+            .sort((a, b) => a.label.localeCompare(b.label))
         );
       })
       .catch((err) => console.log(err));
@@ -47,11 +49,13 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         const data =
           res.data &&
           res.data.subtoolCategorys &&
-          res.data.subtoolCategorys.map((i) => ({
-            label: i.name,
-            value: i.name,
-            parentCategory: i.parentCategory,
-          }));
+          res.data.subtoolCategorys
+            .map((i) => ({
+              label: i.name,
+              value: i.name,
+              parentCategory: i.parentCategory,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label));
         setSubCatOpt(data);
       })
       .catch((err) => console.log(err));
@@ -59,10 +63,12 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       .get(`${apiPath.prodPath}/api/users/`)
       .then((res) => {
         setTechAssignOpt(
-          res.data.allUsers.map((i) => ({
-            label: i.fullname,
-            value: i.fullname,
-          }))
+          res.data.allUsers
+            .map((i) => ({
+              label: i.fullname,
+              value: i.fullname,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label))
           // .filter((i) => i.userType == "foreman")
         );
       })
