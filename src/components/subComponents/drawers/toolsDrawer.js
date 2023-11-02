@@ -125,7 +125,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       formData.append("editFlag", "true");
       if (newFileFlag) {
         console.log("here in newFileFlag");
-        formData.append("picture", pictureUpload);
+        formData.append("files", pictureUpload);
         formData.append("oldFiles", JSON.stringify(oldFile));
       } else {
         console.log(pictureUpload);
@@ -145,7 +145,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       formData.append("employee", employee.value);
       formData.append("project", project);
       formData.append("lastPurchasePrice", lastPurchasePrice);
-      formData.append("picture", pictureUpload);
+      formData.append("files", pictureUpload);
       formData.append("serial", serial);
       formData.append("newFileFlag", newFileFlag);
       addTool(formData);
@@ -293,7 +293,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
           <div className="input-wrap">
             <label>Picture</label>
             <input
-              name="picture"
+              name="files"
               className={`${poppins.className} input-cus`}
               type="file"
               onChange={handleUpload}

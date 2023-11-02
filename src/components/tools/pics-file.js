@@ -104,7 +104,7 @@ function PicsFiles({ toolsId, attachments }) {
       }
       axios({
         method: "patch",
-        url: `${apiPath.prodPath}/api/tools/addFiles/${toolsId}`,
+        url: `${apiPath.devPath}/api/tools/addFiles/${toolsId}`,
         data: formData,
         withCredentials: false,
         headers: { "Content-Type": "multipart/form-data" },
