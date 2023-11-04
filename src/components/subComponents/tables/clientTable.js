@@ -15,6 +15,7 @@ import Image from "next/image";
 import Swal from "sweetalert2";
 import ClientDrawer from "../drawers/clientDrawer";
 // import DeviceDrawer from "../drawers/deviceDrawer";
+import ClientInfo from "../drawers/clientInfo";
 const poppins = Poppins({
   weight: ["300", "600", "700"],
   subsets: ["latin"],
@@ -40,10 +41,8 @@ export default function ClientTable({ allClients, loading, refreshData }) {
     setActionFlag(false);
   };
   const openInfoDrawer = () => {
-    if (infoModal) {
-      setActionFlag(false);
-    }
     setInfoModal(!infoModal);
+    setActionFlag(false);
   };
   const editClient = (data, id) => {
     axios
@@ -79,6 +78,7 @@ export default function ClientTable({ allClients, loading, refreshData }) {
   const sortedClients = allClients.sort((a, b) =>
     a.customerCode.localeCompare(b.customerCode)
   );
+
   return (
     <Paper
       className={poppins.className}
@@ -121,6 +121,12 @@ export default function ClientTable({ allClients, loading, refreshData }) {
                         {actionFlag && i.id == clientId ? (
                           <div className="dropdown-div">
                             <p
+                              onClick={openInfoDrawer}
+                              className={poppins.className}
+                            >
+                              Open
+                            </p>
+                            <p
                               onClick={() => openEmpModal({ ...i })}
                               className={poppins.className}
                             >
@@ -156,6 +162,14 @@ export default function ClientTable({ allClients, loading, refreshData }) {
                 id={clientId}
                 data={editData}
                 editClient={editClient}
+              />
+            ) : null}
+            {infoModal ? (
+              <ClientInfo
+                open={infoModal}
+                onClose={openInfoDrawer}
+                item={item}
+                refreshData={refreshData}
               />
             ) : null}
           </Table>

@@ -14,6 +14,7 @@ function Clients() {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allClients, setAllClients] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     setLoading(true);
     axios
@@ -29,6 +30,20 @@ function Clients() {
   }, []);
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
+  };
+  const handleSearch = (e) => {
+    setLoading(true);
+    e.preventDefault();
+    if (search == "") {
+      return false;
+    }
+    axios
+      .get(`${apiPath.prodPath}/api/clients/${search}`)
+      .then((res) => {
+        setAllClients(res.data.clients);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   };
   const addClient = (data) => {
     console.log("data", data);
@@ -54,6 +69,21 @@ function Clients() {
         setLoading(false);
       });
   };
+  const handleClear = () => {
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/clients/`)
+      .then((res) => {
+        console.log(res.data);
+        setAllClients(res.data.clients);
+        setLoading(false);
+        setSearch("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <section className="client-wrap">
       <section className="inner-client">
@@ -61,6 +91,31 @@ function Clients() {
           <button onClick={() => setDrawer(true)} className={poppins.className}>
             Add Client
           </button>
+        </div>
+        <div className="search-wrap">
+          <form onSubmit={handleSearch}>
+            <input
+              className={poppins.className}
+              type="text"
+              placeholder="Search by Name"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <input
+              className={`${poppins.className} search-btn`}
+              type="submit"
+              value={"Search"}
+            />
+            {search == "" ? null : (
+              <p
+                onClick={handleClear}
+                className={`${poppins.className} clear-btn`}
+                style={{ color: "red" }}
+              >
+                Clear
+              </p>
+            )}
+          </form>
         </div>
         <section className="table-wrap">
           <ClientTable
