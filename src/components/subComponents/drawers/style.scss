@@ -139,3 +139,10 @@
         }
     }
 }
+.close-modal{
+    text-align: right;
+    font-size: 22px;
+    &:hover{
+        cursor: pointer;
+    }
+}

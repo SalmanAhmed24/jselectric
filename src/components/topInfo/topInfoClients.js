@@ -22,6 +22,14 @@ function TopInfoClients({ item }) {
         <p>{item.primaryContact}</p>
       </div>
       <div className="singleInfo">
+        <label>Primary Email</label>
+        <p>{item.primaryEmail}</p>
+      </div>
+      <div className="singleInfo">
+        <label>Secondary Email</label>
+        <p>{item.secondaryEmail}</p>
+      </div>
+      <div className="singleInfo">
         <label>Fax</label>
         <p>{item.fax}</p>
       </div>

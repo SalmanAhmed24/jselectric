@@ -34,6 +34,8 @@ function ClientDrawer({
   const [taxable, setTaxable] = useState("");
   const [status, setStatus] = useState("");
   const [customerTerm, setCustomerTerm] = useState("");
+  const [primaryEmail, setPrimaryEmail] = useState("");
+  const [secondaryEmail, setSecondaryEmail] = useState("");
   const [taxCode, setTaxCode] = useState("");
   const [retailCertificate, setRetailCertificate] = useState("");
   const [resaleExpDate, setResaleExpDate] = useState("");
@@ -155,6 +157,8 @@ function ClientDrawer({
       setLastDateBilled(dataObj.lastDateBilled);
       setLastDatePaid(dataObj.lastDatePaid);
       setDateEstablished(dataObj.dateEstablished);
+      setPrimaryEmail(dataObj.primaryEmail);
+      setSecondaryEmail(dataObj.secondaryEmail);
       setCreditLimit(dataObj.creditLimit);
       setMaterialLevel({
         label: dataObj.materialLevel,
@@ -209,6 +213,8 @@ function ClientDrawer({
       dateEstablished: dateEstablished == "undefined" ? "" : dateEstablished,
       creditLimit,
       materialLevel: materialLevel.value,
+      primaryEmail,
+      secondaryEmail,
       laborLevel: laborLevel.value,
     };
     if (edit) {
@@ -227,6 +233,9 @@ function ClientDrawer({
       className="employeeDrawer clientDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         <form onSubmit={handleAddDevice}>
           {/* <div className="input-wrap">
             <label>Category</label>
@@ -307,6 +316,24 @@ function ClientDrawer({
               value={phone}
               className={`${poppins.className} input-cus`}
               onChange={(e) => validatePhone(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Primary Email</label>
+            <input
+              type="text"
+              value={primaryEmail}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setPrimaryEmail(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Secondary Email</label>
+            <input
+              type="text"
+              value={secondaryEmail}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setSecondaryEmail(e.target.value)}
             />
           </div>
           <div className="input-wrap">
