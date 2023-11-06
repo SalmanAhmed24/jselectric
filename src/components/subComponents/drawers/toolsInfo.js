@@ -70,7 +70,7 @@ function ToolsInfo({ open, onClose, item, refreshData }) {
         {activeTab == "Pics / Files" ? (
           <PicsFiles toolsId={item.id} attachments={item.attachments} />
         ) : null}
-        {activeTab == "History" ? <HistoryTab /> : null}
+        {activeTab == "History" ? <HistoryTab history={item.history} /> : null}
       </div>
     </Drawer>
   );

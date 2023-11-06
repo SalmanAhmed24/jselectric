@@ -170,3 +170,22 @@
         }
     }
 }
+.row-history{
+    background-color: antiquewhite;
+    display: flex;
+    margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 10px;
+            
+    flex-wrap: wrap;
+        .single-item{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-right: 20px;
+            label{
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+        }
+}
