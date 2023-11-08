@@ -7,6 +7,8 @@ import Tools from "../../components/tools";
 import Devices from "../../components/devices";
 import Vehicles from "../../components/vehicles";
 import Clients from "../../components/clients";
+import Schedule from "../../components/schedule/schedule";
+
 import "./list.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -56,6 +58,13 @@ export default function List() {
           >
             Clients
           </li>
+          <li
+            className={
+              activeLink == "Schedules" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Schedules
+          </li>
         </ul>
       </section>
 
@@ -63,6 +72,9 @@ export default function List() {
       {activeLink == "Devices" ? <Devices picklistName={"Tools"} /> : null}
       {activeLink == "Vehicles" ? <Vehicles picklistName={"Vehicles"} /> : null}
       {activeLink == "Clients" ? <Clients picklistName={"Clients"} /> : null}
+      {activeLink == "Schedules" ? (
+        <Schedule picklistName={"Schedules"} />
+      ) : null}
     </main>
   );
 }

@@ -107,6 +107,9 @@ function DeviceDrawer({
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         <form onSubmit={handleAddDevice}>
           <div className="input-wrap">
             <label>Category</label>
