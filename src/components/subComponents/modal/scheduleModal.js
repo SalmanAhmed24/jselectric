@@ -248,7 +248,7 @@ function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
       id: eventObj.event_id,
     };
     axios
-      .post(`${apiPath.devPath}/api/users/editSchedule/${userId}`, dataObj)
+      .post(`${apiPath.prodPath}/api/users/editSchedule/${userId}`, dataObj)
       .then((res) => {
         onConfirm(res.data.error);
       })
