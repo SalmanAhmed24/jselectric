@@ -44,3 +44,39 @@
             }
     }
 }
+.innerForm{
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .input-wrap{
+        margin: 10px 10px;
+        width: 200px;
+        label{
+            font-weight: bold;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        p{
+            margin-top: 10px;
+            color: red;
+        }
+    }
+    .sub-btn-wrap{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        input{
+            margin-top: 0px;
+            padding: 5px 10px;
+            background-color: black;
+            border-radius: 5px;
+            color: #fff;
+            border:1px solid #000;
+            font-size: 16px;
+        }
+    }
+}
+.custom-editor-wrap{
+    padding: 20px;
+}

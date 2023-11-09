@@ -24,6 +24,7 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
   const [endTime, setEndTime] = useState("");
   const [user, setUser] = useState("");
   const [edit, setEdit] = useState(false);
+  const [eventObj, setEventObj] = useState("");
   useEffect(() => {
     setUserOpt([userObj]);
     setUser(userObj);
@@ -92,6 +93,28 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
           handleClose();
         }
       });
+  };
+  const editSchedule = (flagValue) => {
+    if (flagValue) {
+      Swal.fire({
+        icon: "error",
+        text: "Uneable to update the schedule",
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        text: "Successfully updated the schedule",
+      });
+      refreshData();
+      handleClose();
+    }
+    // const dataObj = {
+    //   date:moment(event.)
+    // }
+    // axios.post()
+  };
+  const storeEvent = (event) => {
+    setEventObj(event);
   };
   console.log("alteredSche", alteredSch);
   return (
@@ -189,10 +212,124 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
           view="month"
           events={alteredSch}
           onDelete={handleDeleEvent}
+          onEventClick={storeEvent}
+          customEditor={(props) => (
+            <SchedulerEditor
+              eventObj={eventObj}
+              onConfirm={editSchedule}
+              props={props}
+              userId={user.value}
+            />
+          )}
         />
       </div>
     </Modal>
   );
 }
-
+function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
+  console.log(props);
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  useEffect(() => {
+    setDate(moment(eventObj.end).format("YYYY/MM/DD"));
+    setStartTime(moment(eventObj.start).format("hh:mm"));
+    setEndTime(moment(eventObj.end).format("hh:mm"));
+  }, []);
+  const handleDate = (value) => {
+    setDate(value);
+  };
+  const handleEditSchedule = (event) => {
+    event.preventDefault();
+    const dataObj = {
+      date: date,
+      startTime: startTime,
+      endTime: endTime,
+      id: eventObj.event_id,
+    };
+    axios
+      .post(`${apiPath.devPath}/api/users/editSchedule/${userId}`, dataObj)
+      .then((res) => {
+        onConfirm(res.data.error);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <div className="custom-editor-wrap">
+      <div className="main-wrap">
+        <p className="close-modal" onClick={props.close}>
+          &#10005;
+        </p>
+      </div>
+      <form className="innerForm" onSubmit={handleEditSchedule}>
+        <div className="input-wrap">
+          <label>Date</label>
+          <DatePicker
+            id="datePicker-1"
+            value={date}
+            onChange={handleDate}
+            locale={"en-US"}
+          />
+          {date !== "" ? (
+            <p
+              onClick={() => {
+                setDate("");
+              }}
+              className="clear-value"
+            >
+              Clear
+            </p>
+          ) : null}
+        </div>
+        <div className="input-wrap">
+          <label>Start Time</label>
+          <TimePicker
+            id="datePicker-1"
+            value={startTime}
+            onChange={(value) => setStartTime(value)}
+            locale={"en-US"}
+          />
+          {startTime !== "" ? (
+            <p
+              onClick={() => {
+                setStartTime("");
+              }}
+              className="clear-value"
+            >
+              Clear
+            </p>
+          ) : null}
+        </div>
+        <div className="input-wrap">
+          <label>End Time</label>
+          <TimePicker
+            id="datePicker-1"
+            value={endTime}
+            onChange={(value) => setEndTime(value)}
+            locale={"en-US"}
+          />
+          {startTime !== "" ? (
+            <p
+              onClick={() => {
+                setEndTime("");
+              }}
+              className="clear-value"
+            >
+              Clear
+            </p>
+          ) : null}
+        </div>
+        <div className="sub-btn-wrap">
+          <input
+            className={`${poppins.className} addEmp`}
+            type="submit"
+            value={"Edit Schedule"}
+          />
+        </div>
+      </form>
+    </div>
+  );
+}
 export default ScheduleModal;
