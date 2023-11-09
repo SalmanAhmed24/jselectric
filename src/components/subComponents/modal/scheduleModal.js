@@ -18,17 +18,16 @@ const poppins = Poppins({
 
 function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
   const [drawer, setDrawer] = useState(false);
-  const [userOpt, setUserOpt] = useState([userObj]);
+  const [userOpt, setUserOpt] = useState("");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("");
   const [edit, setEdit] = useState(false);
-  const [scheduledUser, setScheduledUser] = [];
   useEffect(() => {
     setUserOpt([userObj]);
     setUser(userObj);
-  }, [open]);
+  }, []);
 
   const handleAddSchedule = (e) => {
     e.preventDefault();
@@ -64,12 +63,11 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
     endDate("");
     setUser("");
   };
-
-  const alteredSch =
+  let alteredSch =
     schedules &&
-    schedules.map((i, ind) => {
+    schedules.map((i) => {
       return {
-        event_id: ind,
+        event_id: i._id,
         title: `From ${i.startTime} to ${i.endTime}`,
         start: new Date(
           `${moment(i.date).format("YYYY/MM/DD")} ${i.startTime}`
@@ -77,6 +75,24 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
         end: new Date(`${moment(i.date).format("YYYY/MM/DD")} ${i.endTime}`),
       };
     });
+  const handleDeleEvent = (id) => {
+    console.log("@@@", userObj, id);
+    axios
+      .delete(
+        `${apiPath.prodPath}/api/users/deleteSchedule/${userObj.value}&&${id}`
+      )
+      .then((res) => {
+        if (res.data && res.data.error) {
+          Swal.fire({
+            icon: "error",
+            text: "Error deleting the schedule",
+          });
+        } else {
+          refreshData();
+          handleClose();
+        }
+      });
+  };
   console.log("alteredSche", alteredSch);
   return (
     <Modal
@@ -169,7 +185,11 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
             </div>
           </form>
         </div>
-        <Scheduler view="month" events={alteredSch} />
+        <Scheduler
+          view="month"
+          events={alteredSch}
+          onDelete={handleDeleEvent}
+        />
       </div>
     </Modal>
   );

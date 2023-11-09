@@ -18,7 +18,6 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [scheduledUser, setScheduledUser] = [];
   useEffect(() => {
     setUserOpt([userObj]);
     setUser(userObj);
