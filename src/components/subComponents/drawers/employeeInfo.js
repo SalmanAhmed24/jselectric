@@ -6,6 +6,7 @@ import TopInfo from "../../topInfo/topInfo";
 import BadgeTab from "../tabs/badgeTab";
 import Notes from "../../notes/notes";
 import "./style.scss";
+import ScheduleTab from "../tabs/scheduleTab";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
@@ -57,10 +58,10 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
           <li
             onClick={tabHandler}
             className={
-              activeTab == "Link 4" ? "activeTab simpleTab" : "simple Tab"
+              activeTab == "Schedules" ? "activeTab simpleTab" : "simple Tab"
             }
           >
-            Link 4
+            Schedules
           </li>
         </ul>
       </div>
@@ -76,7 +77,9 @@ function EmployeeInfo({ open, onClose, item, refreshData }) {
         {activeTab == "Pic/Files" ? (
           <PicFile userId={item.id} attachments={item.attachments} />
         ) : null}
-        {activeTab == "Link 4" ? <p>this is Link 4 tab</p> : null}
+        {activeTab == "Schedules" ? (
+          <ScheduleTab schedules={item.schedules} />
+        ) : null}
       </div>
     </Drawer>
   );

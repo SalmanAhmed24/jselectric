@@ -39,9 +39,7 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
     setOpenModal(!openModal);
   };
   const openInfoDrawer = () => {
-    if (infoModal) {
-      setActionFlag(false);
-    }
+    setActionFlag(false);
     setInfoModal(!infoModal);
   };
   const editEmp = (data, id) => {
