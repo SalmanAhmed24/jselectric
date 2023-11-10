@@ -17,6 +17,7 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
   const [user, setUser] = useState();
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [title, setTitle] = useState("");
   const [endTime, setEndTime] = useState("");
   useEffect(() => {
     setUserOpt([userObj]);
@@ -32,6 +33,7 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
       date,
       startTime: startTime,
       endTime: endTime,
+      title,
     };
     axios
       .post(`${apiPath.prodPath}/api/users/addSchedule/${user.value}`, dataObj)
@@ -84,6 +86,14 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
               value={user}
               onChange={(v) => setUser(v)}
               isDisabled={true}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Title</label>
+            <input
+              value={title}
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div className="input-wrap">
