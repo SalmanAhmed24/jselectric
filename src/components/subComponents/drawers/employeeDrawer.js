@@ -17,7 +17,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const [creditCard, setCreditCard] = useState("");
   const [tablet, setTablet] = useState("");
   const [primaryAddress, setPrimaryAddress] = useState("");
-  const [secondayAddress, setSecondaryAddress] = useState("");
+  const [secondaryAddress, setSecondaryAddress] = useState("");
   const [stateValue, setStateValue] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [city, setCity] = useState("");
@@ -99,7 +99,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       username,
       password,
       primaryAddress,
-      secondayAddress,
+      secondaryAddress,
       state: stateValue,
       zipcode,
     };
@@ -201,7 +201,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
           <div className="input-wrap">
             <label>Secondary Address</label>
             <input
-              value={secondayAddress}
+              value={secondaryAddress}
               className={`${poppins.className} input-cus`}
               onChange={(e) => setSecondaryAddress(e.target.value)}
             />

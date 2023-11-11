@@ -35,7 +35,9 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
   };
   const openEmpModal = (data) => {
     setEditData(data);
-    refreshData();
+    if (openModal) {
+      refreshData();
+    }
     setOpenModal(!openModal);
   };
   const openInfoDrawer = () => {
