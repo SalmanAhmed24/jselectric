@@ -95,7 +95,10 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                 <TableCell style={{ minWidth: 150 }}>Email</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Vehicle</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Tablet</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Primary Address</TableCell>
                 <TableCell style={{ minWidth: 150 }}>City</TableCell>
+                <TableCell style={{ minWidth: 150 }}>State</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Zipcode</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -144,7 +147,18 @@ export default function EmployeeTable({ allUsers, loading, refreshData }) {
                       <TableCell>{i.email}</TableCell>
                       <TableCell>{i.vehicle}</TableCell>
                       <TableCell>{i.tablet}</TableCell>
+                      <TableCell>
+                        {i.primaryAddress == undefined
+                          ? "N/A"
+                          : i.primaryAddress}
+                      </TableCell>
                       <TableCell>{i.city}</TableCell>
+                      <TableCell>
+                        {i.state == undefined ? "N/A" : i.state}
+                      </TableCell>
+                      <TableCell>
+                        {i.zipcode == undefined ? "N/A" : i.zipcode}
+                      </TableCell>
                     </TableRow>
                   );
                 })

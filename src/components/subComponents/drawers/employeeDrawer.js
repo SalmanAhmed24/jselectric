@@ -16,6 +16,10 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
   const [vehicle, setVehicle] = useState("");
   const [creditCard, setCreditCard] = useState("");
   const [tablet, setTablet] = useState("");
+  const [primaryAddress, setPrimaryAddress] = useState("");
+  const [secondayAddress, setSecondaryAddress] = useState("");
+  const [stateValue, setStateValue] = useState("");
+  const [zipcode, setZipcode] = useState("");
   const [city, setCity] = useState("");
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
@@ -59,6 +63,22 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       setCompanyPhone(data.companyPhone);
       setUsername(data.username);
       setPassword(data.password);
+      setPrimaryAddress(
+        data.primaryAddress && data.primaryAddress !== undefined
+          ? data.primaryAddress
+          : ""
+      );
+      setSecondaryAddress(
+        data.secondaryAddress && data.secondaryAddress !== undefined
+          ? data.secondaryAddress
+          : ""
+      );
+      setStateValue(
+        data.stateValue && data.stateValue !== undefined ? data.stateValue : ""
+      );
+      setZipcode(
+        data.zipcode && data.zipcode !== undefined ? data.zipcode : ""
+      );
       setCreditCard(data.creditCard);
     }
   }, []);
@@ -78,6 +98,10 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       companyPhone,
       username,
       password,
+      primaryAddress,
+      secondayAddress,
+      state: stateValue,
+      zipcode,
     };
     if (edit) {
       editEmp(dataObj, id);
@@ -99,6 +123,10 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     setUsername("");
     setCreditCard("");
     setPassword("");
+    setPrimaryAddress("");
+    setSecondaryAddress("");
+    setStateValue("");
+    setZipcode("");
   };
   const allBoleanOpt = [
     { value: "Yes", label: "Yes" },
@@ -163,11 +191,43 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
             />
           </div>
           <div className="input-wrap">
+            <label>Primary Address</label>
+            <input
+              value={primaryAddress}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setPrimaryAddress(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Secondary Address</label>
+            <input
+              value={secondayAddress}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setSecondaryAddress(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
             <label>City</label>
             <input
               value={city}
               className={`${poppins.className} input-cus`}
               onChange={(e) => setCity(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>State</label>
+            <input
+              value={stateValue}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setStateValue(e.target.value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Zipcode</label>
+            <input
+              value={zipcode}
+              className={`${poppins.className} input-cus`}
+              onChange={(e) => setZipcode(e.target.value)}
             />
           </div>
           <div className="input-wrap">
