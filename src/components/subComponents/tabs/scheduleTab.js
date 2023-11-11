@@ -7,7 +7,7 @@ function ScheduleTab({ schedules }) {
     schedules.map((i) => {
       return {
         event_id: i._id,
-        title: `From ${i.startTime} to ${i.endTime}`,
+        title: `${i.title} - From ${i.startTime} to ${i.endTime}`,
         start: new Date(
           `${moment(i.date).format("YYYY/MM/DD")} ${i.startTime}`
         ),
