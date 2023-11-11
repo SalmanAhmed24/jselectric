@@ -73,9 +73,7 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
           ? data.secondaryAddress
           : ""
       );
-      setStateValue(
-        data.stateValue && data.stateValue !== undefined ? data.stateValue : ""
-      );
+      setStateValue(data.state && data.state !== undefined ? data.state : "");
       setZipcode(
         data.zipcode && data.zipcode !== undefined ? data.zipcode : ""
       );
