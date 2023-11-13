@@ -12,6 +12,14 @@ function ScheduleTab({ schedules }) {
           `${moment(i.date).format("YYYY/MM/DD")} ${i.startTime}`
         ),
         end: new Date(`${moment(i.date).format("YYYY/MM/DD")} ${i.endTime}`),
+        color:
+          i.title == "Scheduled"
+            ? "#000000"
+            : i.title == "Day Off"
+            ? "#89CFF0"
+            : i.title == "Sick"
+            ? "#FF5733"
+            : "#0000FF",
       };
     });
   return (

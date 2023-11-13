@@ -23,7 +23,6 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
     setUserOpt([userObj]);
     setUser(userObj);
   }, [open]);
-  console.log("userObj and userArr", user, userOpt);
   const handleDate = (value) => {
     setDate(value);
   };
@@ -33,7 +32,7 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
       date,
       startTime: startTime,
       endTime: endTime,
-      title,
+      title: title.value,
     };
     axios
       .post(`${apiPath.prodPath}/api/users/addSchedule/${user.value}`, dataObj)
@@ -66,7 +65,15 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
     setStartTime("");
     setEndTime("");
     setUser("");
+    setTitle("");
   };
+
+  const titleOpt = [
+    { label: "Scheduled", value: "Scheduled" },
+    { label: "Day Off", value: "Day Off" },
+    { label: "Sick", value: "Sick" },
+    { label: "Vacation", value: "Vacation" },
+  ];
   return (
     <Drawer
       anchor={"right"}
@@ -90,10 +97,10 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
           </div>
           <div className="input-wrap">
             <label>Title</label>
-            <input
+            <Select
+              options={titleOpt}
               value={title}
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(v) => setTitle(v)}
             />
           </div>
           <div className="input-wrap">

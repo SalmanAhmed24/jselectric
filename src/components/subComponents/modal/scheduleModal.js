@@ -37,7 +37,7 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
       date: date,
       startTime: startTime,
       endTime: endTime,
-      title: title,
+      title: title.value,
     };
     axios
       .post(`${apiPath.prodPath}/api/users/addSchedule/${user.value}`, dataObj)
@@ -77,6 +77,14 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
           `${moment(i.date).format("YYYY/MM/DD")} ${i.startTime}`
         ),
         end: new Date(`${moment(i.date).format("YYYY/MM/DD")} ${i.endTime}`),
+        color:
+          i.title == "Scheduled"
+            ? "#000000"
+            : i.title == "Day Off"
+            ? "#89CFF0"
+            : i.title == "Sick"
+            ? "#FF5733"
+            : "#0000FF",
       };
     });
   const handleDeleEvent = (id) => {
@@ -119,7 +127,12 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
   const storeEvent = (event) => {
     setEventObj(event);
   };
-  console.log("alteredSche", alteredSch);
+  const titleOpt = [
+    { label: "Scheduled", value: "Scheduled" },
+    { label: "Day Off", value: "Day Off" },
+    { label: "Sick", value: "Sick" },
+    { label: "Vacation", value: "Vacation" },
+  ];
   return (
     <Modal
       open={open}
@@ -146,10 +159,10 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
             </div>
             <div className="input-wrap">
               <label>Title</label>
-              <input
+              <Select
+                options={titleOpt}
                 value={title}
-                type="text"
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(v) => setTitle(v)}
               />
             </div>
             <div className="input-wrap">
@@ -247,11 +260,17 @@ function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
     setDate(moment(eventObj.end).format("YYYY/MM/DD"));
     setStartTime(moment(eventObj.start).format("hh:mm"));
     setEndTime(moment(eventObj.end).format("hh:mm"));
-    setTitle(eventObj.title);
+    setTitle({ label: eventObj.title, value: eventObj.title });
   }, []);
   const handleDate = (value) => {
     setDate(value);
   };
+  const titleOpt = [
+    { label: "Scheduled", value: "Scheduled" },
+    { label: "Day Off", value: "Day Off" },
+    { label: "Sick", value: "Sick" },
+    { label: "Vacation", value: "Vacation" },
+  ];
   const handleEditSchedule = (event) => {
     event.preventDefault();
     const dataObj = {
@@ -259,7 +278,7 @@ function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
       startTime: startTime,
       endTime: endTime,
       id: eventObj.event_id,
-      title: title,
+      title: title.value,
     };
     axios
       .post(`${apiPath.prodPath}/api/users/editSchedule/${userId}`, dataObj)
@@ -281,10 +300,10 @@ function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
         <div className="input-wrap">
           <div className="input-wrap">
             <label>Title</label>
-            <input
+            <Select
+              options={titleOpt}
               value={title}
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(v) => setTitle(v)}
             />
           </div>
           <label>Date</label>
