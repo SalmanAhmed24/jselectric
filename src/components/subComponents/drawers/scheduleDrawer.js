@@ -73,6 +73,8 @@ function ScheduleDrawer({ open, userObj, onClose, edit, refreshData }) {
     { label: "Day Off", value: "Day Off" },
     { label: "Sick", value: "Sick" },
     { label: "Vacation", value: "Vacation" },
+    { label: "Leave Of Absence", value: "Leave Of Absence" },
+    { label: "Bereavement Leave", value: "Bereavement Leave" },
   ];
   return (
     <Drawer

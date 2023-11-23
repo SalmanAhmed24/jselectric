@@ -4,6 +4,9 @@ import thunk from "redux-thunk";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 import userSlice from "./slices/userSlice";
+import chatSlice from "./slices/chatSlice";
+import allChatSlice from "./slices/allChatSlice";
+import notificationSlice from "./slices/notification";
 const isClient = typeof window !== "undefined";
 let persistedReducer;
 if (isClient) {
@@ -11,10 +14,19 @@ if (isClient) {
     key: "root",
     storage: storage,
   };
-  const rootReducers = combineReducers({ user: userSlice });
+  const rootReducers = combineReducers({
+    user: userSlice,
+    currentChat: chatSlice,
+    allChats: allChatSlice,
+    notification: notificationSlice,
+  });
   persistedReducer = persistReducer(persistConfig, rootReducers);
 } else {
-  persistedReducer = combineReducers({ user: userSlice });
+  persistedReducer = combineReducers({
+    user: userSlice,
+    chats: chatSlice,
+    notification: notificationSlice,
+  });
 }
 export const store = configureStore({
   reducer: persistedReducer,

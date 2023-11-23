@@ -84,6 +84,10 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
             ? "#89CFF0"
             : i.title == "Sick"
             ? "#FF5733"
+            : i.title == "Leave Of Absence"
+            ? "#990f02"
+            : i.title == "Bereavement Leave"
+            ? "#BC544B"
             : "#0000FF",
       };
     });
@@ -132,6 +136,8 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
     { label: "Day Off", value: "Day Off" },
     { label: "Sick", value: "Sick" },
     { label: "Vacation", value: "Vacation" },
+    { label: "Leave Of Absence", value: "Leave Of Absence" },
+    { label: "Bereavement Leave", value: "Bereavement Leave" },
   ];
   return (
     <Modal
@@ -270,6 +276,8 @@ function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
     { label: "Day Off", value: "Day Off" },
     { label: "Sick", value: "Sick" },
     { label: "Vacation", value: "Vacation" },
+    { label: "Leave Of Absence", value: "Leave Of Absence" },
+    { label: "Bereavement Leave", value: "Bereavement Leave" },
   ];
   const handleEditSchedule = (event) => {
     event.preventDefault();

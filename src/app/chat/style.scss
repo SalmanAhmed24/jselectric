@@ -1,0 +1,23 @@
+.chat-wrap{
+    width: 100%;
+    height: 100dvh;
+    background-color: #fff;
+    display: flex;
+}
+.chat-contacts{
+    width: fit-content;
+    min-width: 20%;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: column;
+}
+.chat-message-con{
+    width: fit-content;
+    max-width: 80%;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}

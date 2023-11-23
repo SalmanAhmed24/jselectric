@@ -19,6 +19,10 @@ function ScheduleTab({ schedules }) {
             ? "#89CFF0"
             : i.title == "Sick"
             ? "#FF5733"
+            : i.title == "Leave Of Absence"
+            ? "#990f02"
+            : i.title == "Bereavement Leave"
+            ? "#BC544B"
             : "#0000FF",
       };
     });

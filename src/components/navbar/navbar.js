@@ -1,6 +1,8 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
+import { storeCurrentChat } from "../../store/slices/chatSlice";
+import { storeNotification } from "../../store/slices/notification";
 import "./navbar.scss";
 import { Poppins } from "next/font/google";
 const poppins = Poppins({
@@ -12,6 +14,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { storeUser } from "../../store/slices/userSlice";
 function Navbar() {
   const user = useSelector((state) => state.user);
+  const notification = useSelector((state) => state.notification.notification);
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
@@ -21,6 +24,11 @@ function Navbar() {
   const handleLogout = () => {
     dispatch(storeUser(null));
     router.push("/login");
+  };
+  const handleNotification = (chat) => {
+    dispatch(storeCurrentChat(chat));
+    router.push("/chat");
+    dispatch(storeNotification([]));
   };
   return (
     <>
@@ -66,6 +74,31 @@ function Navbar() {
             Settings
           </Link>
           <div className="logout-wrap">
+            <div className="img-wrap" style={{ position: "relative" }}>
+              <Link href={"/chat"}>
+                <img src="./chat.png" className="chat-img" />
+              </Link>
+              {notification.length ? (
+                <span className={`${poppins.className} notification-ind`}>
+                  {notification.length}
+                </span>
+              ) : null}
+              {notification.length ? (
+                <div className="notification-bar">
+                  {notification.map((i) => {
+                    return (
+                      <p
+                        onClick={() => handleNotification(i.chat)}
+                        key={i._id}
+                        className={`${poppins.className} not-msg`}
+                      >
+                        Message from {i.sender.fullname}
+                      </p>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
             <button
               className={`${poppins.className} logout`}
               onClick={handleLogout}
