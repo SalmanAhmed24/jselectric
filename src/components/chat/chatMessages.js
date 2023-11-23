@@ -28,7 +28,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification.notification);
   useEffect(() => {
-    socket = io(ENDPOINT);
+    socket = io().connect();
     socket.emit("setup", loggedInUser);
     socket.on("connection", () => setSocketConnected(true));
     console.log("called first");
