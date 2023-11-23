@@ -28,7 +28,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification.notification);
   useEffect(() => {
-    socket = io("https://jselectric-backend.vercel.app", {
+    socket = io("https://jselectric.vercel.app", {
       withCredentials: true,
       extraHeaders: {
         "my-custom-header": "abcd",
