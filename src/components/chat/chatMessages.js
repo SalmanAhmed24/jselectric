@@ -5,58 +5,32 @@ import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import Messages from "./messages";
 import { apiPath } from "@/utils/routes";
-import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { storeNotification } from "../../store/slices/notification";
-import { storeCurrentChat } from "@/store/slices/chatSlice";
 const poppins = Poppins({
   weight: ["300", "500", "700", "800"],
   style: ["normal"],
   subsets: ["latin"],
 });
 
-// const ENDPOINT = "https://jselectric-backend.vercel.app/";
-var socket, selectedChatCompare;
-
 function ChatMessages({ currentChat, loggedInUser }) {
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [messageArr, setMessageArr] = useState([]);
   const [message, setMessage] = useState("");
-  const [loader, setLoaderFlag] = useState(false);
-  const [socketConnected, setSocketConnected] = useState(false);
-  const [refreshFlag, setRefreshFlag] = useState(false);
-  const dispatch = useDispatch();
-  const notification = useSelector((state) => state.notification.notification);
-  useEffect(() => {
-    socket = io("https://jselectric.vercel.app", {
-      withCredentials: true,
-      extraHeaders: {
-        "my-custom-header": "abcd",
-      },
-    }).connect();
-    socket.emit("setup", loggedInUser);
-    socket.on("connection", () => setSocketConnected(true));
-    console.log("called first");
-  }, []);
+  var interval;
+  // useEffect(() => {
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, [currentChat]);
   useEffect(() => {
     getChatMessages();
-    selectedChatCompare = currentChat;
-    console.log("called second");
+    interval = setInterval(() => {
+      getChatMessages();
+    }, 30000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [currentChat]);
-  useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare._id == newMessageReceived.chat._id
-      ) {
-        if (notification.includes(newMessageReceived) == false) {
-          dispatch(storeNotification([newMessageReceived, ...notification]));
-        }
-      }
-      setMessageArr([...messageArr, newMessageReceived]);
-      dispatch(storeCurrentChat(currentChat));
-    });
-  }, [refreshFlag]);
   const handleMessages = (e) => {
     e.preventDefault();
     var dataObj = {
@@ -70,11 +44,8 @@ function ChatMessages({ currentChat, loggedInUser }) {
         const newMessageChatId =
           res.data && res.data.messages && res.data.messages.chat._id;
         if (newMessageChatId == currentChat._id) {
-          console.log("here in if");
           setMessageArr([...messageArr, res.data.messages]);
           setMessage("");
-          socket.emit("new message", res.data.messages);
-          setRefreshFlag(!refreshFlag);
         } else {
           console.log("here in else");
         }
@@ -84,20 +55,15 @@ function ChatMessages({ currentChat, loggedInUser }) {
       });
   };
   const getChatMessages = async () => {
-    setLoaderFlag(true);
     try {
       const result = await axios.get(
         `${apiPath.devPath}/api/message/${currentChat._id}`
       );
       setMessageArr(result.data.messages);
-      setLoaderFlag(false);
-      socket.emit("join chat", currentChat._id);
     } catch (error) {
       console.log(error);
-      setLoaderFlag(false);
     }
   };
-  console.log("@@!!", notification);
   return currentChat == undefined ? (
     <p className={poppins.className} style={{ fontSize: "22px" }}>
       Select a Chat from the side bar
@@ -122,9 +88,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
           </p>
         </div>
       </div>
-      {loader ? (
-        <p className={poppins.className}>Loading...</p>
-      ) : messageArr.length ? (
+      {messageArr.length ? (
         <Messages
           messageArr={messageArr}
           currentChat={currentChat}
