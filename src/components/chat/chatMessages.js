@@ -15,7 +15,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-const ENDPOINT = "https://jselectric-backend.vercel.app/";
+// const ENDPOINT = "https://jselectric-backend.vercel.app/";
 var socket, selectedChatCompare;
 
 function ChatMessages({ currentChat, loggedInUser }) {
@@ -28,7 +28,12 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification.notification);
   useEffect(() => {
-    socket = io().connect();
+    socket = io("https://jselectric-backend.vercel.app", {
+      withCredentials: true,
+      extraHeaders: {
+        "my-custom-header": "abcd",
+      },
+    }).connect();
     socket.emit("setup", loggedInUser);
     socket.on("connection", () => setSocketConnected(true));
     console.log("called first");
