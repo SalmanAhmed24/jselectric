@@ -15,7 +15,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-const ENDPOINT = "https://jselectric-backend.vercel.app";
+const ENDPOINT = "http://localhost:9000";
 var socket, selectedChatCompare;
 
 function ChatMessages({ currentChat, loggedInUser }) {
