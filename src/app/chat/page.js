@@ -24,7 +24,7 @@ function Chat() {
   const dispatch = useDispatch();
   const getAllChats = () => {
     axios
-      .get(`${apiPath.devPath}/api/chats/${loggedInUser.id}`)
+      .get(`${apiPath.prodPath}/api/chats/${loggedInUser.id}`)
       .then((res) => {
         dispatch(storeAllChat(res.data.allChats));
         if (res.data.allChats && res.data.allChats.length) {

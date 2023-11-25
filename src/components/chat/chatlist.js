@@ -52,7 +52,7 @@ function ChatList() {
         loggedInUserId: loggedInUser.id,
       };
       axios
-        .post(`${apiPath.devPath}/api/chats/addChat`, dataObj)
+        .post(`${apiPath.prodPath}/api/chats/addChat`, dataObj)
         .then((res) => {
           if (!allChats.find((item) => item._id == res.data._id)) {
             dispatch(storeAllChat([res.data, ...allChats]));
@@ -73,7 +73,7 @@ function ChatList() {
         chatName: groupName,
       };
       axios
-        .post(`${apiPath.devPath}/api/chats/groupChat`, dataObj)
+        .post(`${apiPath.prodPath}/api/chats/groupChat`, dataObj)
         .then((res) => {
           if (!allChats.find((item) => item._id == res.data._id)) {
             dispatch(storeAllChat([res.data, ...allChats]));
@@ -94,7 +94,7 @@ function ChatList() {
   const getAllChats = () => {
     setLoader(true);
     axios
-      .get(`${apiPath.devPath}/api/chats/${loggedInUser.id}`)
+      .get(`${apiPath.prodPath}/api/chats/${loggedInUser.id}`)
       .then((res) => {
         dispatch(storeAllChat(res.data.allChats));
         setLoader(false);

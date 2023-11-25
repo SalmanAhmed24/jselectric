@@ -39,7 +39,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
       chatId: currentChat._id,
     };
     axios
-      .post(`${apiPath.devPath}/api/message/addMessage`, dataObj)
+      .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
         const newMessageChatId =
           res.data && res.data.messages && res.data.messages.chat._id;
@@ -60,7 +60,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
     } else {
       try {
         const result = await axios.get(
-          `${apiPath.devPath}/api/message/${currentChat._id}`
+          `${apiPath.prodPath}/api/message/${currentChat._id}`
         );
         setMessageArr(result.data.messages);
       } catch (error) {
