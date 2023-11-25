@@ -14,6 +14,7 @@ import { storeAllChat } from "../../store/slices/allChatSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
+import { storeCurrentChat } from "@/store/slices/chatSlice";
 function Chat() {
   const loggedInUser = useSelector((state) => state.user.user.userInfo);
   const currentChat = useSelector((state) => state.currentChat.currentChat);
@@ -26,6 +27,9 @@ function Chat() {
       .get(`${apiPath.devPath}/api/chats/${loggedInUser.id}`)
       .then((res) => {
         dispatch(storeAllChat(res.data.allChats));
+        if (res.data.allChats && res.data.allChats.length) {
+          dispatch(storeCurrentChat(res.data.allChats[0]));
+        }
       })
       .catch((error) => console.log(error));
   };

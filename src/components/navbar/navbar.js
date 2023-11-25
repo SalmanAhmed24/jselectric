@@ -25,11 +25,11 @@ function Navbar() {
     dispatch(storeUser(null));
     router.push("/login");
   };
-  const handleNotification = (chat) => {
-    dispatch(storeCurrentChat(chat));
-    router.push("/chat");
-    dispatch(storeNotification([]));
-  };
+  // const handleNotification = (chat) => {
+  //   dispatch(storeCurrentChat(chat));
+  //   router.push("/chat");
+  //   dispatch(storeNotification([]));
+  // };
   return (
     <>
       {user.user == null || user.user.error ? null : (
@@ -78,12 +78,12 @@ function Navbar() {
               <Link href={"/chat"}>
                 <img src="./chat.png" className="chat-img" />
               </Link>
-              {notification.length ? (
+              {/* {notification.length ? (
                 <span className={`${poppins.className} notification-ind`}>
                   {notification.length}
                 </span>
-              ) : null}
-              {notification.length ? (
+              ) : null} */}
+              {/* {notification.length ? (
                 <div className="notification-bar">
                   {notification.map((i) => {
                     return (
@@ -97,7 +97,7 @@ function Navbar() {
                     );
                   })}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <button
               className={`${poppins.className} logout`}

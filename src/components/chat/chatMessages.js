@@ -55,13 +55,17 @@ function ChatMessages({ currentChat, loggedInUser }) {
       });
   };
   const getChatMessages = async () => {
-    try {
-      const result = await axios.get(
-        `${apiPath.devPath}/api/message/${currentChat._id}`
-      );
-      setMessageArr(result.data.messages);
-    } catch (error) {
-      console.log(error);
+    if (currentChat == null) {
+      return false;
+    } else {
+      try {
+        const result = await axios.get(
+          `${apiPath.devPath}/api/message/${currentChat._id}`
+        );
+        setMessageArr(result.data.messages);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return currentChat == undefined ? (
