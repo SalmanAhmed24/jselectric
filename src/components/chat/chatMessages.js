@@ -6,6 +6,9 @@ import axios from "axios";
 import Messages from "./messages";
 import { apiPath } from "@/utils/routes";
 import { useDispatch, useSelector } from "react-redux";
+import Pusher from "pusher-js";
+import { storeNotification } from "@/store/slices/notification";
+
 const poppins = Poppins({
   weight: ["300", "500", "700", "800"],
   style: ["normal"],
@@ -15,7 +18,13 @@ const poppins = Poppins({
 function ChatMessages({ currentChat, loggedInUser }) {
   const [messageArr, setMessageArr] = useState([]);
   const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notification.notification);
   var interval;
+  var pusher = new Pusher("07be80edc6aa2291c746", {
+    cluster: "ap2",
+  });
+  var channel = pusher.subscribe("message-channel");
   // useEffect(() => {
 
   //   return () => {
@@ -39,15 +48,23 @@ function ChatMessages({ currentChat, loggedInUser }) {
       chatId: currentChat._id,
     };
     axios
-      .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
+      .post(`${apiPath.devPath}/api/message/addMessage`, dataObj)
       .then((res) => {
         const newMessageChatId =
           res.data && res.data.messages && res.data.messages.chat._id;
-        if (newMessageChatId == currentChat._id) {
+        if (newMessageChatId !== currentChat._id) {
           setMessageArr([...messageArr, res.data.messages]);
           setMessage("");
         } else {
-          console.log("here in else");
+          channel.bind("latest-message", function (data) {
+            if (notification.length) {
+              dispatch(storeNotification([data, ...notification]));
+            } else {
+              dispatch(storeNotification([data]));
+            }
+          });
+          setMessageArr([...messageArr, res.data.messages]);
+          setMessage("");
         }
       })
       .catch((err) => {

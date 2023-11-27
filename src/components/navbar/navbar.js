@@ -18,18 +18,19 @@ function Navbar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
-  useEffect(() => {
-    console.log("this is user", user);
-  }, [user]);
+  useEffect(() => {}, [user, notification]);
   const handleLogout = () => {
     dispatch(storeUser(null));
     router.push("/login");
   };
-  // const handleNotification = (chat) => {
-  //   dispatch(storeCurrentChat(chat));
-  //   router.push("/chat");
-  //   dispatch(storeNotification([]));
-  // };
+  const handleNotification = (chat) => {
+    dispatch(storeCurrentChat(chat));
+    router.push("/chat");
+    dispatch(storeNotification([]));
+  };
+  const filteredNot = notification.filter(
+    (i) => user && user.user.userInfo.id !== i.sender._id
+  );
   return (
     <>
       {user.user == null || user.user.error ? null : (
@@ -78,14 +79,14 @@ function Navbar() {
               <Link href={"/chat"}>
                 <img src="./chat.png" className="chat-img" />
               </Link>
-              {/* {notification.length ? (
+              {filteredNot.length ? (
                 <span className={`${poppins.className} notification-ind`}>
-                  {notification.length}
+                  {filteredNot.length}
                 </span>
-              ) : null} */}
-              {/* {notification.length ? (
+              ) : null}
+              {filteredNot.length ? (
                 <div className="notification-bar">
-                  {notification.map((i) => {
+                  {filteredNot.map((i) => {
                     return (
                       <p
                         onClick={() => handleNotification(i.chat)}
@@ -97,7 +98,7 @@ function Navbar() {
                     );
                   })}
                 </div>
-              ) : null} */}
+              ) : null}
             </div>
             <button
               className={`${poppins.className} logout`}

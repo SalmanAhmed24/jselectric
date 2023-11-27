@@ -7,7 +7,6 @@ const poppins = Poppins({
 import moment from "moment";
 import "./style.scss";
 function Messages({ messageArr, loggedInUser }) {
-  console.log("messageArr", messageArr);
   return messageArr.map((i) => {
     return (
       <div key={i._id} className="row-message">

@@ -78,7 +78,7 @@ function ChatList() {
           if (!allChats.find((item) => item._id == res.data._id)) {
             dispatch(storeAllChat([res.data, ...allChats]));
           }
-          console.log(res.data);
+
           dispatch(storeCurrentChat(res.data.allChats));
           setLoader(false);
           setChatUser("");
