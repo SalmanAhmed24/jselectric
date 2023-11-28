@@ -90,7 +90,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
           : null,
     };
     axios
-      .post(`${apiPath.devPath}/api/message/addMessage`, dataObj)
+      .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
         const newMessageChatId =
           res.data && res.data.messages && res.data.messages.chat._id;
