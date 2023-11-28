@@ -13,6 +13,7 @@ import "./style.scss";
 function AllChats({ loggedInUser, allChats, currentChat }) {
   const dispatch = useDispatch();
   const handleChatInner = (chat) => {
+    console.log("^^^^", chat);
     dispatch(storeCurrentChat(chat));
   };
   return (

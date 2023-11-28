@@ -6,8 +6,9 @@ import axios from "axios";
 import Messages from "./messages";
 import { apiPath } from "@/utils/routes";
 import { useDispatch, useSelector } from "react-redux";
-import Pusher from "pusher-js";
-import { storeNotification } from "@/store/slices/notification";
+import { RadioGroup } from "react-rainbow-components";
+import Select from "react-select";
+import ChatDrawer from "../subComponents/drawers/chatDrawer";
 
 const poppins = Poppins({
   weight: ["300", "500", "700", "800"],
@@ -18,21 +19,22 @@ const poppins = Poppins({
 function ChatMessages({ currentChat, loggedInUser }) {
   const [messageArr, setMessageArr] = useState([]);
   const [message, setMessage] = useState("");
-  const dispatch = useDispatch();
-  const notification = useSelector((state) => state.notification.notification);
+  const [toolsCheckBox, setToolsCheckBox] = useState("");
+  const [allToolsOpt, setAllToolsOpt] = useState([]);
+  const [allClientsOpt, setAllClientsOpt] = useState([]);
+  const [selectedTool, setSelectedTool] = useState("");
+  const [selectedClient, setSelectedClient] = useState("");
+  const [chatModalFlag, setChatModalFlag] = useState(false);
+  const allChats = useSelector((state) => state.allChats.allChats);
   var interval;
-  var pusher = new Pusher("07be80edc6aa2291c746", {
-    cluster: "ap2",
-  });
-  var channel = pusher.subscribe("message-channel");
-  // useEffect(() => {
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [currentChat]);
+  const options = [
+    { value: "Tools", label: "Tools" },
+    { value: "Clients", label: "Clients" },
+  ];
   useEffect(() => {
     getChatMessages();
+    fetchTools();
+    fetchClients();
     interval = setInterval(() => {
       getChatMessages();
     }, 30000);
@@ -40,32 +42,60 @@ function ChatMessages({ currentChat, loggedInUser }) {
       clearInterval(interval);
     };
   }, [currentChat]);
+  const fetchTools = () => {
+    axios
+      .get(`${apiPath.prodPath}/api/tools/`)
+      .then((res) => {
+        const alteredData = res.data.allTools.map((i) => {
+          return {
+            label: i.description,
+            value: i.description,
+            ...i,
+          };
+        });
+        setAllToolsOpt(alteredData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const fetchClients = () => {
+    axios
+      .get(`${apiPath.prodPath}/api/clients/`)
+      .then((res) => {
+        const alteredDataClient = res.data.clients.map((i) => {
+          return {
+            label: i.customerName,
+            value: i.customerName,
+            ...i,
+          };
+        });
+        setAllClientsOpt(alteredDataClient);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleMessages = (e) => {
     e.preventDefault();
     var dataObj = {
       sender: loggedInUser.id,
       content: message,
       chatId: currentChat._id,
+      moduleAttachments:
+        toolsCheckBox.value == "Tools"
+          ? selectedTool
+          : toolsCheckBox.value == "Clients"
+          ? selectedClient
+          : null,
     };
     axios
       .post(`${apiPath.devPath}/api/message/addMessage`, dataObj)
       .then((res) => {
         const newMessageChatId =
           res.data && res.data.messages && res.data.messages.chat._id;
-        if (newMessageChatId !== currentChat._id) {
-          setMessageArr([...messageArr, res.data.messages]);
-          setMessage("");
-        } else {
-          channel.bind("latest-message", function (data) {
-            if (notification.length) {
-              dispatch(storeNotification([data, ...notification]));
-            } else {
-              dispatch(storeNotification([data]));
-            }
-          });
-          setMessageArr([...messageArr, res.data.messages]);
-          setMessage("");
-        }
+        setMessageArr([...messageArr, res.data.messages]);
+        setMessage("");
       })
       .catch((err) => {
         console.log(err);
@@ -77,7 +107,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
     } else {
       try {
         const result = await axios.get(
-          `${apiPath.prodPath}/api/message/${currentChat._id}`
+          `${apiPath.prodPath}/api/message/${currentChat && currentChat._id}`
         );
         setMessageArr(result.data.messages);
       } catch (error) {
@@ -85,6 +115,18 @@ function ChatMessages({ currentChat, loggedInUser }) {
       }
     }
   };
+  const handleToolCheckBox = (event) => {
+    setToolsCheckBox({ value: event.target.value, label: event.target.value });
+    setSelectedClient("");
+    setSelectedTool("");
+  };
+  const closeModal = () => {
+    setChatModalFlag(!chatModalFlag);
+  };
+  const allModulesData = allChats.length
+    ? allChats.find((i) => i._id == currentChat._id)
+    : [];
+  console.log("####", allModulesData);
   return currentChat == undefined ? (
     <p className={poppins.className} style={{ fontSize: "22px" }}>
       Select a Chat from the side bar
@@ -109,6 +151,20 @@ function ChatMessages({ currentChat, loggedInUser }) {
           </p>
         </div>
       </div>
+      {allModulesData.moduleAttachments !== undefined ? (
+        <div className="view-module-data-wrap">
+          {allModulesData &&
+          allModulesData.moduleAttachments &&
+          allModulesData.moduleAttachments.length ? (
+            <button
+              onClick={() => setChatModalFlag(true)}
+              className={`${poppins.className} view-modules-data`}
+            >
+              View Modules Data
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       {messageArr.length ? (
         <Messages
           messageArr={messageArr}
@@ -121,19 +177,52 @@ function ChatMessages({ currentChat, loggedInUser }) {
         </div>
       )}
       <form className="message-form" onSubmit={handleMessages}>
-        <input
-          value={message}
-          type="text"
-          className={`${poppins.className} message-inp`}
-          onChange={(e) => setMessage(e.target.value)}
-          required={true}
-        />
-        <input
-          type="submit"
-          value={"Send"}
-          className={`${poppins.className} send-msg-btn`}
-        />
+        <div className="message-form-inputs">
+          <input
+            value={message}
+            type="text"
+            className={`${poppins.className} message-inp`}
+            onChange={(e) => setMessage(e.target.value)}
+            required={true}
+          />
+          <input
+            type="submit"
+            value={"Send"}
+            className={`${poppins.className} send-msg-btn`}
+          />
+        </div>
+        <div className="radio-btn-wrap">
+          <RadioGroup
+            className={poppins.className}
+            id="radio-group-component-1"
+            options={options}
+            value={toolsCheckBox.value}
+            onChange={handleToolCheckBox}
+          />
+          {toolsCheckBox.value == "Tools" ? (
+            <Select
+              className={`${poppins.className} options-cus`}
+              options={allToolsOpt}
+              value={selectedTool}
+              onChange={(value) => setSelectedTool(value)}
+            />
+          ) : toolsCheckBox.value == "Clients" ? (
+            <Select
+              className={`${poppins.className} options-cus`}
+              options={allClientsOpt}
+              value={selectedClient}
+              onChange={(value) => setSelectedClient(value)}
+            />
+          ) : null}
+        </div>
       </form>
+      {chatModalFlag ? (
+        <ChatDrawer
+          onClose={closeModal}
+          open={chatModalFlag}
+          item={allModulesData && allModulesData.moduleAttachments}
+        />
+      ) : null}
     </div>
   );
 }

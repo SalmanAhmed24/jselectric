@@ -99,27 +99,47 @@
     max-width: 1300px;
     padding-bottom: 70px;
     .message-form{
-        width: 75%;
-        position: fixed;
-        bottom: 10px;
+        width: 70%;
+        position: relative;
         display: flex;
-        flex-wrap: nowrap;
-        .message-inp{
-            width: 90%;
-            border: 1px solid #a2a2a2;
-            padding: 5px;
-            
-            font-size: 16px;
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
+        flex-direction: column;
+        position: fixed;
+            bottom: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 5px #a2a2a2;
+            border-radius: 15px;
+            padding:15px;
+            overflow-y: scroll;
+        .message-form-inputs{
+            width: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            margin-bottom: 15px;
+            .message-inp{
+                width: 100% !important; 
+                border: 1px solid #a2a2a2;
+                padding: 5px;
+                font-size: 16px;
+                border-top-left-radius: 20px;
+                border-bottom-left-radius: 20px;
+            }
+            .send-msg-btn{
+                border-top-right-radius: 20px;
+                border-bottom-right-radius: 20px;
+                padding: 5px;
+                align-self: center;
+                font-size: 16px;
+                border: 1px solid #a2a2a2;
+            }
         }
-        .send-msg-btn{
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-            padding: 5px;
-            align-self: center;
-            font-size: 16px;
-            border: 1px solid #a2a2a2;
+        .radio-btn-wrap{
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            .options-cus{
+                width: 400px;
+                align-self: flex-start;
+            }
         }
     }
 }
@@ -180,5 +200,23 @@ width: 100%;
             margin-top: 5px;
             font-size: 10px;
         }
+        }
+}
+.view-module-data-wrap{
+    display: flex;
+    flex-direction: column;
+        .view-modules-data{
+            background-color: #fff;
+            color: #1F3F49;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border:1px solid #1F3F49;
+            width: fit-content;
+            align-self: flex-end;
+            margin-bottom: 15px;
+            &:hover{
+                cursor: pointer;
+            }
         }
 }
