@@ -33,6 +33,7 @@ function Chat() {
       })
       .catch((error) => console.log(error));
   };
+  console.log("##@@!!!", currentChat);
   return (
     <div className="chat-wrap">
       <div className="chat-contacts">
@@ -41,7 +42,9 @@ function Chat() {
         </div>
       </div>
       <div className="chat-message-con">
-        <ChatMessages currentChat={currentChat} loggedInUser={loggedInUser} />
+        {currentChat == null ? null : (
+          <ChatMessages currentChat={currentChat} loggedInUser={loggedInUser} />
+        )}
       </div>
     </div>
   );
