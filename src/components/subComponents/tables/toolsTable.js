@@ -45,7 +45,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
   };
   const editTool = (data, id) => {
     axios
-      .patch(`${apiPath.devPath}/api/tools/${id}`, data)
+      .patch(`${apiPath.prodPath}/api/tools/${id}`, data)
       .then((res) => {
         refreshData();
         openEmpModal();
@@ -65,7 +65,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put(`${apiPath.devPath}/api/tools/${id}`, { file })
+          .put(`${apiPath.prodPath}/api/tools/${id}`, { file })
           .then((res) => {
             refreshData();
             openEmpModal();
