@@ -33,7 +33,7 @@ function Chat() {
       })
       .catch((error) => console.log(error));
   };
-  console.log("##@@!!!", currentChat);
+
   return (
     <div className="chat-wrap">
       <div className="chat-contacts">

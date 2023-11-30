@@ -33,7 +33,7 @@ function Tools() {
   };
   const addTool = (data) => {
     axios
-      .post(`${apiPath.prodPath}/api/tools/addTools`, data)
+      .post(`${apiPath.devPath}/api/tools/addTools`, data)
       .then((res) => {
         handleCloseDrawer();
         refreshData();

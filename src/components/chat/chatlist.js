@@ -101,7 +101,6 @@ function ChatList() {
       })
       .catch((error) => console.log(error));
   };
-  console.log("@@##@@", allChats);
   return (
     <div>
       <div className="chat-btns-wrap">

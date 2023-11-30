@@ -15,7 +15,6 @@ function ClientInfo({ open, onClose, item, refreshData }) {
   const tabHandler = (e) => {
     setActiveTab(e.target.innerText);
   };
-  console.log("@@@", item);
   return (
     <Drawer
       anchor={"right"}

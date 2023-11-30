@@ -28,9 +28,9 @@ function Navbar() {
     router.push("/chat");
     dispatch(storeNotification([]));
   };
-  const filteredNot = notification.filter(
-    (i) => user && user.user.userInfo.id !== i.sender._id
-  );
+  // const filteredNot = notification.filter(
+  //   (i) => user && user.user.userInfo.id !== i.sender._id
+  // );
   return (
     <>
       {user.user == null || user.user.error ? null : (
@@ -79,12 +79,12 @@ function Navbar() {
               <Link href={"/chat"}>
                 <img src="./chat.png" className="chat-img" />
               </Link>
-              {filteredNot.length ? (
+              {/* {filteredNot.length ? (
                 <span className={`${poppins.className} notification-ind`}>
                   {filteredNot.length}
                 </span>
-              ) : null}
-              {filteredNot.length ? (
+              ) : null} */}
+              {/* {filteredNot.length ? (
                 <div className="notification-bar">
                   {filteredNot.map((i) => {
                     return (
@@ -98,7 +98,7 @@ function Navbar() {
                     );
                   })}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <button
               className={`${poppins.className} logout`}

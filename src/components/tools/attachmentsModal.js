@@ -38,7 +38,6 @@ function AttachmentModal({ files, openFlag, closeModal }) {
       "width=largeImage.stylewidth,height=largeImage.style.height,resizable=1"
     );
   };
-  console.log("!!!!", modifiedFile);
   return (
     <Modal
       open={openFlag}

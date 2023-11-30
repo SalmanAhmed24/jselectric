@@ -92,7 +92,6 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
       };
     });
   const handleDeleEvent = (id) => {
-    console.log("@@@", userObj, id);
     axios
       .delete(
         `${apiPath.prodPath}/api/users/deleteSchedule/${userObj.value}&&${id}`
@@ -257,7 +256,6 @@ function ScheduleModal({ schedules, userObj, refreshData, handleClose, open }) {
   );
 }
 function SchedulerEditor({ onConfirm, userId, eventObj, close, props }) {
-  console.log(props);
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");

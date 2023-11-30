@@ -32,7 +32,6 @@ function Schedule() {
       });
   };
 
-  console.log("@@@", allUsers);
   return (
     <section className="employee-wrap">
       <div className="add-btn-wrap">

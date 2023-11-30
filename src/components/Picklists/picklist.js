@@ -94,7 +94,6 @@ function PicklistComp({ picklistName }) {
         setLoading(false);
       });
   }, []);
-  console.log(picklistData);
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
   };
@@ -150,7 +149,6 @@ function PicklistComp({ picklistName }) {
       .catch((err) => console.log(err));
   };
   const refreshData = () => {
-    console.log("here");
     let url;
     if (picklistName == "User Type") {
       url = `${apiPath.prodPath}/api/userType/`;

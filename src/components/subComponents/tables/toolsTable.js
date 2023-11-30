@@ -45,7 +45,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
   };
   const editTool = (data, id) => {
     axios
-      .patch(`${apiPath.prodPath}/api/tools/${id}`, data)
+      .patch(`${apiPath.devPath}/api/tools/${id}`, data)
       .then((res) => {
         refreshData();
         openEmpModal();
@@ -65,7 +65,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put(`${apiPath.prodPath}/api/tools/${id}`, { file })
+          .put(`${apiPath.devPath}/api/tools/${id}`, { file })
           .then((res) => {
             refreshData();
             openEmpModal();
@@ -92,6 +92,7 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
               <TableRow>
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 80 }}>Tool#</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Picture</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Category</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Sub-Category</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Description</TableCell>
@@ -139,6 +140,13 @@ export default function EmployeeTable({ allTools, loading, refreshData }) {
                         ) : null}
                       </TableCell>
                       <TableCell>{i.toolNumber}</TableCell>
+                      <TableCell>
+                        <img
+                          style={{ width: 40 }}
+                          src={i.picture && i.picture.fileUrl}
+                          className="tool-picture"
+                        />
+                      </TableCell>
                       <TableCell>{i.category}</TableCell>
                       <TableCell>{i.subCategory}</TableCell>
                       <TableCell>{i.description}</TableCell>

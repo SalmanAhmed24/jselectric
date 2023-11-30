@@ -131,7 +131,6 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
     { value: "No", label: "No" },
   ];
   const userTypeHandler = (e) => {
-    console.log(e);
     setUserType(e);
   };
   const positionHandler = (e) => {

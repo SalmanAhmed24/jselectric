@@ -50,7 +50,6 @@ function Clients() {
     axios
       .post(`${apiPath.prodPath}/api/clients/addClient`, data)
       .then((res) => {
-        console.log(res);
         handleCloseDrawer();
         refreshData();
       })
@@ -74,7 +73,6 @@ function Clients() {
     axios
       .get(`${apiPath.prodPath}/api/clients/`)
       .then((res) => {
-        console.log(res.data);
         setAllClients(res.data.clients);
         setLoading(false);
         setSearch("");

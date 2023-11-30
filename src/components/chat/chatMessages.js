@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RadioGroup } from "react-rainbow-components";
 import Select from "react-select";
 import ChatDrawer from "../subComponents/drawers/chatDrawer";
-
+import notification, {
+  storeNotification,
+} from "../../store/slices/notification";
+import Pusher from "pusher-js";
 const poppins = Poppins({
   weight: ["300", "500", "700", "800"],
   style: ["normal"],
@@ -26,6 +29,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const [selectedClient, setSelectedClient] = useState("");
   const [chatModalFlag, setChatModalFlag] = useState(false);
   const allChats = useSelector((state) => state.allChats.allChats);
+  const dispatch = useDispatch();
   var interval;
   const options = [
     { value: "Tools", label: "Tools" },
@@ -92,8 +96,14 @@ function ChatMessages({ currentChat, loggedInUser }) {
     axios
       .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
-        const newMessageChatId =
-          res.data && res.data.messages && res.data.messages.chat._id;
+        const newMessageChat = res.data && res.data.messages;
+        if (
+          newMessageChat.chat &&
+          newMessageChat.chat._id !== currentChat._id
+        ) {
+          // sendNotification();
+          setMessageArr([...messageArr, res.data.messages]);
+        }
         setMessageArr([...messageArr, res.data.messages]);
         setMessage("");
       })
@@ -109,6 +119,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
         const result = await axios.get(
           `${apiPath.prodPath}/api/message/${currentChat && currentChat._id}`
         );
+
         setMessageArr(result.data.messages);
       } catch (error) {
         console.log(error);
@@ -123,10 +134,19 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const closeModal = () => {
     setChatModalFlag(!chatModalFlag);
   };
+  const sendNotification = () => {
+    const pusher = new Pusher("b3228eb38ec0c8e24229", {
+      cluster: "ap2",
+    });
+    var channel = pusher.subscribe("my-channel");
+    channel.bind("my-event", function (data) {
+      console.log("this is data", data);
+      dispatch(storeNotification(data));
+    });
+  };
   const allModulesData = allChats.length
     ? allChats.find((i) => i._id == currentChat._id)
     : [];
-  console.log("####", allModulesData);
   return currentChat == undefined ? (
     <p className={poppins.className} style={{ fontSize: "22px" }}>
       Select a Chat from the side bar

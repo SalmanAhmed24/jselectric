@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Select from "react-select";
+import Swal from "sweetalert2";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
@@ -87,8 +88,8 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       setSubCategory({ label: data.subCategory, value: data.subCategory });
       setEmployee({ label: data.employee, value: data.employee });
       setProject(data.project);
-      setPictureUpload(data.picture);
-      setOldFile(data.picture);
+      setPictureUpload(data.picture !== undefined ? data.picture : undefined);
+      setOldFile(data.picture !== undefined ? data.picture : undefined);
       setToolNumber(data.toolNumber);
       setSerial(data.serial);
       setLastPurchasePrice(data.lastPurchasePrice);
@@ -97,59 +98,111 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
 
   const handleAddTool = (e) => {
     e.preventDefault();
-    // const dataObj = {
-    //   toolNumber,
-    //   category: category.value,
-    //   description,
-    //   techAssigned: techAssigned.value,
-    //   location,
-    //   subCategory: subCategory.value,
-    //   employee: employee.value,
-    //   project,
-    //   lastPurchasePrice,
-    //   picture: pictureUpload,
-    //   serial,
-    // };
-    if (edit) {
-      console.log("here in editFlag in handler", edit);
-      const formData = new FormData();
-      formData.append("toolNumber", toolNumber);
-      formData.append("category", category.value);
-      formData.append("description", description);
-      formData.append("techAssigned", techAssigned.value);
-      formData.append("location", location);
-      formData.append("subCategory", subCategory.value);
-      formData.append("employee", employee.value);
-      formData.append("project", project);
-      formData.append("lastPurchasePrice", lastPurchasePrice);
-      formData.append("editFlag", "true");
-      if (newFileFlag) {
-        console.log("here in newFileFlag");
-        formData.append("files", pictureUpload);
-        formData.append("oldFiles", JSON.stringify(oldFile));
-      } else {
-        console.log(pictureUpload);
-        formData.append("pictureObj", JSON.stringify(pictureUpload));
-      }
-      formData.append("serial", serial);
-      formData.append("newFileFlag", newFileFlag);
-      editTool(formData, id);
+    if (pictureUpload == "" || pictureUpload == undefined) {
+      Swal.fire({
+        icon: "warning",
+        text: "Are you sure you want to save without a picture?",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        showCancelButton: true,
+        showConfirmButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (edit) {
+            const formData = new FormData();
+            formData.append("toolNumber", toolNumber);
+            formData.append("category", category.value);
+            formData.append("description", description);
+            formData.append("techAssigned", techAssigned.value);
+            formData.append("location", location);
+            formData.append("subCategory", subCategory.value);
+            formData.append("employee", employee.value);
+            formData.append("project", project);
+            formData.append("lastPurchasePrice", lastPurchasePrice);
+            formData.append("editFlag", "true");
+            if (newFileFlag) {
+              formData.append("files", pictureUpload);
+              formData.append(
+                "oldFiles",
+                oldFile == undefined ? undefined : JSON.stringify(oldFile)
+              );
+            } else {
+              formData.append(
+                "pictureObj",
+                pictureUpload == undefined
+                  ? undefined
+                  : JSON.stringify(pictureUpload)
+              );
+            }
+            formData.append("serial", serial);
+            formData.append("newFileFlag", newFileFlag);
+            editTool(formData, id);
+          } else {
+            const formData = new FormData();
+            formData.append("toolNumber", toolNumber);
+            formData.append("category", category.value);
+            formData.append("description", description);
+            formData.append("techAssigned", techAssigned.value);
+            formData.append("location", location);
+            formData.append("subCategory", subCategory.value);
+            formData.append("employee", employee.value);
+            formData.append("project", project);
+            formData.append("lastPurchasePrice", lastPurchasePrice);
+            formData.append("files", pictureUpload);
+            formData.append("serial", serial);
+            formData.append("newFileFlag", newFileFlag);
+            addTool(formData);
+            dataEntryRefresh();
+          }
+        }
+      });
     } else {
-      const formData = new FormData();
-      formData.append("toolNumber", toolNumber);
-      formData.append("category", category.value);
-      formData.append("description", description);
-      formData.append("techAssigned", techAssigned.value);
-      formData.append("location", location);
-      formData.append("subCategory", subCategory.value);
-      formData.append("employee", employee.value);
-      formData.append("project", project);
-      formData.append("lastPurchasePrice", lastPurchasePrice);
-      formData.append("files", pictureUpload);
-      formData.append("serial", serial);
-      formData.append("newFileFlag", newFileFlag);
-      addTool(formData);
-      dataEntryRefresh();
+      if (edit) {
+        const formData = new FormData();
+        formData.append("toolNumber", toolNumber);
+        formData.append("category", category.value);
+        formData.append("description", description);
+        formData.append("techAssigned", techAssigned.value);
+        formData.append("location", location);
+        formData.append("subCategory", subCategory.value);
+        formData.append("employee", employee.value);
+        formData.append("project", project);
+        formData.append("lastPurchasePrice", lastPurchasePrice);
+        formData.append("editFlag", "true");
+        if (newFileFlag) {
+          formData.append("files", pictureUpload);
+          formData.append(
+            "oldFiles",
+            oldFile == undefined ? undefined : JSON.stringify(oldFile)
+          );
+        } else {
+          formData.append(
+            "pictureObj",
+            pictureUpload == undefined
+              ? undefined
+              : JSON.stringify(pictureUpload)
+          );
+        }
+        formData.append("serial", serial);
+        formData.append("newFileFlag", newFileFlag);
+        editTool(formData, id);
+      } else {
+        const formData = new FormData();
+        formData.append("toolNumber", toolNumber);
+        formData.append("category", category.value);
+        formData.append("description", description);
+        formData.append("techAssigned", techAssigned.value);
+        formData.append("location", location);
+        formData.append("subCategory", subCategory.value);
+        formData.append("employee", employee.value);
+        formData.append("project", project);
+        formData.append("lastPurchasePrice", lastPurchasePrice);
+        formData.append("files", pictureUpload);
+        formData.append("serial", serial);
+        formData.append("newFileFlag", newFileFlag);
+        addTool(formData);
+        dataEntryRefresh();
+      }
     }
   };
   const dataEntryRefresh = () => {
@@ -209,6 +262,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               className={`${poppins.className} input-cus`}
               type="number"
               onChange={handleDigitCheck}
+              required={true}
             />
           </div>
           <div className="input-wrap">
@@ -218,6 +272,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               onChange={categoryHandler}
               id="example-select-1"
               value={category}
+              required={true}
             />
           </div>
           <div className="input-wrap">
@@ -226,6 +281,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               options={filteredCatOpt}
               onChange={(e) => setSubCategory(e)}
               value={subCategory}
+              required={true}
             />
           </div>
           <div className="input-wrap">
@@ -244,6 +300,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               onChange={techAssignedHandler}
               id="example-select-1"
               value={techAssigned}
+              required={true}
             />
           </div>
           <div className="input-wrap">
@@ -299,7 +356,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               onChange={handleUpload}
               accept="image/png,image/jpeg"
             />
-            {edit ? (
+            {edit && pictureUpload !== undefined ? (
               <img src={pictureUpload.fileUrl} style={{ width: "30%" }} />
             ) : null}
           </div>
