@@ -16,10 +16,7 @@ const poppins = Poppins({
   style: ["normal"],
   subsets: ["latin"],
 });
-var pusher = new Pusher("07be80edc6aa2291c746", {
-  cluster: "ap2",
-});
-var channel;
+
 function ChatMessages({ currentChat, loggedInUser }) {
   const [messageArr, setMessageArr] = useState([]);
   const [message, setMessage] = useState("");
@@ -47,18 +44,14 @@ function ChatMessages({ currentChat, loggedInUser }) {
     // return () => {
     //   clearInterval(interval);
     // };
+
     channel = pusher.subscribe("chat-live");
     return () => {
       pusher.unsubscribe("chat-live");
     };
   }, [currentChat]);
   useEffect(() => {
-    const selectedChat = allChats.filter((i) => i._id !== currentChat._id);
-    if (selectedChat.length > 0) {
-      sendNotification();
-    } else {
-      dispatch(storeNotification([]));
-    }
+    sendNotification();
   });
   const fetchTools = () => {
     axios
