@@ -15,16 +15,28 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import { storeCurrentChat } from "@/store/slices/chatSlice";
+import { useRouter } from "next/navigation";
 function Chat() {
-  const loggedInUser = useSelector((state) => state.user.user.userInfo);
+  const router = useRouter();
+  const loggedInUser = useSelector((state) =>
+    state.user.user == null ? null : state.user.user.userInfo
+  );
   const currentChat = useSelector((state) => state.currentChat.currentChat);
   useEffect(() => {
-    getAllChats();
+    if (loggedInUser == null) {
+      router.push("/");
+    } else {
+      getAllChats();
+    }
   }, []);
   const dispatch = useDispatch();
   const getAllChats = () => {
     axios
-      .get(`${apiPath.prodPath}/api/chats/${loggedInUser.id}`)
+      .get(
+        `${apiPath.prodPath}/api/chats/${
+          loggedInUser == null ? null : loggedInUser.id
+        }`
+      )
       .then((res) => {
         dispatch(storeAllChat(res.data.allChats));
         if (res.data.allChats && res.data.allChats.length) {

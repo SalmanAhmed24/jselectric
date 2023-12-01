@@ -17,7 +17,7 @@ function AllChats({ loggedInUser, allChats, currentChat }) {
   };
   return (
     <div className="allchats-wrap">
-      {allChats && allChats.length ? (
+      {loggedInUser == null ? null : allChats && allChats.length ? (
         <div className="chats-row-con">
           {allChats
             .filter((item) => item.isGroupChat == false)

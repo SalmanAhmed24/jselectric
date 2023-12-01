@@ -22,24 +22,28 @@ function ChatList() {
   const [groupChatUser, setGroupChatUser] = useState([]);
   const [singleChatFlag, setSingleChatFlag] = useState(true);
   const [groupChatFlag, setGroupChatFlag] = useState(false);
-  const loggedInUser = useSelector((state) => state.user.user.userInfo);
+  const loggedInUser = useSelector((state) =>
+    state.user.user == null ? null : state.user.user.userInfo
+  );
   const currentChat = useSelector((state) => state.currentChat.currentChat);
   const allChats = useSelector((state) => state.allChats.allChats);
   const dispatch = useDispatch();
   useEffect(() => {
     axios.get(`${apiPath.prodPath}/api/users/`).then(({ data }) => {
-      setUserOpt(
-        data.allUsers
-          .map((i) => {
-            return {
-              label: i.fullname,
-              value: i._id,
-              ...i,
-            };
-          })
-          .filter((item) => item.fullname !== loggedInUser.fullname)
-          .sort((a, b) => a.label.localeCompare(b.label))
-      );
+      loggedInUser == null
+        ? false
+        : setUserOpt(
+            data.allUsers
+              .map((i) => {
+                return {
+                  label: i.fullname,
+                  value: i._id,
+                  ...i,
+                };
+              })
+              .filter((item) => item.fullname !== loggedInUser.fullname)
+              .sort((a, b) => a.label.localeCompare(b.label))
+          );
     });
     getAllChats();
   }, []);
@@ -94,7 +98,11 @@ function ChatList() {
   const getAllChats = () => {
     setLoader(true);
     axios
-      .get(`${apiPath.prodPath}/api/chats/${loggedInUser.id}`)
+      .get(
+        `${apiPath.prodPath}/api/chats/${
+          loggedInUser == null ? null : loggedInUser.id
+        }`
+      )
       .then((res) => {
         dispatch(storeAllChat(res.data.allChats));
         setLoader(false);

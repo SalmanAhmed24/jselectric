@@ -9,16 +9,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { RadioGroup } from "react-rainbow-components";
 import Select from "react-select";
 import ChatDrawer from "../subComponents/drawers/chatDrawer";
-import notification, {
-  storeNotification,
-} from "../../store/slices/notification";
+import { storeNotification } from "../../store/slices/notification";
 import Pusher from "pusher-js";
 const poppins = Poppins({
   weight: ["300", "500", "700", "800"],
   style: ["normal"],
   subsets: ["latin"],
 });
-
+var pusher = new Pusher("07be80edc6aa2291c746", {
+  cluster: "ap2",
+});
+var channel;
 function ChatMessages({ currentChat, loggedInUser }) {
   const [messageArr, setMessageArr] = useState([]);
   const [message, setMessage] = useState("");
@@ -29,6 +30,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
   const [selectedClient, setSelectedClient] = useState("");
   const [chatModalFlag, setChatModalFlag] = useState(false);
   const allChats = useSelector((state) => state.allChats.allChats);
+  const notification = useSelector((state) => state.notification.notification);
   const dispatch = useDispatch();
   var interval;
   const options = [
@@ -39,13 +41,25 @@ function ChatMessages({ currentChat, loggedInUser }) {
     getChatMessages();
     fetchTools();
     fetchClients();
-    interval = setInterval(() => {
-      getChatMessages();
-    }, 30000);
+    // interval = setInterval(() => {
+    //   getChatMessages();
+    // }, 30000);
+    // return () => {
+    //   clearInterval(interval);
+    // };
+    channel = pusher.subscribe("chat-live");
     return () => {
-      clearInterval(interval);
+      pusher.unsubscribe("chat-live");
     };
   }, [currentChat]);
+  useEffect(() => {
+    const selectedChat = allChats.filter((i) => i._id !== currentChat._id);
+    if (selectedChat.length > 0) {
+      sendNotification();
+    } else {
+      dispatch(storeNotification([]));
+    }
+  });
   const fetchTools = () => {
     axios
       .get(`${apiPath.prodPath}/api/tools/`)
@@ -96,15 +110,8 @@ function ChatMessages({ currentChat, loggedInUser }) {
     axios
       .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
-        const newMessageChat = res.data && res.data.messages;
-        if (
-          newMessageChat.chat &&
-          newMessageChat.chat._id !== currentChat._id
-        ) {
-          // sendNotification();
-          setMessageArr([...messageArr, res.data.messages]);
-        }
-        setMessageArr([...messageArr, res.data.messages]);
+        sendNotification();
+        // setMessageArr([...messageArr, res.data.messages]);
         setMessage("");
       })
       .catch((err) => {
@@ -119,7 +126,6 @@ function ChatMessages({ currentChat, loggedInUser }) {
         const result = await axios.get(
           `${apiPath.prodPath}/api/message/${currentChat && currentChat._id}`
         );
-
         setMessageArr(result.data.messages);
       } catch (error) {
         console.log(error);
@@ -135,13 +141,13 @@ function ChatMessages({ currentChat, loggedInUser }) {
     setChatModalFlag(!chatModalFlag);
   };
   const sendNotification = () => {
-    const pusher = new Pusher("b3228eb38ec0c8e24229", {
-      cluster: "ap2",
-    });
-    var channel = pusher.subscribe("my-channel");
-    channel.bind("my-event", function (data) {
-      console.log("this is data", data);
-      dispatch(storeNotification(data));
+    channel.bind("add-message", function (data) {
+      if (notification.length == 0) {
+        dispatch(storeNotification([data.message]));
+      } else {
+        dispatch(storeNotification([data.message, ...notification]));
+      }
+      setMessageArr([...messageArr, data.message]);
     });
   };
   const allModulesData = allChats.length
@@ -151,7 +157,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
     <p className={poppins.className} style={{ fontSize: "22px" }}>
       Select a Chat from the side bar
     </p>
-  ) : (
+  ) : loggedInUser == null ? null : (
     <div className="main-message-wrap">
       <div className={"chat-header"}>
         <div className="user-chat-names">
