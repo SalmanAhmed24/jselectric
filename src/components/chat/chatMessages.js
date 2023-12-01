@@ -100,12 +100,6 @@ function ChatMessages({ currentChat, loggedInUser }) {
       sender: loggedInUser.id,
       content: message,
       chatId: currentChat._id,
-      moduleAttachments:
-        toolsCheckBox.value == "Tools"
-          ? selectedTool
-          : toolsCheckBox.value == "Clients"
-          ? selectedClient
-          : null,
     };
     axios
       .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
@@ -177,20 +171,6 @@ function ChatMessages({ currentChat, loggedInUser }) {
           </p>
         </div>
       </div>
-      {allModulesData.moduleAttachments !== undefined ? (
-        <div className="view-module-data-wrap">
-          {allModulesData &&
-          allModulesData.moduleAttachments &&
-          allModulesData.moduleAttachments.length ? (
-            <button
-              onClick={() => setChatModalFlag(true)}
-              className={`${poppins.className} view-modules-data`}
-            >
-              View Modules Data
-            </button>
-          ) : null}
-        </div>
-      ) : null}
       {messageArr.length ? (
         <Messages
           messageArr={messageArr}
@@ -242,13 +222,6 @@ function ChatMessages({ currentChat, loggedInUser }) {
           ) : null}
         </div>
       </form>
-      {chatModalFlag ? (
-        <ChatDrawer
-          onClose={closeModal}
-          open={chatModalFlag}
-          item={allModulesData && allModulesData.moduleAttachments}
-        />
-      ) : null}
     </div>
   );
 }
