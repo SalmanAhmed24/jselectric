@@ -1,3 +1,5 @@
+import moment from "moment";
+
 function TopInfoTools({ item }) {
   return (
     <div className="employeeInfo">
@@ -34,8 +36,16 @@ function TopInfoTools({ item }) {
         <p>{item.employee}</p>
       </div>
       <div className="singleInfo">
+        <label>Purchase Date</label>
+        <p>{moment(item.purchaseDate).format("MM/DD/YYYY")}</p>
+      </div>
+      <div className="singleInfo">
         <label>Last Purchase Price</label>
         <p>{item.lastPurchasePrice}</p>
+      </div>
+      <div className="singleInfo">
+        <label>Warranty Exp Date</label>
+        <p>{moment(item.warrantyExpDate).format("MM/DD/YYYY")}</p>
       </div>
       <div className="singleInfo">
         <label>Serial #</label>

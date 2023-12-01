@@ -34,6 +34,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [newFileFlag, setNewFileFlag] = useState(false);
   const [oldFile, setOldFile] = useState("");
   const [purchaseDate, setPurchaseDate] = useState("");
+  const [warrantyExpDate, setWarrantyExpDate] = useState("");
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/toolCategory/`)
@@ -127,6 +128,11 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
           ? ""
           : data.purchaseDate
       );
+      setWarrantyExpDate(
+        data.warrantyExpDate == undefined || data.warrantyExpDate == "undefined"
+          ? ""
+          : data.warrantyExpDate
+      );
       setSerial(data.serial);
       setLastPurchasePrice(data.lastPurchasePrice);
     }
@@ -156,6 +162,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             formData.append("project", project);
             formData.append("lastPurchasePrice", lastPurchasePrice);
             formData.append("purchaseDate", purchaseDate);
+            formData.append("warrantyExpDate", warrantyExpDate);
             formData.append("editFlag", "true");
             if (newFileFlag) {
               formData.append("files", pictureUpload);
@@ -186,7 +193,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             formData.append("project", project);
             formData.append("lastPurchasePrice", lastPurchasePrice);
             formData.append("purchaseDate", purchaseDate);
-
+            formData.append("warrantyExpDate", warrantyExpDate);
             formData.append("files", pictureUpload);
             formData.append("serial", serial);
             formData.append("newFileFlag", newFileFlag);
@@ -206,8 +213,8 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         formData.append("employee", employee.value);
         formData.append("project", project);
         formData.append("lastPurchasePrice", lastPurchasePrice);
+        formData.append("warrantyExpDate", warrantyExpDate);
         formData.append("purchaseDate", purchaseDate);
-
         formData.append("editFlag", "true");
         if (newFileFlag) {
           formData.append("files", pictureUpload);
@@ -238,7 +245,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         formData.append("project", project);
         formData.append("lastPurchasePrice", lastPurchasePrice);
         formData.append("purchaseDate", purchaseDate);
-
+        formData.append("warrantyExpDate", warrantyExpDate);
         formData.append("files", pictureUpload);
         formData.append("serial", serial);
         formData.append("newFileFlag", newFileFlag);
@@ -259,6 +266,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
     setProject("");
     setSerial("");
     setPurchaseDate("");
+    setWarrantyExpDate("");
   };
   const categoryHandler = (e) => {
     setSubCategory("");
@@ -381,7 +389,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             />
           </div>
           <div className="input-wrap">
-            <label>Resale Exp Date</label>
+            <label>Purchase Date</label>
             <DatePicker
               id="datePicker-1"
               value={purchaseDate}
@@ -402,6 +410,20 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               onChange={(e) => setLastPurchasePrice(e.target.value)}
               value={lastPurchasePrice}
             />
+          </div>
+          <div className="input-wrap">
+            <label>Warranty Exp Date</label>
+            <DatePicker
+              id="datePicker-1"
+              value={warrantyExpDate}
+              onChange={(value) => setWarrantyExpDate(value)}
+              locale={"en-US"}
+            />
+            {warrantyExpDate !== "" ? (
+              <p onClick={() => setWarrantyExpDate("")} className="clear-value">
+                Clear
+              </p>
+            ) : null}
           </div>
           <div className="input-wrap">
             <label>Picture</label>
