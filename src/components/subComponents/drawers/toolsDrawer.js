@@ -1,7 +1,7 @@
 import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import { Picklist, PicklistOption, DatePicker } from "react-rainbow-components";
+import { DatePicker } from "react-rainbow-components";
 import "./style.scss";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -33,6 +33,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
   const [serial, setSerial] = useState("");
   const [newFileFlag, setNewFileFlag] = useState(false);
   const [oldFile, setOldFile] = useState("");
+  const [purchaseDate, setPurchaseDate] = useState("");
   useEffect(() => {
     axios
       .get(`${apiPath.prodPath}/api/toolCategory/`)
@@ -47,17 +48,47 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
     axios
       .get(`${apiPath.prodPath}/api/subtoolCategory/`)
       .then((res) => {
-        const data =
-          res.data &&
-          res.data.subtoolCategorys &&
-          res.data.subtoolCategorys
-            .map((i) => ({
-              label: i.name,
-              value: i.name,
-              parentCategory: i.parentCategory,
-            }))
-            .sort((a, b) => a.label.localeCompare(b.label));
-        setSubCatOpt(data);
+        if (edit) {
+          if (data.category == "Ladder") {
+            const dataObj =
+              res.data &&
+              res.data.subtoolCategorys &&
+              res.data.subtoolCategorys
+                .map((i) => ({
+                  label: i.name,
+                  value: i.name,
+                  parentCategory: i.parentCategory,
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label))
+                .filter((i) => i.parentCategory == "ladder");
+            setFilteredCatOpt(dataObj);
+          } else {
+            const dataObj =
+              res.data &&
+              res.data.subtoolCategorys &&
+              res.data.subtoolCategorys
+                .map((i) => ({
+                  label: i.name,
+                  value: i.name,
+                  parentCategory: i.parentCategory,
+                }))
+                .sort((a, b) => a.label.localeCompare(b.label))
+                .filter((i) => i.parentCategory == data.category);
+            setFilteredCatOpt(dataObj);
+          }
+        } else {
+          const data =
+            res.data &&
+            res.data.subtoolCategorys &&
+            res.data.subtoolCategorys
+              .map((i) => ({
+                label: i.name,
+                value: i.name,
+                parentCategory: i.parentCategory,
+              }))
+              .sort((a, b) => a.label.localeCompare(b.label));
+          setSubCatOpt(data);
+        }
       })
       .catch((err) => console.log(err));
     axios
@@ -91,6 +122,11 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       setPictureUpload(data.picture !== undefined ? data.picture : undefined);
       setOldFile(data.picture !== undefined ? data.picture : undefined);
       setToolNumber(data.toolNumber);
+      setPurchaseDate(
+        data.purchaseDate == undefined || data.purchaseDate == "undefined"
+          ? ""
+          : data.purchaseDate
+      );
       setSerial(data.serial);
       setLastPurchasePrice(data.lastPurchasePrice);
     }
@@ -119,6 +155,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             formData.append("employee", employee.value);
             formData.append("project", project);
             formData.append("lastPurchasePrice", lastPurchasePrice);
+            formData.append("purchaseDate", purchaseDate);
             formData.append("editFlag", "true");
             if (newFileFlag) {
               formData.append("files", pictureUpload);
@@ -148,11 +185,12 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
             formData.append("employee", employee.value);
             formData.append("project", project);
             formData.append("lastPurchasePrice", lastPurchasePrice);
+            formData.append("purchaseDate", purchaseDate);
+
             formData.append("files", pictureUpload);
             formData.append("serial", serial);
             formData.append("newFileFlag", newFileFlag);
-            addTool(formData);
-            dataEntryRefresh();
+            addTool(formData, dataEntryRefresh);
           }
         }
       });
@@ -168,6 +206,8 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         formData.append("employee", employee.value);
         formData.append("project", project);
         formData.append("lastPurchasePrice", lastPurchasePrice);
+        formData.append("purchaseDate", purchaseDate);
+
         formData.append("editFlag", "true");
         if (newFileFlag) {
           formData.append("files", pictureUpload);
@@ -197,11 +237,12 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
         formData.append("employee", employee.value);
         formData.append("project", project);
         formData.append("lastPurchasePrice", lastPurchasePrice);
+        formData.append("purchaseDate", purchaseDate);
+
         formData.append("files", pictureUpload);
         formData.append("serial", serial);
         formData.append("newFileFlag", newFileFlag);
-        addTool(formData);
-        dataEntryRefresh();
+        addTool(formData, dataEntryRefresh);
       }
     }
   };
@@ -217,6 +258,7 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
     setToolNumber("");
     setProject("");
     setSerial("");
+    setPurchaseDate("");
   };
   const categoryHandler = (e) => {
     setSubCategory("");
@@ -337,6 +379,20 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
               onChange={(e) => setSerial(e.target.value)}
               value={serial}
             />
+          </div>
+          <div className="input-wrap">
+            <label>Resale Exp Date</label>
+            <DatePicker
+              id="datePicker-1"
+              value={purchaseDate}
+              onChange={(value) => setPurchaseDate(value)}
+              locale={"en-US"}
+            />
+            {purchaseDate !== "" ? (
+              <p onClick={() => setPurchaseDate("")} className="clear-value">
+                Clear
+              </p>
+            ) : null}
           </div>
           <div className="input-wrap">
             <label>Last Purchase Price</label>

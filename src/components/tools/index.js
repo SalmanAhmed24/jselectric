@@ -31,12 +31,20 @@ function Tools() {
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
   };
-  const addTool = (data) => {
+  const addTool = (data, cb = null) => {
     axios
       .post(`${apiPath.prodPath}/api/tools/addTools`, data)
       .then((res) => {
-        handleCloseDrawer();
-        refreshData();
+        if (res.data && res.data.error) {
+          Swal.fire({
+            icon: "error",
+            text: `${res.data.message}`,
+          });
+        } else {
+          handleCloseDrawer();
+          refreshData();
+          cb();
+        }
       })
       .catch((err) => console.log(err));
   };
