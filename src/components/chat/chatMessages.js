@@ -105,7 +105,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
       .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
         sendNotification();
-        // setMessageArr([...messageArr, res.data.messages]);
+        setMessageArr([...messageArr, res.data.messages]);
         setMessage("");
       })
       .catch((err) => {
@@ -141,7 +141,6 @@ function ChatMessages({ currentChat, loggedInUser }) {
       } else {
         dispatch(storeNotification([data.message, ...notification]));
       }
-      setMessageArr([...messageArr, data.message]);
     });
   };
   const allModulesData = allChats.length
