@@ -13,10 +13,12 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { storeUser } from "../../store/slices/userSlice";
 import Pusher from "pusher-js";
+
 var pusher = new Pusher("07be80edc6aa2291c746", {
   cluster: "ap2",
 });
 var channel;
+
 function Navbar() {
   const user = useSelector((state) => state.user);
   const notification = useSelector((state) => state.notification.notification);
@@ -25,6 +27,13 @@ function Navbar() {
   const path = usePathname();
   useEffect(() => {
     channel = pusher.subscribe("chat-live");
+    channel.bind("add-message", function (data) {
+      if (notification.length == 0) {
+        dispatch(storeNotification([data.message]));
+      } else {
+        dispatch(storeNotification([data.message, ...notification]));
+      }
+    });
     return () => {
       pusher.unsubscribe("chat-live");
     };
@@ -38,7 +47,6 @@ function Navbar() {
     router.push("/chat");
     dispatch(storeNotification([]));
   };
-  console.log("notifications", notification);
   const filteredNot =
     user.user == null
       ? []
