@@ -12,13 +12,23 @@ const poppins = Poppins({
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { storeUser } from "../../store/slices/userSlice";
+import Pusher from "pusher-js";
+var pusher = new Pusher("07be80edc6aa2291c746", {
+  cluster: "ap2",
+});
+var channel;
 function Navbar() {
   const user = useSelector((state) => state.user);
   const notification = useSelector((state) => state.notification.notification);
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
-  useEffect(() => {}, [user, notification]);
+  useEffect(() => {
+    channel = pusher.subscribe("chat-live");
+    return () => {
+      pusher.unsubscribe("chat-live");
+    };
+  }, [user, notification]);
   const handleLogout = () => {
     dispatch(storeUser(null));
     router.push("/login");
