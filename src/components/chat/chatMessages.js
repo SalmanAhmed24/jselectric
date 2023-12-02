@@ -52,14 +52,15 @@ function ChatMessages({ currentChat, loggedInUser }) {
       pusher.unsubscribe("chat-live");
     };
   }, [currentChat]);
-  useEffect(() => {
-    const selectedChat = allChats.filter((i) => i._id !== currentChat._id);
-    if (selectedChat.length > 0) {
-      sendNotification();
-    } else {
-      dispatch(storeNotification([]));
-    }
-  });
+  // useEffect(() => {
+  //   const selectedChat = allChats.filter((i) => i._id !== currentChat._id);
+  //   if (selectedChat.length > 0) {
+  //     sendNotification();
+  //   } else {
+  //     dispatch(storeNotification([]));
+  //   }
+  // });
+
   const fetchTools = () => {
     axios
       .get(`${apiPath.prodPath}/api/tools/`)
