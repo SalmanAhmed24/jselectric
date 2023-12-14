@@ -50,6 +50,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Salesperson Code") {
       apiUrl = `${apiPath.prodPath}/api/salesPersonCode/`;
     }
+    if (picklistName == "Job Type") {
+      apiUrl = `${apiPath.prodPath}/api/jobType/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -86,6 +89,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Salesperson Code") {
           setPicklistData(res.data.salesPersonCodes);
+        }
+        if (picklistName == "Job Type") {
+          setPicklistData(res.data.jobTypes);
         }
         setLoading(false);
       })
@@ -131,6 +137,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Salesperson Code") {
       url = `${apiPath.prodPath}/api/salesPersonCode/addsalesPersonCode`;
+    }
+    if (picklistName == "Job Type") {
+      url = `${apiPath.prodPath}/api/jobType/addJobType`;
     }
     axios
       .post(url, data)
@@ -183,6 +192,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Salesperson Code") {
       url = `${apiPath.prodPath}/api/salesPersonCode/`;
     }
+    if (picklistName == "Job Type") {
+      url = `${apiPath.prodPath}/api/jobType/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -219,6 +231,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Salesperson Code") {
           setPicklistData(res.data.salesPersonCodes);
+        }
+        if (picklistName == "Job Type") {
+          setPicklistData(res.data.jobTypes);
         }
         setLoading(false);
       })

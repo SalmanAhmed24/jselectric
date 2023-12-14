@@ -139,6 +139,15 @@ export default function Settings() {
             >
               Salesperson Code
             </li>
+            <li
+              className={
+                activeLink == "Job Type"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Job Type
+            </li>
           </ul>
         ) : null}
       </section>
@@ -176,6 +185,9 @@ export default function Settings() {
         ) : null}
         {activeLink == "Salesperson Code" ? (
           <PicklistComp picklistName={"Salesperson Code"} />
+        ) : null}
+        {activeLink == "Job Type" ? (
+          <PicklistComp picklistName={"Job Type"} />
         ) : null}
       </section>
     </main>

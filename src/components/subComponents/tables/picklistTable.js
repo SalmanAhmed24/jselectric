@@ -73,6 +73,9 @@ export default function PicklistTable({
     if (picklistName == "Salesperson Code") {
       apiUrl = `${apiPath.prodPath}/api/salesPersonCode/${id}`;
     }
+    if (picklistName == "Job Type") {
+      apiUrl = `${apiPath.prodPath}/api/jobType/${id}`;
+    }
     axios
       .patch(apiUrl, data)
       .then((res) => {
@@ -124,6 +127,9 @@ export default function PicklistTable({
         }
         if (picklistName == "Salesperson Code") {
           apiUrl = `${apiPath.prodPath}/api/salesPersonCode/${id}`;
+        }
+        if (picklistName == "Job Type") {
+          apiUrl = `${apiPath.prodPath}/api/jobType/${id}`;
         }
         axios
           .delete(apiUrl)
