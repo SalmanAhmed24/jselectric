@@ -53,6 +53,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Job Type") {
       apiUrl = `${apiPath.prodPath}/api/jobType/`;
     }
+    if (picklistName == "Phase") {
+      apiUrl = `${apiPath.prodPath}/api/phase/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -92,6 +95,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Job Type") {
           setPicklistData(res.data.jobTypes);
+        }
+        if (picklistName == "Phase") {
+          setPicklistData(res.data.phases);
         }
         setLoading(false);
       })
@@ -140,6 +146,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Job Type") {
       url = `${apiPath.prodPath}/api/jobType/addJobType`;
+    }
+    if (picklistName == "Phase") {
+      url = `${apiPath.prodPath}/api/phase/addphase`;
     }
     axios
       .post(url, data)
@@ -195,6 +204,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Job Type") {
       url = `${apiPath.prodPath}/api/jobType/`;
     }
+    if (picklistName == "Phase") {
+      url = `${apiPath.prodPath}/api/phase/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -234,6 +246,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Job Type") {
           setPicklistData(res.data.jobTypes);
+        }
+        if (picklistName == "Phase") {
+          setPicklistData(res.data.phases);
         }
         setLoading(false);
       })
