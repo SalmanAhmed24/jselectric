@@ -7,6 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Poppins } from "next/font/google";
+import VehicleInfo from "../drawers/vehicleInfo";
+
 import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
@@ -27,7 +29,6 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
   const [editData, setEditData] = useState({});
   const [infoModal, setInfoModal] = useState(false);
   const [item, setItem] = useState();
-
   const handleActions = (id, objData) => {
     setVehicleId(id);
     setItem(objData);
@@ -71,7 +72,10 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
   const sortedVehicles = allVehicles.sort(
     (a, b) => parseFloat(a.vehicleNo) - parseFloat(b.vehicleNo)
   );
-
+  const openInfoDrawer = () => {
+    setInfoModal(!infoModal);
+    setActionFlag(false);
+  };
   return (
     <Paper
       className={poppins.className}
@@ -121,6 +125,12 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
                         />
                         {actionFlag && i.id == vehicleId ? (
                           <div className="dropdown-div">
+                            <p
+                              onClick={openInfoDrawer}
+                              className={poppins.className}
+                            >
+                              Open
+                            </p>
                             <p
                               onClick={() => openEmpModal({ ...i })}
                               className={poppins.className}
@@ -183,6 +193,14 @@ export default function VehicleTable({ allVehicles, loading, refreshData }) {
                 id={vehicleId}
                 data={editData}
                 editVehicle={editVehicle}
+              />
+            ) : null}
+            {infoModal ? (
+              <VehicleInfo
+                open={infoModal}
+                onClose={openInfoDrawer}
+                item={item}
+                refreshData={refreshData}
               />
             ) : null}
           </Table>
