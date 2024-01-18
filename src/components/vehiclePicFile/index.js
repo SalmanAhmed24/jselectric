@@ -11,6 +11,7 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
+import "./style.scss";
 function VehiclePicFile({ vehicleId, attachments }) {
   const [fileUpload, setFileUpload] = useState([]);
   const [note, setNote] = useState("");
@@ -180,7 +181,7 @@ function VehiclePicFile({ vehicleId, attachments }) {
   ) : (
     <section>
       <form
-        className=""
+        className="pic-file-wrap"
         onSubmit={handleFilesData}
         encType="multipart/form-data"
       >

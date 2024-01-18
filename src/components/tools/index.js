@@ -15,6 +15,7 @@ function Tools() {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allTools, setAllTools] = useState([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     setLoading(true);
     axios
@@ -61,6 +62,34 @@ function Tools() {
         setLoading(false);
       });
   };
+  const handleSearch = (e) => {
+    setLoading(true);
+    e.preventDefault();
+    if (search == "") {
+      return false;
+    }
+    axios
+      .get(`${apiPath.prodPath}/api/tools/${search}`)
+      .then((res) => {
+        setAllTools(res.data.allTools);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleClear = () => {
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/tools/`)
+      .then((res) => {
+        setAllTools(res.data.allTools);
+        setLoading(false);
+        setSearch("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -71,6 +100,31 @@ function Tools() {
         >
           Add Tools
         </button>
+      </div>
+      <div className="search-wrap">
+        <form onSubmit={handleSearch}>
+          <input
+            className={poppins.className}
+            type="text"
+            placeholder="Search by Tool#"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <input
+            className={`${poppins.className} search-btn`}
+            type="submit"
+            value={"Search"}
+          />
+          {search == "" ? null : (
+            <p
+              onClick={handleClear}
+              className={`${poppins.className} clear-btn`}
+              style={{ color: "red" }}
+            >
+              Clear
+            </p>
+          )}
+        </form>
       </div>
       <div className="table-wrap">
         <ToolsTable

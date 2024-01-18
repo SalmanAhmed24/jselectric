@@ -71,3 +71,14 @@
         }
     }
 }
+.pic-file-wrap{
+display: flex;
+    .input-wrap{
+        display: flex;
+        flex-direction: column;
+        margin-right: 20px;
+        .submit-btn{
+            align-self: flex-end;
+        }
+    }
+}
