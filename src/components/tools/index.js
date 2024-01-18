@@ -7,6 +7,7 @@ import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
+import Select from "react-select";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],
@@ -16,6 +17,10 @@ function Tools() {
   const [loading, setLoading] = useState(false);
   const [allTools, setAllTools] = useState([]);
   const [search, setSearch] = useState("");
+  const [searchOpt, setSearchOpt] = useState({
+    label: "Tool No",
+    value: "toolNo",
+  });
   useEffect(() => {
     setLoading(true);
     axios
@@ -69,7 +74,7 @@ function Tools() {
       return false;
     }
     axios
-      .get(`${apiPath.prodPath}/api/tools/${search}`)
+      .get(`${apiPath.prodPath}/api/tools/${search}&&${searchOpt.value}`)
       .then((res) => {
         setAllTools(res.data.allTools);
         setLoading(false);
@@ -101,31 +106,73 @@ function Tools() {
           Add Tools
         </button>
       </div>
-      <div className="search-wrap">
-        <form onSubmit={handleSearch}>
-          <input
-            className={poppins.className}
-            type="text"
-            placeholder="Search by Tool#"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <input
-            className={`${poppins.className} search-btn`}
-            type="submit"
-            value={"Search"}
-          />
-          {search == "" ? null : (
-            <p
-              onClick={handleClear}
-              className={`${poppins.className} clear-btn`}
-              style={{ color: "red" }}
-            >
-              Clear
-            </p>
-          )}
-        </form>
+      <div className="search-opt">
+        <Select
+          className={poppins.className}
+          value={searchOpt}
+          options={[
+            { label: "Serial No", value: "serialNo" },
+            { label: "Tool No", value: "toolNo" },
+          ]}
+          onChange={(value) => {
+            setSearchOpt(value);
+            setSearch("");
+          }}
+        />
       </div>
+      {searchOpt.value == "toolNo" ? (
+        <div className="search-wrap">
+          <form onSubmit={handleSearch}>
+            <input
+              className={poppins.className}
+              type="text"
+              placeholder="Search by Tool#"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <input
+              className={`${poppins.className} search-btn`}
+              type="submit"
+              value={"Search"}
+            />
+            {search == "" ? null : (
+              <p
+                onClick={handleClear}
+                className={`${poppins.className} clear-btn`}
+                style={{ color: "red" }}
+              >
+                Clear
+              </p>
+            )}
+          </form>
+        </div>
+      ) : (
+        <div className="search-wrap">
+          <form onSubmit={handleSearch}>
+            <input
+              className={poppins.className}
+              type="text"
+              placeholder="Search by Serial #"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <input
+              className={`${poppins.className} search-btn`}
+              type="submit"
+              value={"Search"}
+            />
+            {search == "" ? null : (
+              <p
+                onClick={handleClear}
+                className={`${poppins.className} clear-btn`}
+                style={{ color: "red" }}
+              >
+                Clear
+              </p>
+            )}
+          </form>
+        </div>
+      )}
       <div className="table-wrap">
         <ToolsTable
           loading={loading}
