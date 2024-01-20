@@ -1,0 +1,18 @@
+.action-wrap{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    span{
+        font-size: 20px;
+        transition: 0.3s ease-in-out;
+        &:hover{
+            cursor: pointer;
+            &:first-child{
+                color: red;
+            }
+            &:last-child{
+                color: blue;
+            }
+        }
+    }
+}

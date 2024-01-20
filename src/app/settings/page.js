@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Employees from "../../components/employees";
+import TimeTrack from "../../components/timeTrack";
+
 import PicklistComp from "../../components/Picklists/picklist";
 import "./style.scss";
 const poppins = Poppins({
@@ -13,8 +15,9 @@ const poppins = Poppins({
 export default function Settings() {
   const user = useSelector((state) => state.user);
   const router = useRouter();
-  const [activeLink, setActiveLink] = useState("Employees");
+  const [activeLink, setActiveLink] = useState("Employee");
   const [showPick, setShowPick] = useState(false);
+  const [showEmp, setShowEmp] = useState(true);
   useEffect(() => {
     if (user.user == null || user.user.error) {
       router.push("/login");
@@ -26,15 +29,34 @@ export default function Settings() {
   return (
     <main className={`${poppins.className} home-dashboard`}>
       <section className="links-wrap">
-        <ul onClick={handleLinks} className={poppins.className}>
-          <li
-            className={
-              activeLink == "Employees" ? "activeLink simpleLink" : "simpleLink"
-            }
+        <p onClick={() => setShowEmp(!showEmp)}>
+          Employees {showEmp ? "-" : "+"}
+        </p>
+        {showEmp ? (
+          <ul
+            onClick={handleLinks}
+            className={`${poppins.className} inner-links`}
           >
-            Employees
-          </li>
-        </ul>
+            <li
+              className={
+                activeLink == "Employee"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Employee
+            </li>
+            <li
+              className={
+                activeLink == "Time Track"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Time Track
+            </li>
+          </ul>
+        ) : null}
         <p onClick={() => setShowPick(!showPick)}>
           Picklist {showPick ? "-" : "+"}
         </p>
@@ -159,7 +181,8 @@ export default function Settings() {
         ) : null}
       </section>
       <section className={`${poppins.className} content-wrap`}>
-        {activeLink == "Employees" ? <Employees /> : null}
+        {activeLink == "Employee" ? <Employees /> : null}
+        {activeLink == "Time Track" ? <TimeTrack /> : null}
         {activeLink == "User Type" ? (
           <PicklistComp picklistName={"User Type"} />
         ) : null}
