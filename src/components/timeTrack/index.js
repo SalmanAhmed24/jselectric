@@ -2,7 +2,7 @@
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import TimeTrackTable from "../subComponents/tables/timeTrackTable";
-import EmployeeDrawer from "../subComponents/drawers/employeeDrawer";
+import TimeTrackDrawer from "../subComponents/drawers/timeTrackDrawer";
 import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
@@ -20,6 +20,7 @@ function TimeTrack() {
   const [allUsers, setAllUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [activeSpecFlag, setActiveSpecFlag] = useState(true);
+  const [currentItem, setCurrentItem] = useState("");
   useEffect(() => {
     setLoading(true);
     axios
@@ -107,8 +108,33 @@ function TimeTrack() {
       });
     setSearch("");
   };
+  const editTimeTrackModal = (item) => {
+    console.log("yar dont do this", item);
+    setCurrentItem(item);
+    setDrawer(true);
+  };
   const specTrackData = timeTrack.filter((i) => i.spectrum == true);
   const noSpecTrackData = timeTrack.filter((i) => i.spectrum == false);
+  const editData = (data, id) => {
+    axios.patch(`${apiPath.prodPath}/api/timeTrack/${id}`, data).then((res) => {
+      if (res.data.error) {
+        Swal.fire({
+          icon: "error",
+          text: "Uneable to edit",
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          text: "Edited Successfully",
+          showConfirmButton: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            refreshData();
+          }
+        });
+      }
+    });
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -167,13 +193,15 @@ function TimeTrack() {
           loading={loading}
           allTimeTrack={activeSpecFlag ? specTrackData : noSpecTrackData}
           refreshData={refreshData}
+          handleEdit={editTimeTrackModal}
         />
       </div>
-      {/* <EmployeeDrawer
-        addEmp={addEmp}
+      <TimeTrackDrawer
+        timeTrackData={currentItem}
         open={drawer}
         onClose={handleCloseDrawer}
-      /> */}
+        editTimeTrackData={editData}
+      />
     </section>
   );
 }
