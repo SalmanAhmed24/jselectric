@@ -109,6 +109,42 @@ export default function Settings() {
             </li>
             <li
               className={
+                activeLink == "Task Category"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Task Category
+            </li>
+            <li
+              className={
+                activeLink == "Task Status"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Task Status
+            </li>
+            <li
+              className={
+                activeLink == "Notes Status"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Notes Status
+            </li>
+            <li
+              className={
+                activeLink == "Notes Category"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Notes Category
+            </li>
+            <li
+              className={
                 activeLink == "Customer Type"
                   ? "activeLink simpleLink"
                   : "simpleLink"
@@ -197,6 +233,18 @@ export default function Settings() {
         ) : null}
         {activeLink == "Device Category" ? (
           <PicklistComp picklistName={"Device Category"} />
+        ) : null}
+        {activeLink == "Task Category" ? (
+          <PicklistComp picklistName={"Task Category"} />
+        ) : null}
+        {activeLink == "Task Status" ? (
+          <PicklistComp picklistName={"Task Status"} />
+        ) : null}
+        {activeLink == "Notes Status" ? (
+          <PicklistComp picklistName={"Notes Status"} />
+        ) : null}
+        {activeLink == "Notes Category" ? (
+          <PicklistComp picklistName={"Notes Category"} />
         ) : null}
         {activeLink == "Customer Type" ? (
           <PicklistComp picklistName={"Customer Type"} />

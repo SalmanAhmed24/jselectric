@@ -32,6 +32,18 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Device Category") {
       apiUrl = `${apiPath.prodPath}/api/deviceCategory/`;
     }
+    if (picklistName == "Task Category") {
+      apiUrl = `${apiPath.prodPath}/api/taskCategory/`;
+    }
+    if (picklistName == "Task Status") {
+      apiUrl = `${apiPath.prodPath}/api/taskStatus/`;
+    }
+    if (picklistName == "Notes Status") {
+      apiUrl = `${apiPath.prodPath}/api/notesStatus/`;
+    }
+    if (picklistName == "Notes Category") {
+      apiUrl = `${apiPath.prodPath}/api/notesCategory/`;
+    }
     if (picklistName == "Customer Type") {
       apiUrl = `${apiPath.prodPath}/api/customerType/`;
     }
@@ -74,6 +86,18 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Device Category") {
           setPicklistData(res.data.deviceCategory);
+        }
+        if (picklistName == "Task Category") {
+          setPicklistData(res.data.taskCategory);
+        }
+        if (picklistName == "Notes Category") {
+          setPicklistData(res.data.notesCategory);
+        }
+        if (picklistName == "Task Status") {
+          setPicklistData(res.data.taskStatus);
+        }
+        if (picklistName == "Notes Status") {
+          setPicklistData(res.data.notesStatus);
         }
         if (picklistName == "Customer Type") {
           setPicklistData(res.data.customerTypes);
@@ -122,6 +146,18 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Device Category") {
       url = `${apiPath.prodPath}/api/deviceCategory/adddeviceCategory`;
+    }
+    if (picklistName == "Task Category") {
+      url = `${apiPath.prodPath}/api/taskCategory/addtaskCategory`;
+    }
+    if (picklistName == "Notes Category") {
+      url = `${apiPath.prodPath}/api/notesCategory/addnotesCategory`;
+    }
+    if (picklistName == "Task Status") {
+      url = `${apiPath.prodPath}/api/taskStatus/addtaskStatus`;
+    }
+    if (picklistName == "Notes Status") {
+      url = `${apiPath.prodPath}/api/notesStatus/addnotesStatus`;
     }
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/addsubtoolCategory`;
@@ -180,6 +216,18 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Device Category") {
       url = `${apiPath.prodPath}/api/deviceCategory/`;
     }
+    if (picklistName == "Task Category") {
+      url = `${apiPath.prodPath}/api/taskCategory/`;
+    }
+    if (picklistName == "Notes Category") {
+      url = `${apiPath.prodPath}/api/notesCategory/`;
+    }
+    if (picklistName == "Task Status") {
+      url = `${apiPath.prodPath}/api/taskStatus/`;
+    }
+    if (picklistName == "Notes Status") {
+      url = `${apiPath.prodPath}/api/notesStatus/`;
+    }
     if (picklistName == "Tool Sub-Category") {
       url = `${apiPath.prodPath}/api/subtoolCategory/`;
     }
@@ -222,6 +270,18 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Device Category") {
           setPicklistData(res.data.deviceCategory);
+        }
+        if (picklistName == "Task Category") {
+          setPicklistData(res.data.taskCategory);
+        }
+        if (picklistName == "Notes Category") {
+          setPicklistData(res.data.notesCategory);
+        }
+        if (picklistName == "Task Status") {
+          setPicklistData(res.data.taskStatus);
+        }
+        if (picklistName == "Notes Status") {
+          setPicklistData(res.data.notesStatus);
         }
         if (picklistName == "Tool Sub-Category") {
           setPicklistData(res.data.subtoolCategorys);

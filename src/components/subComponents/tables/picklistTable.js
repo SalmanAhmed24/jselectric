@@ -52,6 +52,15 @@ export default function PicklistTable({
     if (picklistName == "Device Category") {
       apiUrl = `${apiPath.prodPath}/api/deviceCategory/${id}`;
     }
+    if (picklistName == "Task Category") {
+      apiUrl = `${apiPath.prodPath}/api/taskCategory/${id}`;
+    }
+    if (picklistName == "Notes Category") {
+      apiUrl = `${apiPath.prodPath}/api/notesCategory/${id}`;
+    }
+    if (picklistName == "Notes Status") {
+      apiUrl = `${apiPath.prodPath}/api/notesStatus/${id}`;
+    }
     if (picklistName == "Tool Sub-Category") {
       apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
     }
@@ -107,8 +116,20 @@ export default function PicklistTable({
         if (picklistName == "Tool Category") {
           apiUrl = `${apiPath.prodPath}/api/toolCategory/${id}`;
         }
-        if (picklistName == "Tool Category") {
+        if (picklistName == "Device Category") {
           apiUrl = `${apiPath.prodPath}/api/deviceCategory/${id}`;
+        }
+        if (picklistName == "Task Category") {
+          apiUrl = `${apiPath.prodPath}/api/taskCategory/${id}`;
+        }
+        if (picklistName == "Notes Category") {
+          apiUrl = `${apiPath.prodPath}/api/notesCategory/${id}`;
+        }
+        if (picklistName == "Task Status") {
+          apiUrl = `${apiPath.prodPath}/api/taskStatus/${id}`;
+        }
+        if (picklistName == "Notes Status") {
+          apiUrl = `${apiPath.prodPath}/api/notesStatus/${id}`;
         }
         if (picklistName == "Tool Sub-Category") {
           apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
