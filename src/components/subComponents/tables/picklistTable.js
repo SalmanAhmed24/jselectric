@@ -61,6 +61,9 @@ export default function PicklistTable({
     if (picklistName == "Notes Status") {
       apiUrl = `${apiPath.prodPath}/api/notesStatus/${id}`;
     }
+    if (picklistName == "Task Status") {
+      apiUrl = `${apiPath.prodPath}/api/taskStatus/${id}`;
+    }
     if (picklistName == "Tool Sub-Category") {
       apiUrl = `${apiPath.prodPath}/api/subtoolCategory/${id}`;
     }

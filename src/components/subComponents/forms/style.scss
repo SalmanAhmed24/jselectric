@@ -23,6 +23,7 @@
                         outline-color: rgb(116, 116, 255);
                     }
                 }
+                
                 .save-btn{
                     background-color: #1F3F49;
                     color: #fff;
@@ -47,6 +48,24 @@
                 color: #000;
             }
                 }
+        }
+        .sub-btn-wrap{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 10px;
+            align-items: center;
+            .add-task{
+                background-color: #1F3F49;
+                color: #fff;
+                transition: 0.3s ease-in-out;
+                border: 1px solid #1F3F49;
+                &:hover{
+                    cursor: pointer;
+                    background-color: #fff;
+                    color: #1F3F49;
+                }
+            }
         }
 }
 .clear-value{

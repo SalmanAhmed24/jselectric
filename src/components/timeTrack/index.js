@@ -109,7 +109,6 @@ function TimeTrack() {
     setSearch("");
   };
   const editTimeTrackModal = (item) => {
-    console.log("yar dont do this", item);
     setCurrentItem(item);
     setDrawer(true);
   };

@@ -1,26 +1,26 @@
 "use client";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import JobTable from "../subComponents/tables/jobTable";
-import JobDrawer from "../subComponents/drawers/jobDrawer";
 import "./style.scss";
 import axios from "axios";
+import TaskDrawer from "../subComponents/drawers/taskDrawer";
+import TaskTable from "../subComponents/tables/taskTable";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],
 });
-function Job() {
+function Task({ user }) {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [allJobs, setAllJobs] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${apiPath.prodPath}/api/job/`)
+      .get(`${apiPath.prodPath}/api/task/`)
       .then((res) => {
-        setAllJobs(res.data.jobs);
+        setAllTasks(res.data.allTasks);
         setLoading(false);
       })
       .catch((err) => {
@@ -31,21 +31,12 @@ function Job() {
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
   };
-  const addJob = (data) => {
-    axios
-      .post(`${apiPath.prodPath}/api/job/addJob`, data)
-      .then((res) => {
-        handleCloseDrawer();
-        refreshData();
-      })
-      .catch((err) => console.log(err));
-  };
   const refreshData = () => {
     setLoading(true);
     axios
-      .get(`${apiPath.prodPath}/api/job/`)
+      .get(`${apiPath.prodPath}/api/task/`)
       .then((res) => {
-        setAllJobs(res.data.jobs);
+        setAllTasks(res.data.allTasks);
         setLoading(false);
       })
       .catch((err) => {
@@ -53,27 +44,54 @@ function Job() {
         setLoading(false);
       });
   };
+  const handleAddTask = (data, editFlag, id) => {
+    if (editFlag) {
+      // edit goes here
+    } else {
+      axios.post(`${apiPath.prodPath}/api/task/addTask`, data).then((res) => {
+        if (res.data.error) {
+          Swal.fire({
+            icon: "error",
+            text: "Error Adding Task try again",
+          });
+        } else {
+          Swal.fire({
+            icon: "success",
+            text: "Added Successfully",
+          });
+          refreshData();
+          setDrawer(false);
+        }
+      });
+    }
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
-        <h2 className={poppins.className}>Jobs</h2>
+        <h2 className={poppins.className}>Tasks</h2>
         <button
           onClick={() => setDrawer(true)}
           className={`${poppins.className} btn-add`}
         >
-          Add Job
+          Add Task
         </button>
       </div>
       <div className="table-wrap">
-        <JobTable
+        <TaskTable
+          allTasks={allTasks}
           loading={loading}
-          allJobs={allJobs}
           refreshData={refreshData}
         />
       </div>
-      <JobDrawer addJob={addJob} open={drawer} onClose={handleCloseDrawer} />
+      <TaskDrawer
+        loggedInUser={user}
+        open={drawer}
+        onClose={handleCloseDrawer}
+        addTask={handleAddTask}
+        edit={false}
+      />
     </section>
   );
 }
 
-export default Job;
+export default Task;

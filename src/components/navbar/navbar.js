@@ -97,6 +97,11 @@ function Navbar() {
             Settings
           </Link>
           <div className="logout-wrap">
+            <div className="img-wrap">
+              <Link href={"/task"}>
+                <img src="./checklist.png" className="chat-img" />
+              </Link>
+            </div>
             <div className="img-wrap" style={{ position: "relative" }}>
               <Link href={"/chat"}>
                 <img src="./chat.png" className="chat-img" />

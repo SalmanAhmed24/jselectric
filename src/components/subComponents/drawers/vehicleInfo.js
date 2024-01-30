@@ -11,7 +11,6 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 function VehiclesInfo({ open, onClose, item, refreshData }) {
-  console.log("this is item", item);
   const [activeTab, setActiveTab] = useState("Pics / Files");
   const tabHandler = (e) => {
     setActiveTab(e.target.innerText);

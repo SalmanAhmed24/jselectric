@@ -147,7 +147,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       setLunchStartTime("");
       setLunchEndTime("");
     }
-    console.log("checkbox value", value);
     setCheckbox(value);
   };
   return (
