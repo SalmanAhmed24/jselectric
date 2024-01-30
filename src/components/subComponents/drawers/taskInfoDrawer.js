@@ -114,7 +114,7 @@ function TaskInfo({ open, onClose, item }) {
         <p className="close" onClick={() => onClose()}>
           x
         </p>
-        <p>Task info top comes here</p>
+        {/* <p>Task info top comes here</p> */}
       </div>
       <div className={`${poppins.className} tabs-wrap`}>
         <ul className="tabs">
