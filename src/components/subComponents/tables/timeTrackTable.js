@@ -83,11 +83,7 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
                       )}`}</TableCell>
                       <TableCell>{row.lunch == false ? "No" : "Yes"}</TableCell>
                       <TableCell>
-                        {row.lunch
-                          ? `${tConvert(row.lunchStartTime)} to ${tConvert(
-                              row.lunchEndTime
-                            )}`
-                          : "none"}
+                        {row.lunch ? `${row.lunchTime} min` : "none"}
                       </TableCell>
                       <TableCell>
                         {row.spectrum == false ? "No" : "Yes"}
