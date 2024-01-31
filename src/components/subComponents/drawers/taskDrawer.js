@@ -398,7 +398,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Devices")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
@@ -415,7 +415,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Clients")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
@@ -432,7 +432,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Employees")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
@@ -449,7 +449,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Jobs")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
@@ -466,7 +466,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Tools")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
@@ -483,7 +483,7 @@ function TaskDrawer({
                 .filter((i) => i.label == "Vehicles")
                 .map((i) => {
                   return (
-                    <div className="input-wrap">
+                    <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
