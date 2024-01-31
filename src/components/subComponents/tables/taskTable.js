@@ -161,7 +161,14 @@ export default function TaskTable({
                       <TableCell>
                         {moment(i.dueDate).format("MM-DD-YYYY")}
                       </TableCell>
-                      <TableCell>{i.selectedModule}</TableCell>
+                      <TableCell>
+                        {i.selectedModule &&
+                          i.selectedModule.map((inner, ind) => {
+                            return i.selectedModule.length - 1 == ind
+                              ? `${inner}`
+                              : `${inner},`;
+                          })}
+                      </TableCell>
                       <TableCell>
                         {i.assignedTo &&
                           i.assignedTo.map((inner, ind) => {

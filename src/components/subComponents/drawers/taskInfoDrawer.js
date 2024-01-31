@@ -6,6 +6,7 @@ import NotesTask from "../tabs/notesTask";
 import TaskAttachment from "../tabs/taskAttachment";
 import "./style.scss";
 import axios from "axios";
+import TaskTopInfo from "../../topInfo/taskTopInfo";
 import { apiPath } from "@/utils/routes";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
@@ -114,7 +115,7 @@ function TaskInfo({ open, onClose, item }) {
         <p className="close" onClick={() => onClose()}>
           x
         </p>
-        {/* <p>Task info top comes here</p> */}
+        <TaskTopInfo item={item} />
       </div>
       <div className={`${poppins.className} tabs-wrap`}>
         <ul className="tabs">

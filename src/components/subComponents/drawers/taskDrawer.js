@@ -31,11 +31,129 @@ function TaskDrawer({
   const [assignedTo, setAssignedTo] = useState([]);
   const [assignedToOpt, setAssignedToOpt] = useState([]);
   const [selectedModule, setSelectedModule] = useState([]);
+  const [allClients, setAllClients] = useState([]);
+  const [allDevices, setAllDevices] = useState([]);
+  const [allEmp, setAllEmp] = useState([]);
+  const [allJob, setAllJob] = useState([]);
+  const [allTools, setAllTools] = useState([]);
+  const [allVehicles, setAllVehicles] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [devices, setDevices] = useState([]);
+  const [emp, setEmp] = useState([]);
+  const [job, setJob] = useState([]);
+  const [tool, setTool] = useState([]);
+  const [vehicle, setVehicle] = useState([]);
   const [user, setUser] = useState(
     loggedInUser && loggedInUser.userInfo ? loggedInUser.userInfo.fullname : ""
   );
 
   useEffect(() => {
+    axios
+      .get(`${apiPath.prodPath}/api/clients/`)
+      .then((res) => {
+        setAllClients(
+          res.data.clients.map((inner) => {
+            return {
+              label: inner.customerName,
+              value: inner.customerName,
+              selectedModule: "Clients",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .get(`${apiPath.prodPath}/api/devices/`)
+      .then((res) => {
+        setAllDevices(
+          res.data.devices.map((inner) => {
+            return {
+              label: inner.make,
+              value: inner.make,
+              selectedModule: "Devices",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .get(`${apiPath.prodPath}/api/users/`)
+      .then((res) => {
+        setAllEmp(
+          res.data.allUsers.map((inner) => {
+            return {
+              label: inner.fullname,
+              value: inner.fullname,
+              selectedModule: "Employees",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get(`${apiPath.prodPath}/api/job/`)
+      .then((res) => {
+        setAllJob(
+          res.data.jobs.map((inner) => {
+            return {
+              label: inner.jobId,
+              value: inner.jobId,
+              selectedModule: "Jobs",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get(`${apiPath.prodPath}/api/tools/`)
+      .then((res) => {
+        setAllTools(
+          res.data.allTools.map((inner) => {
+            return {
+              label: inner.toolNumber,
+              value: inner.toolNumber,
+              selectedModule: "Tools",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    axios
+      .get(`${apiPath.prodPath}/api/vehicles/`)
+      .then((res) => {
+        setAllVehicles(
+          res.data.vehicles.map((inner) => {
+            return {
+              label: inner.vehicleNo,
+              value: inner.vehicleNo,
+              selectedModule: "Vehicles",
+              id: inner.id,
+            };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     axios
       .get(`${apiPath.prodPath}/api/taskCategory`)
       .then((res) => {
@@ -78,12 +196,35 @@ function TaskDrawer({
           return { label: i.fullname, value: i.fullname };
         })
       );
-      setSelectedModule({
-        label: data.selectedModule,
-        value: data.selectedModule,
+      setSelectedModule(
+        data.selectedModule.map((i) => {
+          return { label: i, value: i };
+        })
+      );
+      data.selectedModule.forEach((element) => {
+        if (element == "Clients") {
+          setClients(data.moduleArr.find((i) => i.selectedModule == "Clients"));
+        }
+        if (element == "Devices") {
+          setDevices(data.moduleArr.find((i) => i.selectedModule == "Devices"));
+        }
+        if (element == "Employees") {
+          setEmp(data.moduleArr.find((i) => i.selectedModule == "Employees"));
+        }
+        if (element == "Jobs") {
+          setJob(data.moduleArr.find((i) => i.selectedModule == "Jobs"));
+        }
+        if (element == "Tools") {
+          setTool(data.moduleArr.find((i) => i.selectedModule == "Tools"));
+        }
+        if (element == "Vehicles") {
+          setVehicle(
+            data.moduleArr.find((i) => i.selectedModule == "Vehicles")
+          );
+        }
       });
     }
-  }, []);
+  }, [open]);
   function validatePhoneNumber(input_str) {
     const re = /^[0-9-]+$/;
     return re.test(input_str);
@@ -106,7 +247,29 @@ function TaskDrawer({
       assignedTo: assignedTo.map((i) => {
         return { fullname: i.label };
       }),
-      selectedModule: selectedModule.value,
+      selectedModule: selectedModule.map((i) => {
+        return i.value;
+      }),
+      moduleArr: selectedModule.map((item) => {
+        if (item.label == "Devices") {
+          return devices;
+        }
+        if (item.label == "Clients") {
+          return clients;
+        }
+        if (item.label == "Employees") {
+          return emp;
+        }
+        if (item.label == "Jobs") {
+          return job;
+        }
+        if (item.label == "Tools") {
+          return tool;
+        }
+        if (item.label == "Vehicles") {
+          return vehicle;
+        }
+      }),
     };
     if (edit) {
       editTask(dataObj, id);
@@ -123,17 +286,25 @@ function TaskDrawer({
     setTaskStatus("");
     setAssignedTo([]);
     setSelectedModule("");
+    setDevices("");
+    setClients("");
+    setEmp("");
+    setJob("");
+    setVehicle("");
+    setTool("");
   };
   const selectedModuleOpt = [
     { label: "Clients", value: "Clients" },
     { label: "Devices", value: "Devices" },
     { label: "Employees", value: "Employees" },
-    { label: "Invoices", value: "Invoices" },
     { label: "Jobs", value: "Jobs" },
     { label: "Tools", value: "Tools" },
     { label: "Vehicles", value: "Vehicles" },
-    { label: "Vendors", value: "Vendors" },
   ];
+  const handleModuleSelection = (value) => {
+    setSelectedModule(value);
+  };
+  console.log("options", allClients);
   return (
     <Drawer
       anchor={"right"}
@@ -182,10 +353,12 @@ function TaskDrawer({
               </p>
             ) : null}
           </div>
-          <div className="input-wrap">
+          <div className="input-wrap" style={{ width: "100%" }}>
             <label>Description</label>
-            <input
+            <textarea
               type="text"
+              rows={3}
+              cols={12}
               className={poppins.className}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -200,7 +373,7 @@ function TaskDrawer({
               onChange={(value) => setTaskStatus(value)}
             />
           </div>
-          <div className="input-wrap">
+          <div className="input-wrap" style={{ width: "100%" }}>
             <label>Assigned To</label>
             <Select
               isMulti
@@ -210,15 +383,118 @@ function TaskDrawer({
               onChange={(v) => setAssignedTo(v)}
             />
           </div>
-          <div className="input-wrap">
+          <div className="input-wrap" style={{ width: "100%" }}>
             <label>Module</label>
             <Select
               className={poppins.className}
               options={selectedModuleOpt}
               value={selectedModule}
-              onChange={(value) => setSelectedModule(value)}
+              isMulti={true}
+              onChange={handleModuleSelection}
             />
           </div>
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Devices")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allDevices}
+                        value={devices}
+                        onChange={(value) => setDevices(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Clients")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allClients}
+                        value={clients}
+                        onChange={(value) => setClients(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Employees")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allEmp}
+                        value={emp}
+                        onChange={(value) => setEmp(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Jobs")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allJob}
+                        value={job}
+                        onChange={(value) => setJob(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Tools")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allTools}
+                        value={tool}
+                        onChange={(value) => setTool(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
+          {selectedModule.length
+            ? selectedModule
+                .filter((i) => i.label == "Vehicles")
+                .map((i) => {
+                  return (
+                    <div className="input-wrap">
+                      <label>{i.label}</label>
+                      <Select
+                        className={poppins.className}
+                        options={allVehicles}
+                        value={vehicle}
+                        onChange={(value) => setVehicle(value)}
+                      />
+                    </div>
+                  );
+                })
+            : null}
           <div className="sub-btn-wrap">
             <input
               className={`${poppins.className} addEmp`}
