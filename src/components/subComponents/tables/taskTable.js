@@ -79,7 +79,7 @@ export default function TaskTable({
     });
   };
   const sortedTasks = allTasks.sort((a, b) =>
-    a.taskCategory.localeCompare(b.taskCategory)
+    a.currentDate.localeCompare(b.currentDate)
   );
   return (
     <Paper
