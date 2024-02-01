@@ -24,6 +24,10 @@ function HistoryTab({ history }) {
               </div>
               <div className="single-item">
                 <label>Notes</label>
+                <p>{i.note}</p>
+              </div>
+              <div className="single-item">
+                <label>Job</label>
                 <p>{i.job}</p>
               </div>
               <div className="single-item">
