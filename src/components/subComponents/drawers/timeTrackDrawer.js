@@ -16,7 +16,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
   const [employeeOpt, setEmployeeOpt] = useState("");
   const [employee, setEmployee] = useState("");
   const [jobOpt, setJobOpt] = useState("");
-  const [job, setJob] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
   const [phaseOpt, setPhaseOpt] = useState("");
   const [phase, setPhase] = useState("");
   const [date, setDate] = useState("");
@@ -26,6 +26,8 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
   const [lunchStartTime, setLunchStartTime] = useState("");
   const [lunchEndTime, setLunchEndTime] = useState("");
   const [loggedInUser, setLoggedInUser] = useState("");
+  const [notes, setNotes] = useState("");
+
   const options = [
     { value: "spectrum", label: "Spectrum", disabled: false },
     { value: "lunch", label: "Lunch", disabled: false },
@@ -72,11 +74,12 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       label: timeTrackData.employee,
       value: timeTrackData.employee,
     });
-    setJob({ label: timeTrackData.job, value: timeTrackData.job });
+    setJobDescription(timeTrackData.job);
     setPhase({ label: timeTrackData.phase, value: timeTrackData.phase });
     setDate(timeTrackData.date);
     setStartTime(timeTrackData.startTime);
     setEndTime(timeTrackData.endTime);
+    setNotes(timeTrackData.notes);
     setCheckbox(
       timeTrackData.spectrum && timeTrackData.lunch
         ? ["spectrum", "lunch"]
@@ -113,7 +116,8 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
     }
     const dataObj = {
       employee: employee.value,
-      job: job.value,
+      jobDescription: jobDescription,
+      notes,
       phase: phase.value,
       date,
       startTime,
@@ -132,7 +136,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
   };
   const handleReset = () => {
     setEmployee("");
-    setJob("");
+    setJobDescription("");
     setDate("");
     setPhase("");
     setStartTime("");
@@ -140,6 +144,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
     setLunchEndTime("");
     setLunchStartTime("");
     setCheckbox([]);
+    setNotes("");
   };
   const handleCheckbox = (value) => {
     const isLunch = value.filter((i) => i == "lunch");
@@ -172,13 +177,22 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
             />
           </div>
           <div className="input-wrap">
-            <label className={poppins.className}>Job</label>
-            <Select
-              options={jobOpt}
-              value={job}
-              onChange={(e) => setJob(e)}
+            <label className={poppins.className}>Job Description</label>
+            <input
+              type="text"
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
               className={poppins.className}
               required={true}
+            />
+          </div>
+          <div className="input-wrap">
+            <label className={poppins.className}>Notes</label>
+            <input
+              type="text"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className={poppins.className}
             />
           </div>
           <div className="input-wrap">

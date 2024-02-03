@@ -96,6 +96,7 @@ export default function TaskTable({
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Current Date</TableCell>
                 <TableCell style={{ minWidth: 150 }}>User</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Task Priority</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Task Category</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Task Status</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Due Date</TableCell>
@@ -156,6 +157,7 @@ export default function TaskTable({
                         {moment(i.currentDate).format("MM-DD-YYYY")}
                       </TableCell>
                       <TableCell>{i.user}</TableCell>
+                      <TableCell>{i.taskPriority}</TableCell>
                       <TableCell>{i.taskCategory}</TableCell>
                       <TableCell>{i.taskStatus}</TableCell>
                       <TableCell>

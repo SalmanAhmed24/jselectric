@@ -50,13 +50,14 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
             <TableRow>
               <TableCell>Actions</TableCell>
               <TableCell style={{ minWidth: 150 }}>Employee</TableCell>
-              <TableCell>Job</TableCell>
-              <TableCell>Phase</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Job Description</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Phase</TableCell>
               <TableCell style={{ minWidth: 100 }}>Date</TableCell>
               <TableCell style={{ minWidth: 150 }}>Timings</TableCell>
-              <TableCell>Lunch</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Lunch</TableCell>
               <TableCell style={{ minWidth: 150 }}>Lunch Timings</TableCell>
-              <TableCell>Spectrum</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Spectrum</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Notes</TableCell>
               <TableCell style={{ minWidth: 150 }}>User</TableCell>
             </TableRow>
           </TableHead>
@@ -73,7 +74,7 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
                         </div>
                       </TableCell>
                       <TableCell>{row.employee}</TableCell>
-                      <TableCell>{row.job}</TableCell>
+                      <TableCell>{row.jobDescription}</TableCell>
                       <TableCell>{row.phase}</TableCell>
                       <TableCell>
                         {moment(row.date).format("MM/DD/YYYY")}
@@ -88,6 +89,7 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
                       <TableCell>
                         {row.spectrum == false ? "No" : "Yes"}
                       </TableCell>
+                      <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.user}</TableCell>
                     </TableRow>
                   );

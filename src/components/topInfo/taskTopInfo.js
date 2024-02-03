@@ -12,6 +12,10 @@ function TaskTopInfo({ item }) {
         <p>{item.user}</p>
       </div>
       <div className="singleInfo">
+        <label>Task Priority</label>
+        <p>{item.taskPriority}</p>
+      </div>
+      <div className="singleInfo">
         <label>Task Category</label>
         <p>{item.taskCategory}</p>
       </div>

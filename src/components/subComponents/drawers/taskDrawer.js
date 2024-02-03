@@ -43,6 +43,7 @@ function TaskDrawer({
   const [job, setJob] = useState([]);
   const [tool, setTool] = useState([]);
   const [vehicle, setVehicle] = useState([]);
+  const [taskPriority, setTaskPriority] = useState("");
   const [user, setUser] = useState(
     loggedInUser && loggedInUser.userInfo ? loggedInUser.userInfo.fullname : ""
   );
@@ -188,6 +189,7 @@ function TaskDrawer({
       setCurrentDate(moment(data.currentDate).format());
       setDueDate(moment(data.dueDate).format());
       setUser(data.user);
+      setTaskPriority({ label: data.taskPriority, value: data.taskPriority });
       setDescription(data.description);
       setTaskCategory({ label: data.taskCategory, value: data.taskCategory });
       setTaskStatus({ label: data.taskStatus, value: data.taskStatus });
@@ -244,6 +246,7 @@ function TaskDrawer({
       dueDate,
       description,
       taskStatus: taskStatus.value,
+      taskPriority: taskPriority.value,
       assignedTo: assignedTo.map((i) => {
         return { fullname: i.label };
       }),
@@ -292,6 +295,7 @@ function TaskDrawer({
     setJob("");
     setVehicle("");
     setTool("");
+    setTaskPriority("");
   };
   const selectedModuleOpt = [
     { label: "Clients", value: "Clients" },
@@ -304,6 +308,12 @@ function TaskDrawer({
   const handleModuleSelection = (value) => {
     setSelectedModule(value);
   };
+  const taskPriorityOpt = [
+    { label: "Urgent", value: "Urgent" },
+    { label: "High", value: "High" },
+    { label: "Medium", value: "Medium" },
+    { label: "Low", value: "Low" },
+  ];
   console.log("options", allClients);
   return (
     <Drawer
@@ -371,6 +381,15 @@ function TaskDrawer({
               options={taskStatusOpt}
               value={taskStatus}
               onChange={(value) => setTaskStatus(value)}
+            />
+          </div>
+          <div className="input-wrap">
+            <label>Task Priority</label>
+            <Select
+              className={poppins.className}
+              options={taskPriorityOpt}
+              value={taskPriority}
+              onChange={(v) => setTaskPriority(v)}
             />
           </div>
           <div className="input-wrap" style={{ width: "100%" }}>
