@@ -8,7 +8,7 @@ import Devices from "../../components/devices";
 import Vehicles from "../../components/vehicles";
 import Clients from "../../components/clients";
 import Schedule from "../../components/schedule/schedule";
-
+import Tagout from "../../components/tagout/index";
 import "./list.scss";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
@@ -65,6 +65,13 @@ export default function List() {
           >
             Schedules
           </li>
+          <li
+            className={
+              activeLink == "Tagouts" ? "activeLink simpleLink" : "simpleLink"
+            }
+          >
+            Tagouts
+          </li>
         </ul>
       </section>
 
@@ -74,6 +81,9 @@ export default function List() {
       {activeLink == "Clients" ? <Clients picklistName={"Clients"} /> : null}
       {activeLink == "Schedules" ? (
         <Schedule picklistName={"Schedules"} />
+      ) : null}
+      {activeLink == "Tagouts" ? (
+        <Tagout user={currentUser !== null ? currentUser.userInfo : ""} />
       ) : null}
     </main>
   );
