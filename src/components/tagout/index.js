@@ -7,7 +7,6 @@ import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
-import Select from "react-select";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],

@@ -2,13 +2,13 @@ import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import { DatePicker } from "react-rainbow-components";
-import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
+import "./style.scss";
 function TagoutDrawer({
   open,
   onClose,

@@ -38,6 +38,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Task Status") {
       apiUrl = `${apiPath.prodPath}/api/taskStatus/`;
     }
+    if (picklistName == "Task Priority") {
+      apiUrl = `${apiPath.prodPath}/api/taskPriority/`;
+    }
     if (picklistName == "Notes Status") {
       apiUrl = `${apiPath.prodPath}/api/notesStatus/`;
     }
@@ -95,6 +98,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Task Status") {
           setPicklistData(res.data.taskStatus);
+        }
+        if (picklistName == "Task Priority") {
+          setPicklistData(res.data.taskPriority);
         }
         if (picklistName == "Notes Status") {
           setPicklistData(res.data.notesStatus);
@@ -155,6 +161,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Task Status") {
       url = `${apiPath.prodPath}/api/taskStatus/addtaskStatus`;
+    }
+    if (picklistName == "Task Priority") {
+      url = `${apiPath.prodPath}/api/taskPriority/addtaskPriority`;
     }
     if (picklistName == "Notes Status") {
       url = `${apiPath.prodPath}/api/notesStatus/addnotesStatus`;
@@ -225,6 +234,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Task Status") {
       url = `${apiPath.prodPath}/api/taskStatus/`;
     }
+    if (picklistName == "Task Priority") {
+      url = `${apiPath.prodPath}/api/taskPriority/`;
+    }
     if (picklistName == "Notes Status") {
       url = `${apiPath.prodPath}/api/notesStatus/`;
     }
@@ -279,6 +291,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Task Status") {
           setPicklistData(res.data.taskStatus);
+        }
+        if (picklistName == "Task Priority") {
+          setPicklistData(res.data.taskPriority);
         }
         if (picklistName == "Notes Status") {
           setPicklistData(res.data.notesStatus);

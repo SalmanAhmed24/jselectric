@@ -67,10 +67,12 @@ export default function List() {
           </li>
           <li
             className={
-              activeLink == "Tagouts" ? "activeLink simpleLink" : "simpleLink"
+              activeLink == "Lockout/Tagout"
+                ? "activeLink simpleLink"
+                : "simpleLink"
             }
           >
-            Tagouts
+            Lockout/Tagout
           </li>
         </ul>
       </section>
@@ -82,7 +84,7 @@ export default function List() {
       {activeLink == "Schedules" ? (
         <Schedule picklistName={"Schedules"} />
       ) : null}
-      {activeLink == "Tagouts" ? (
+      {activeLink == "Lockout/Tagout" ? (
         <Tagout user={currentUser !== null ? currentUser.userInfo : ""} />
       ) : null}
     </main>

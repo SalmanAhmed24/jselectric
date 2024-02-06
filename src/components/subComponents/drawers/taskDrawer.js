@@ -44,6 +44,7 @@ function TaskDrawer({
   const [tool, setTool] = useState([]);
   const [vehicle, setVehicle] = useState([]);
   const [taskPriority, setTaskPriority] = useState("");
+  const [taskPriorityOpt, setTaskPriorityOpt] = useState("");
   const [user, setUser] = useState(
     loggedInUser && loggedInUser.userInfo ? loggedInUser.userInfo.fullname : ""
   );
@@ -170,6 +171,16 @@ function TaskDrawer({
       .then((res) => {
         setTaskStatusOpt(
           res.data.taskStatus.map((i) => {
+            return { label: i.name, value: i.name };
+          })
+        );
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`${apiPath.prodPath}/api/taskPriority`)
+      .then((res) => {
+        setTaskPriorityOpt(
+          res.data.taskPriority.map((i) => {
             return { label: i.name, value: i.name };
           })
         );
@@ -308,12 +319,6 @@ function TaskDrawer({
   const handleModuleSelection = (value) => {
     setSelectedModule(value);
   };
-  const taskPriorityOpt = [
-    { label: "Urgent", value: "Urgent" },
-    { label: "High", value: "High" },
-    { label: "Medium", value: "Medium" },
-    { label: "Low", value: "Low" },
-  ];
   console.log("options", allClients);
   return (
     <Drawer

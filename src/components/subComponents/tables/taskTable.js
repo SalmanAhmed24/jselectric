@@ -108,7 +108,7 @@ export default function TaskTable({
             <TableBody>
               {sortedTasks.length == 0 ? (
                 <TableRow>
-                  <p className={poppins.className}>No Devices Data Found</p>
+                  <p className={poppins.className}>No Tasks Data Found</p>
                 </TableRow>
               ) : (
                 sortedTasks.map((i) => {

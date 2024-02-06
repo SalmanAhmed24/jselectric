@@ -127,6 +127,15 @@ export default function Settings() {
             </li>
             <li
               className={
+                activeLink == "Task Priority"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Task Priority
+            </li>
+            <li
+              className={
                 activeLink == "Notes Status"
                   ? "activeLink simpleLink"
                   : "simpleLink"
@@ -239,6 +248,9 @@ export default function Settings() {
         ) : null}
         {activeLink == "Task Status" ? (
           <PicklistComp picklistName={"Task Status"} />
+        ) : null}
+        {activeLink == "Task Priority" ? (
+          <PicklistComp picklistName={"Task Priority"} />
         ) : null}
         {activeLink == "Notes Status" ? (
           <PicklistComp picklistName={"Notes Status"} />
