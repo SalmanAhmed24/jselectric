@@ -56,7 +56,7 @@ function TaskInfo({ open, onClose, item }) {
           console.log(err);
         });
     }
-  }, []);
+  }, [activeTab]);
   const controlRefreshData = () => {
     setRefreshFlag(!refreshFlag);
   };
