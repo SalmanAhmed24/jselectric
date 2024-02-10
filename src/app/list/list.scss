@@ -19,3 +19,17 @@
         }
     }
 }
+.inner-links-wrap{
+    padding: 10px 20px 0px 20px;
+    p{
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+    }
+    .activeP{
+        border-bottom: 1px solid #000;
+    }
+}
+.plus-minus{
+    display: inline-block;
+    padding-left: 5px;
+}
