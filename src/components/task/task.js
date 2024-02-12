@@ -236,9 +236,9 @@ function Task({ user }) {
     axios
       .get(`${apiPath.prodPath}/api/task/`)
       .then((res) => {
-        const filteredTasks = res.data.allTasks.filter(
-          (inner) => inner.taskStatus == "Completed"
-        );
+        const filteredTasks = res.data.allTasks
+          .filter((inner) => inner.taskStatus == "Completed")
+          .filter((inner) => inner.user == user.userInfo.fullname);
         setAllTasks(filteredTasks);
         setLoading(false);
       })
