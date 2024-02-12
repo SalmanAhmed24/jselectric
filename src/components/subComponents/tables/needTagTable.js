@@ -111,10 +111,14 @@ function NeedTagTable({ allNeedTag, refreshData, userInfo }) {
                     <TableCell>{row.location}</TableCell>
                     <TableCell>{row.serial}</TableCell>
                     <TableCell>
-                      <img
-                        src={`${row.picture.fileUrl}`}
-                        style={{ width: 100 }}
-                      />
+                      {row.picture && row.picture !== undefined ? (
+                        <img
+                          src={`${row.picture.fileUrl}`}
+                          style={{ width: 100 }}
+                        />
+                      ) : (
+                        "None"
+                      )}
                     </TableCell>
                   </TableRow>
                 );
