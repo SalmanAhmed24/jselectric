@@ -52,13 +52,16 @@ function Task({ user }) {
           console.log(err);
           setLoading(false);
         });
-      axios.get(`${apiPath.prodPath}/api/taskCategory/`).then((res) => {
-        setTaskCategoryOpt(
-          res.data.taskCategory.map((i) => {
-            return { label: i.name, value: i.name };
-          })
-        );
-      });
+      axios
+        .get(`${apiPath.prodPath}/api/taskCategory/`)
+        .then((res) => {
+          setTaskCategoryOpt(
+            res.data.taskCategory.map((i) => {
+              return { label: i.name, value: i.name };
+            })
+          );
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
   const handleCloseDrawer = () => {
@@ -81,10 +84,16 @@ function Task({ user }) {
           });
           setAllTasks(tasks);
           setLoading(false);
-        } else {
+        } else if (activeTab == "Task Created") {
           const filteredTasks = res.data.allTasks.filter(
             (inner) => inner.user == user.userInfo.fullname
           );
+          setAllTasks(filteredTasks);
+          setLoading(false);
+        } else {
+          const filteredTasks = res.data.allTasks
+            .filter((inner) => inner.taskStatus == "Completed")
+            .filter((inner) => inner.user == user.userInfo.fullname);
           setAllTasks(filteredTasks);
           setLoading(false);
         }
@@ -197,9 +206,9 @@ function Task({ user }) {
           setAllTasks(filteredTasks);
           setLoading(false);
         } else {
-          const filteredTasks = res.data.allTasks.filter(
-            (inner) => inner.taskStatus == "Completed"
-          );
+          const filteredTasks = res.data.allTasks
+            .filter((inner) => inner.taskStatus == "Completed")
+            .filter((inner) => inner.user == user.userInfo.fullname);
           setAllTasks(filteredTasks);
           setLoading(false);
         }
