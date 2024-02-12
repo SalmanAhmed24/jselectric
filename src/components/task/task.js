@@ -190,9 +190,15 @@ function Task({ user }) {
           });
           setAllTasks(tasks);
           setLoading(false);
-        } else {
+        } else if (activeTab == "Task Created") {
           const filteredTasks = res.data.allTasks.filter(
             (inner) => inner.user == user.userInfo.fullname
+          );
+          setAllTasks(filteredTasks);
+          setLoading(false);
+        } else {
+          const filteredTasks = res.data.allTasks.filter(
+            (inner) => inner.taskStatus == "Completed"
           );
           setAllTasks(filteredTasks);
           setLoading(false);
@@ -223,6 +229,23 @@ function Task({ user }) {
       description: "",
     });
     refreshData();
+  };
+  const handleTaskCompleted = () => {
+    setActiveTab("Task Completed");
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/task/`)
+      .then((res) => {
+        const filteredTasks = res.data.allTasks.filter(
+          (inner) => inner.taskStatus == "Completed"
+        );
+        setAllTasks(filteredTasks);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   return (
     <section className={`${poppins.className} employee-wrap`}>
@@ -255,6 +278,16 @@ function Task({ user }) {
           }
         >
           Tasks created by user
+        </span>
+        <span
+          onClick={handleTaskCompleted}
+          className={
+            activeTab == "Task Completed"
+              ? `${poppins.className} activeTab simpleTab`
+              : `${poppins.className} simpleTab`
+          }
+        >
+          Tasks Completed
         </span>
       </div>
       {filterFlag ? null : (
