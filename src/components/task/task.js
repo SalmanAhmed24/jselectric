@@ -14,6 +14,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 import { DatePicker } from "react-rainbow-components";
+import moment from "moment";
 function Task({ user }) {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -166,7 +167,15 @@ function Task({ user }) {
     e.preventDefault();
     axios
       .get(
-        `${apiPath.prodPath}/api/task/?taskCategory=${searchForm.taskCategory.value}&&currentDate=${searchForm.currentDate}&&description=${searchForm.description}`
+        `${apiPath.prodPath}/api/task/?taskCategory=${
+          searchForm.taskCategory.value == undefined
+            ? ""
+            : searchForm.taskCategory.value
+        }&currentDate=${
+          searchForm.currentDate == ""
+            ? ""
+            : moment(searchForm.currentDate).format("YYYY-MM-DD")
+        }&description=${searchForm.description}`
       )
       .then((res) => {
         if (activeTab == "Task Assigned") {
