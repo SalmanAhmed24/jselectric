@@ -15,6 +15,7 @@ function AllChats({ loggedInUser, allChats, currentChat }) {
   const handleChatInner = (chat) => {
     dispatch(storeCurrentChat(chat));
   };
+  console.log("allChats", allChats);
   return (
     <div className="allchats-wrap">
       {loggedInUser == null ? null : allChats && allChats.length ? (

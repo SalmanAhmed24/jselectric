@@ -95,13 +95,13 @@ export default function TaskTable({
               <TableRow>
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Current Date</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Assigned To</TableCell>
                 <TableCell style={{ minWidth: 150 }}>User</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Task Priority</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Task Category</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Task Status</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Due Date</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Module</TableCell>
-                <TableCell style={{ minWidth: 150 }}>Assigned To</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Description</TableCell>
               </TableRow>
             </TableHead>
@@ -156,6 +156,14 @@ export default function TaskTable({
                       <TableCell>
                         {moment(i.currentDate).format("MM-DD-YYYY")}
                       </TableCell>
+                      <TableCell>
+                        {i.assignedTo &&
+                          i.assignedTo.map((inner, ind) => {
+                            return i.assignedTo.length - 1 == ind
+                              ? `${inner.fullname}`
+                              : `${inner.fullname},`;
+                          })}
+                      </TableCell>
                       <TableCell>{i.user}</TableCell>
                       <TableCell>{i.taskPriority}</TableCell>
                       <TableCell>{i.taskCategory}</TableCell>
@@ -169,14 +177,6 @@ export default function TaskTable({
                             return i.selectedModule.length - 1 == ind
                               ? `${inner}`
                               : `${inner},`;
-                          })}
-                      </TableCell>
-                      <TableCell>
-                        {i.assignedTo &&
-                          i.assignedTo.map((inner, ind) => {
-                            return i.assignedTo.length - 1 == ind
-                              ? `${inner.fullname}`
-                              : `${inner.fullname},`;
                           })}
                       </TableCell>
                       <TableCell>{i.description}</TableCell>
