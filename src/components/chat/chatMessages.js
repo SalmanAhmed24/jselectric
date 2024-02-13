@@ -197,7 +197,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
             className={`${poppins.className} send-msg-btn`}
           />
         </div>
-        <div className="radio-btn-wrap">
+        {/* <div className="radio-btn-wrap">
           <RadioGroup
             className={poppins.className}
             id="radio-group-component-1"
@@ -220,7 +220,7 @@ function ChatMessages({ currentChat, loggedInUser }) {
               onChange={(value) => setSelectedClient(value)}
             />
           ) : null}
-        </div>
+        </div> */}
       </form>
     </div>
   );
