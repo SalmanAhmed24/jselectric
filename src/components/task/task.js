@@ -45,7 +45,10 @@ function Task({ user }) {
               }
             });
           });
-          setAllTasks(tasks);
+          const taskWithoutComp = tasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskWithoutComp);
           setLoading(false);
         })
         .catch((err) => {
@@ -82,13 +85,19 @@ function Task({ user }) {
               }
             });
           });
-          setAllTasks(tasks);
+          const taskWithoutComp = tasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskWithoutComp);
           setLoading(false);
         } else if (activeTab == "Task Created") {
           const filteredTasks = res.data.allTasks.filter(
             (inner) => inner.user == user.userInfo.fullname
           );
-          setAllTasks(filteredTasks);
+          const taskCreatedWithoutComp = filteredTasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskCreatedWithoutComp);
           setLoading(false);
         } else {
           const filteredTasks = res.data.allTasks
@@ -139,7 +148,10 @@ function Task({ user }) {
             }
           });
         });
-        setAllTasks(tasks);
+        const taskWithoutComp = tasks.filter(
+          (i) => i.taskStatus !== "Completed"
+        );
+        setAllTasks(taskWithoutComp);
         setLoading(false);
       })
       .catch((err) => {
@@ -156,7 +168,10 @@ function Task({ user }) {
         const filteredTasks = res.data.allTasks.filter(
           (inner) => inner.user == user.userInfo.fullname
         );
-        setAllTasks(filteredTasks);
+        const taskCreatedWithoutComp = filteredTasks.filter(
+          (i) => i.taskStatus !== "Completed"
+        );
+        setAllTasks(taskCreatedWithoutComp);
         setLoading(false);
       })
       .catch((err) => {
@@ -197,13 +212,19 @@ function Task({ user }) {
               }
             });
           });
-          setAllTasks(tasks);
+          const taskWithoutComp = tasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskWithoutComp);
           setLoading(false);
         } else if (activeTab == "Task Created") {
           const filteredTasks = res.data.allTasks.filter(
             (inner) => inner.user == user.userInfo.fullname
           );
-          setAllTasks(filteredTasks);
+          const taskCreatedWithoutComp = filteredTasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskCreatedWithoutComp);
           setLoading(false);
         } else {
           const filteredTasks = res.data.allTasks
