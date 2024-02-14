@@ -25,7 +25,10 @@ function Navbar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
+  const [filteredNot, setFilteredNot] = useState([]);
   useEffect(() => {
+    const result = removedLoggedInUser(notification);
+    setFilteredNot(result);
     channel = pusher.subscribe("chat-live");
     channel.bind("add-message", function (data) {
       if (notification.length == 0) {
@@ -47,12 +50,33 @@ function Navbar() {
     router.push("/chat");
     dispatch(storeNotification([]));
   };
-  const filteredNot =
-    user.user == null
-      ? []
-      : notification.filter(
-          (i) => user && user.user.userInfo.id !== i.sender._id
-        );
+  const removedLoggedInUser = (notificationObj) => {
+    var receiverArr = [];
+    notificationObj.forEach((i) => {
+      i.chat.users.forEach((element) => {
+        if (element.fullname !== i.sender.fullname) {
+          receiverArr = [
+            {
+              fullname: element.fullname,
+              latestMsg: i.content,
+              chat: i.chat,
+              sender: i.sender.fullname,
+            },
+            ...receiverArr,
+          ];
+        }
+      });
+    });
+    return receiverArr;
+  };
+  console.log("this is notification", notification);
+  // const filteredNot =
+  //   user.user == null
+  //     ? []
+  //     : notification.filter(
+  //         (i) => user && user.user.userInfo.id !== i.sender._id
+  //       );
+  console.log("this is filterNot", filteredNot);
   return (
     <>
       {user.user == null || user.user.error ? null : (
@@ -107,11 +131,38 @@ function Navbar() {
                 <img src="./chat.png" className="chat-img" />
               </Link>
               {filteredNot.length ? (
-                <span className={`${poppins.className} notification-ind`}>
-                  {filteredNot.length}
-                </span>
+                filteredNot.find(
+                  (i) => i.sender == user.user.userInfo.fullname
+                ) ? null : filteredNot.find(
+                    (i) => i.fullname == user.user.userInfo.fullname
+                  ) ? (
+                  <span className={`${poppins.className} notification-ind`}>
+                    {filteredNot.length}
+                  </span>
+                ) : null
               ) : null}
               {filteredNot.length ? (
+                filteredNot.find(
+                  (i) => i.sender == user.user.userInfo.fullname
+                ) ? null : filteredNot.find(
+                    (i) => i.fullname == user.user.userInfo.fullname
+                  ) ? (
+                  <div className="notification-bar">
+                    {filteredNot.map((i) => {
+                      return (
+                        <p
+                          onClick={() => handleNotification(i.chat)}
+                          key={i._id}
+                          className={`${poppins.className} not-msg`}
+                        >
+                          Message from {i.sender}
+                        </p>
+                      );
+                    })}
+                  </div>
+                ) : null
+              ) : null}
+              {/* {filteredNot.length ? (
                 <div className="notification-bar">
                   {filteredNot.map((i) => {
                     return (
@@ -125,7 +176,7 @@ function Navbar() {
                     );
                   })}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
             <button
               className={`${poppins.className} logout`}
