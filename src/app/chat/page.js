@@ -1,65 +1,116 @@
 "use client";
 import { Poppins } from "next/font/google";
-import "./style.scss";
-const poppins = Poppins({
-  weight: ["300", "500", "700", "800"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
 import React, { useState, useEffect } from "react";
-import ChatList from "../../components/chat/chatlist";
-import ChatMessages from "../../components/chat/chatMessages";
-
-import { storeAllChat } from "../../store/slices/allChatSlice";
-import { useSelector, useDispatch } from "react-redux";
+import CreateChatModal from "../../components/subComponents/modal/createChat";
+import ChatList from "../../components/chat/chatList";
+import LoaderComp from "../../components/loader";
+import "./style.scss";
 import axios from "axios";
-import { apiPath } from "@/utils/routes";
-import { storeCurrentChat } from "@/store/slices/chatSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-function Chat() {
+import { apiPath } from "@/utils/routes";
+import { pusherClient } from "@/utils/pusher";
+const poppins = Poppins({
+  weight: ["300", "500", "600"],
+  subsets: ["latin"],
+  style: ["normal"],
+});
+function ChatPage() {
+  const [createChatModal, setCreateChatModal] = useState(false);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allChats, setAllChats] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const currentUser = useSelector((state) => state.user.user);
   const router = useRouter();
-  const loggedInUser = useSelector((state) =>
-    state.user.user == null ? null : state.user.user.userInfo
-  );
-  const currentChat = useSelector((state) => state.currentChat.currentChat);
+
   useEffect(() => {
-    if (loggedInUser == null) {
-      router.push("/");
-    } else {
-      getAllChats();
+    if (currentUser && currentUser.userInfo && currentUser.userInfo == null) {
+      router.push("/login");
     }
-  }, []);
-  const dispatch = useDispatch();
-  const getAllChats = () => {
-    axios
-      .get(
-        `${apiPath.prodPath}/api/chats/${
-          loggedInUser == null ? null : loggedInUser.id
-        }`
-      )
-      .then((res) => {
-        dispatch(storeAllChat(res.data.allChats));
-        if (res.data.allChats && res.data.allChats.length) {
-          dispatch(storeCurrentChat(res.data.allChats[0]));
+    getUsers();
+    getChats();
+  }, [currentUser]);
+  useEffect(() => {
+    console.log("cr user", currentUser);
+    if (currentUser !== undefined && currentUser !== null) {
+      pusherClient.subscribe(currentUser.userInfo.id);
+      pusherClient.bind("update-chat", handleUpdatedChat);
+
+      return () => {
+        if (currentUser !== undefined && currentUser !== null) {
+          pusherClient.unsubscribe(currentUser.userInfo.id);
+          pusherClient.unbind("update-chat", handleUpdatedChat);
+        }
+      };
+    }
+  }, [currentUser]);
+  const handleUpdatedChat = (updatedChat) => {
+    console.log("here", updatedChat);
+
+    setAllChats((allChats) =>
+      allChats.map((chat) => {
+        if (chat._id === updatedChat.id) {
+          return { ...chat, messages: updatedChat.messages };
+        } else {
+          return chat;
         }
       })
-      .catch((error) => console.log(error));
+    );
   };
-
+  const getUsers = async () => {
+    setLoader(true);
+    await axios
+      .get(`${apiPath.prodPath}/api/users/`)
+      .then((res) => {
+        setAllUsers(res.data.allUsers);
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const getChats = async () => {
+    if (currentUser && currentUser.userInfo && currentUser.userInfo !== null) {
+      setLoader(true);
+      await axios
+        .get(`${apiPath.devPath}/api/chat/${currentUser.userInfo.id}`)
+        .then((res) => {
+          setAllChats(res.data.chat);
+          setLoader(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  const handleCreateModal = () => {
+    setCreateChatModal(!createChatModal);
+  };
   return (
-    <div className="chat-wrap">
-      <div className="chat-contacts">
-        <div className={poppins.className}>
-          <ChatList />
+    <section className={`${poppins.className} chat-wrap-main`}>
+      <div className="chat-btn-wrap">
+        <h1>Create a Single or Group chat</h1>
+        <button onClick={handleCreateModal} className={`${poppins.className}`}>
+          Create Chat
+        </button>
+      </div>
+      <div className="chat-inner-con">
+        <div className="chatlist-wrap">
+          {loader && currentUser && currentUser.userInfo !== null ? (
+            <LoaderComp />
+          ) : (
+            <ChatList allChats={allChats} currentUser={currentUser.userInfo} />
+          )}
         </div>
       </div>
-      <div className="chat-message-con">
-        {currentChat == null ? null : (
-          <ChatMessages currentChat={currentChat} loggedInUser={loggedInUser} />
-        )}
-      </div>
-    </div>
+      <CreateChatModal
+        modalFlag={createChatModal}
+        modalClose={handleCreateModal}
+        allUsers={allUsers}
+        currentUser={currentUser}
+      />
+    </section>
   );
 }
 
-export default Chat;
+export default ChatPage;
