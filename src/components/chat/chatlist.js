@@ -1,34 +1,108 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import ChatBox from "./chatBox";
 import { apiPath } from "@/utils/routes";
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
-const ChatList = ({ allChats, currentUser }) => {
-  const handleSeen = (chatId) => {
-    console.log("currentUser", currentUser);
-    const dataObj = {
-      currentUserId: currentUser.id,
-    };
-    axios
-      .post(`${apiPath.devPath}/api/chat/seenBy/${chatId}`, dataObj)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+import { pusherClient } from "@/utils/pusher";
+import { useSelector } from "react-redux";
+
+const ChatList = ({ currentUser, currentChatId }) => {
+  const [allChats, setAllChats] = useState([]);
+  const [loader, setLoader] = useState(false);
+  useEffect(() => {
+    if (currentUser && currentUser.userInfo && currentUser.userInfo !== null) {
+      getChats();
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    console.log("currrent User", currentUser);
+    if (
+      currentUser !== undefined &&
+      currentUser !== null &&
+      currentUser.userInfo !== undefined
+    ) {
+      pusherClient.subscribe(currentUser.userInfo.id);
+      const handleUpdatedChat = (updatedChat) => {
+        console.log("updatedChat", updatedChat);
+        console.log("this is chat", allChats);
+        setAllChats((allChats) =>
+          allChats.map((chat) => {
+            if (chat._id === updatedChat.id) {
+              return { ...chat, messages: updatedChat.messages };
+            } else {
+              return chat;
+            }
+          })
+        );
+      };
+      const handleNewChat = (newChat) => {
+        console.log("this is chat", allChats);
+        console.log("this is new chat", newChat);
+        setAllChats((allChats) => [...allChats, newChat]);
+      };
+      pusherClient.bind("update-chat", handleUpdatedChat);
+      pusherClient.bind("new-chat", handleNewChat);
+      return () => {
+        if (currentUser !== undefined && currentUser !== null) {
+          pusherClient.unsubscribe(currentUser.userInfo.id);
+          pusherClient.unbind("update-chat", handleUpdatedChat);
+          pusherClient.unbind("new-chat", handleNewChat);
+        }
+      };
+    }
+  }, [currentUser]);
+
+  const getChats = async () => {
+    setLoader(true);
+    if (currentUser && currentUser.userInfo && currentUser.userInfo !== null) {
+      setLoader(true);
+      await axios
+        .get(`${apiPath.prodPath}/api/chat/${currentUser.userInfo.id}`)
+        .then((res) => {
+          setAllChats(res.data.chat);
+          console.log("called", res.data.chat);
+          setLoader(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
+  // const handleSeen = (chatId) => {
+  //   const dataObj = {
+  //     currentUserId: currentUser.id,
+  //   };
+  //   axios
+  //     .post(`${apiPath.prodPath}/api/chat/seenBy/${chatId}`, dataObj)
+  //     .then((res) => {})
+  //     .catch((err) => console.log(err));
+  // };
   const router = useRouter();
-  return allChats.map((chat, index) => {
-    return (
-      <div
-        onClick={() => {
-          handleSeen(chat.id);
-          router.push(`/chat/${chat.id}`);
-        }}
-        key={chat.id}
-        className={chat.isGroup ? "group-chatbox" : "single-chatbox"}
-      >
-        <ChatBox chat={chat} index={index} user={currentUser} />
-      </div>
-    );
-  });
+  return loader ? (
+    <p>Loading...</p>
+  ) : (
+    allChats &&
+      allChats.map((chat, index) => {
+        return (
+          <div
+            // onClick={() => {
+            //   handleSeen(chat.id);
+            //   router.push(`/chat/${chat.id}`);
+            // }}
+            key={chat.id}
+            className={chat.isGroup ? "group-chatbox" : "single-chatbox"}
+          >
+            <ChatBox
+              chat={chat}
+              currentChatId={currentChatId}
+              index={index}
+              user={currentUser}
+            />
+          </div>
+        );
+      })
+  );
 };
 export default ChatList;

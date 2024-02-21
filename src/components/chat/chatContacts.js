@@ -26,7 +26,7 @@ const ChatContacts = ({ usersList, loggedInUser }) => {
       name: contacts.length <= 1 ? "" : groupName,
     };
     await axios
-      .post(`${apiPath.devPath}/api/chat/addChat`, dataObj)
+      .post(`${apiPath.prodPath}/api/chat/addChat`, dataObj)
       .then((res) => {
         if (res.data.error == false) {
           router.push(`/chat/${res.data.chat._id}`);

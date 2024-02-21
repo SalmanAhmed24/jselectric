@@ -1,36 +1,52 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import { apiPath } from "@/utils/routes";
-import LoaderComp from "../loader";
 import { Poppins } from "next/font/google";
 import { pusherClient } from "../../utils/pusher/index";
+import { useDispatch, useSelector } from "react-redux";
 import MessageBox from "../../components/chat/messageBox";
+import { storeRefreshChat } from "@/store/slices/refreshChat";
 const poppins = Poppins({
   weight: ["300", "500", "600"],
   subsets: ["latin"],
   style: ["normal"],
 });
-function ChatDetailComp({ chatId, currentUser, refresh }) {
-  const [chat, setChat] = useState([]);
+function ChatDetailComp({ chatId, currentUser }) {
+  const [chat, setChat] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${apiPath.devPath}/api/chat/?chatId=${chatId}`)
-      .then((res) => {
-        console.log("####", res.data.chat);
-        setChat(res.data.chat);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-      });
-  }, []);
+    if (currentUser && chatId) getChatDetails();
+  }, [chatId, currentUser]);
+  const getChatDetails = async () => {
+    try {
+      setLoading(true);
+      await axios
+        .get(`${apiPath.prodPath}/api/chat/?chatId=${chatId}`)
+        .then((res) => {
+          setLoading(false);
+          setChat(res.data.chat);
+        })
+        .catch((error) => {
+          setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     pusherClient.subscribe(chatId);
+    const handleMessage = async (newMessage) => {
+      console.log("this is new message", newMessage);
+      setChat((prevChat) => {
+        console.log("this is prev chat", prevChat);
+        return {
+          ...prevChat,
+          messages: [...prevChat.messages, newMessage],
+        };
+      });
+    };
     pusherClient.bind("new-message", handleMessage);
-
     return () => {
       pusherClient.unsubscribe(chatId);
       pusherClient.unbind("new-message", handleMessage);
@@ -42,14 +58,7 @@ function ChatDetailComp({ chatId, currentUser, refresh }) {
       behavior: "smooth",
     });
   }, [chat?.messages]);
-  const handleMessage = async (newMessage) => {
-    setChat((prevChat) => {
-      return {
-        ...prevChat,
-        messages: [...prevChat.messages, newMessage],
-      };
-    });
-  };
+
   const handleChatSend = (e) => {
     e.preventDefault();
     const dataObj = {
@@ -58,39 +67,42 @@ function ChatDetailComp({ chatId, currentUser, refresh }) {
       text: message,
     };
     axios
-      .post(`${apiPath.devPath}/api/message/addMessage`, dataObj)
+      .post(`${apiPath.prodPath}/api/message/addMessage`, dataObj)
       .then((res) => {
-        console.log(res);
         setMessage("");
-        refresh();
       })
       .catch((err) => console.log(err));
   };
+  console.log("detailComp chat", chat);
   const filteredChatUser =
     chat !== undefined &&
     chat.isGroup == false &&
     chat.members.filter((i) => i._id !== currentUser.id);
   return loading ? (
-    <LoaderComp />
+    <p>Loading</p>
   ) : chat.length == 0 && chat.members == undefined ? (
     <p>No Chats found</p>
   ) : (
     <div className="chat-detail-inner">
-      <div className="top-section">
-        {chat && chat.isGroup == true ? (
-          <p>
-            {chat.name} <span>({chat.members.length} members)</span>
-          </p>
-        ) : (
-          <p>
-            {chat.length == 0 && chat.members == undefined
-              ? ""
-              : filteredChatUser[0].fullname}
-          </p>
-        )}
-      </div>
+      {chat == undefined ? null : (
+        <div className="top-section">
+          {chat && chat.isGroup == true ? (
+            <p>
+              {chat.name} <span>({chat.members.length} members)</span>
+            </p>
+          ) : (
+            <p>
+              {chat == undefined ||
+              chat.length == 0 ||
+              chat.members == undefined
+                ? ""
+                : filteredChatUser[0].fullname}
+            </p>
+          )}
+        </div>
+      )}
       <div className="middle-content">
-        {chat !== undefined
+        {chat !== undefined && chat.messages !== undefined
           ? chat.messages.map((message, index) => {
               return (
                 <MessageBox

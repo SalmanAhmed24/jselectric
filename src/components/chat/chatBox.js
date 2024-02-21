@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-function ChatBox({ chat, user, index }) {
+import { useRouter } from "next/navigation";
+function ChatBox({ chat, user, index, currentChatId }) {
+  const router = useRouter();
   const otherMembers = chat?.members?.filter(
     (member) => member._id !== user.id
   );
@@ -18,19 +20,22 @@ function ChatBox({ chat, user, index }) {
     return time.join(""); // return adjusted time or original string
   }
   const lastMessage =
-    chat &&
-    chat.messages &&
-    chat.messages.length > 0 &&
-    chat.messages[chat && chat.messages.length - 1];
+    chat?.messages?.length > 0 && chat?.messages[chat?.messages.length - 1];
   const filteredChatUser =
     chat !== undefined &&
     chat.isGroup == false &&
-    chat.members.filter((i) => i._id !== user.id);
-  const seen = lastMessage.seenBy.find((member) => member._id == user.id)
-    ? true
+    chat.members.filter((i) => i._id !== user.userInfo.id);
+  const seen = lastMessage
+    ? lastMessage.seenBy.find((member) => member._id == user.userInfo.id)
+      ? true
+      : false
     : false;
+  console.log("last message", lastMessage);
   return (
-    <div className="chatbox-inner-wrap">
+    <div
+      className="chatbox-inner-wrap"
+      onClick={() => router.push(`/chat/${chat.id}`)}
+    >
       <div className="top">
         {chat?.isGroup ? (
           <span className="name">{chat?.name}</span>

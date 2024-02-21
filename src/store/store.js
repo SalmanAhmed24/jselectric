@@ -7,6 +7,7 @@ import userSlice from "./slices/userSlice";
 import chatSlice from "./slices/chatSlice";
 import allChatSlice from "./slices/allChatSlice";
 import notificationSlice from "./slices/notification";
+import refreshChatSlice from "./slices/refreshChat";
 const isClient = typeof window !== "undefined";
 let persistedReducer;
 if (isClient) {
@@ -19,6 +20,7 @@ if (isClient) {
     currentChat: chatSlice,
     allChats: allChatSlice,
     notification: notificationSlice,
+    refreshChat: refreshChatSlice,
   });
   persistedReducer = persistReducer(persistConfig, rootReducers);
 } else {
@@ -26,6 +28,7 @@ if (isClient) {
     user: userSlice,
     chats: chatSlice,
     notification: notificationSlice,
+    refreshChat: refreshChatSlice,
   });
 }
 export const store = configureStore({
