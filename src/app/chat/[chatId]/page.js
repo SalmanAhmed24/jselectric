@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useRouter, useParams } from "next/navigation";
-import ChatList from "../../../components/chat/chatList";
+import ChatList from "../../../components/chat/chatlist";
 import ChatDetailsComp from "../../../components/chat/chatDetail";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";

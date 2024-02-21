@@ -2,7 +2,7 @@
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import CreateChatModal from "../../components/subComponents/modal/createChat";
-import ChatList from "../../components/chat/chatList";
+import ChatList from "../../components/chat/chatlist";
 import "./style.scss";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
