@@ -37,7 +37,10 @@ const ChatContacts = ({ usersList, loggedInUser }) => {
           });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log("here");
+        console.log(err);
+      });
   };
   return (
     <div className={`${poppins.className} main-contact-list-con`}>

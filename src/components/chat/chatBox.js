@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { storeNotification } from "@/store/slices/notification";
+import { useDispatch, useSelector } from "react-redux";
 function ChatBox({ chat, user, index, currentChatId }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(storeNotification(chat));
+  }, [chat]);
   const router = useRouter();
   const otherMembers = chat?.members?.filter(
     (member) => member._id !== user.id
@@ -30,7 +36,6 @@ function ChatBox({ chat, user, index, currentChatId }) {
       ? true
       : false
     : false;
-  console.log("last message", lastMessage);
   return (
     <div
       className="chatbox-inner-wrap"

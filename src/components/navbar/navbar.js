@@ -21,60 +21,52 @@ import { storeUser } from "../../store/slices/userSlice";
 
 function Navbar() {
   const user = useSelector((state) => state.user);
-  // const notification = useSelector((state) => state.notification.notification);
+  const notification = useSelector((state) => state.notification.notification);
   const dispatch = useDispatch();
   const router = useRouter();
   const path = usePathname();
-  // const [filteredNot, setFilteredNot] = useState([]);
-  useEffect(() => {
-    // const result = removedLoggedInUser(notification);
-    // setFilteredNot(result);
-    // channel = pusher.subscribe("chat-live");
-    // channel.bind("add-message", function (data) {
-    //   if (notification.length == 0) {
-    //     dispatch(storeNotification([data.message]));
-    //   } else {
-    //     dispatch(storeNotification([data.message, ...notification]));
-    //   }
-    // });
-    // return () => {
-    //   pusher.unsubscribe("chat-live");
-    // };
-  }, [user]);
+  const [filterNotification, setFilteredNotification] = useState([]);
   const handleLogout = () => {
     dispatch(storeUser(null));
     router.push("/login");
   };
-  // const handleNotification = (chat) => {
-  //   dispatch(storeCurrentChat(chat));
-  //   router.push("/chat");
-  //   dispatch(storeNotification([]));
-  // };
-  // const removedLoggedInUser = (notificationObj) => {
-  //   var receiverArr = [];
-  //   notificationObj.forEach((i) => {
-  //     i.chat.users.forEach((element) => {
-  //       if (element.fullname !== i.sender.fullname) {
-  //         receiverArr = [
-  //           {
-  //             fullname: element.fullname,
-  //             latestMsg: i.content,
-  //             chat: i.chat,
-  //             sender: i.sender.fullname,
-  //           },
-  //           ...receiverArr,
-  //         ];
-  //       }
-  //     });
-  //   });
-  //   return receiverArr;
-  // };
-  // const filteredNot =
-  //   user.user == null
-  //     ? []
-  //     : notification.filter(
-  //         (i) => user && user.user.userInfo.id !== i.sender._id
-  //       );
+  useEffect(() => {
+    if (
+      notification &&
+      notification !== undefined &&
+      notification.length !== 0
+    ) {
+      const filtered = {
+        ...notification,
+        messages: notification.messages[notification.messages.length - 1],
+      };
+      setFilteredNotification(filtered);
+    }
+  }, [notification]);
+  const test =
+    filterNotification !== undefined &&
+    user !== undefined &&
+    user.user !== null &&
+    user.user !== undefined &&
+    user.user.userInfo !== undefined
+      ? filterNotification.messages
+        ? filterNotification.messages.sender.id !== user.user.userInfo.id
+          ? filterNotification.members.filter(
+              (i) => i.id == user.user.userInfo.id
+            ).length
+            ? filterNotification.messages.seenBy.filter(
+                (i) => i._id == user.user.userInfo.id
+              ).length
+              ? false
+              : true
+            : false
+          : false
+        : false
+      : false;
+  console.log("test", test);
+  const clearNotification = () => {
+    dispatch(storeNotification([]));
+  };
   return (
     <>
       {user.user == null || user.user.error ? null : (
@@ -121,60 +113,24 @@ function Navbar() {
           <div className="logout-wrap">
             <div className="img-wrap">
               <Link href={"/task"}>
-                <img src="./checklist.png" className="chat-img" />
+                <img
+                  src={
+                    path.includes("/chat/")
+                      ? "../checklist.png"
+                      : "./checklist.png"
+                  }
+                  className="chat-img"
+                />
               </Link>
             </div>
             <div className="img-wrap" style={{ position: "relative" }}>
-              <Link href={"/chat"}>
-                <img src="./chat.png" className="chat-img" />
+              <Link href={"/chat"} onClick={clearNotification}>
+                <img
+                  src={path.includes("/chat/") ? "../chat.png" : "./chat.png"}
+                  className="chat-img"
+                />
               </Link>
-              {/* {filteredNot.length ? (
-                filteredNot.find(
-                  (i) => i.sender == user.user.userInfo.fullname
-                ) ? null : filteredNot.find(
-                    (i) => i.fullname == user.user.userInfo.fullname
-                  ) ? (
-                  <span className={`${poppins.className} notification-ind`}>
-                    {filteredNot.length}
-                  </span>
-                ) : null
-              ) : null} */}
-              {/* {filteredNot.length ? (
-                filteredNot.find(
-                  (i) => i.sender == user.user.userInfo.fullname
-                ) ? null : filteredNot.find(
-                    (i) => i.fullname == user.user.userInfo.fullname
-                  ) ? (
-                  <div className="notification-bar">
-                    {filteredNot.map((i) => {
-                      return (
-                        <p
-                          onClick={() => handleNotification(i.chat)}
-                          key={i._id}
-                          className={`${poppins.className} not-msg`}
-                        >
-                          Message from {i.sender}
-                        </p>
-                      );
-                    })}
-                  </div>
-                ) : null
-              ) : null} */}
-              {/* {filteredNot.length ? (
-                <div className="notification-bar">
-                  {filteredNot.map((i) => {
-                    return (
-                      <p
-                        onClick={() => handleNotification(i.chat)}
-                        key={i._id}
-                        className={`${poppins.className} not-msg`}
-                      >
-                        Message from {i.sender.fullname}
-                      </p>
-                    );
-                  })}
-                </div>
-              ) : null} */}
+              {test ? <p className="dot-red"></p> : null}
             </div>
             <button
               className={`${poppins.className} logout`}

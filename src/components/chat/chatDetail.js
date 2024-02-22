@@ -3,9 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { apiPath } from "@/utils/routes";
 import { Poppins } from "next/font/google";
 import { pusherClient } from "../../utils/pusher/index";
-import { useDispatch, useSelector } from "react-redux";
+
 import MessageBox from "../../components/chat/messageBox";
-import { storeRefreshChat } from "@/store/slices/refreshChat";
 const poppins = Poppins({
   weight: ["300", "500", "600"],
   subsets: ["latin"],
@@ -73,7 +72,6 @@ function ChatDetailComp({ chatId, currentUser }) {
       })
       .catch((err) => console.log(err));
   };
-  console.log("detailComp chat", chat);
   const filteredChatUser =
     chat !== undefined &&
     chat.isGroup == false &&

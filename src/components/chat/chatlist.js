@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { pusherClient } from "@/utils/pusher";
 import { useSelector } from "react-redux";
-
 const ChatList = ({ currentUser, currentChatId }) => {
   const [allChats, setAllChats] = useState([]);
   const [loader, setLoader] = useState(false);
+  const refreshChat = useSelector((state) => state.refreshChat.refreshChat);
   useEffect(() => {
     if (currentUser && currentUser.userInfo && currentUser.userInfo !== null) {
       getChats();
@@ -17,7 +17,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log("currrent User", currentUser);
+    console.log("crrrr@@@@", currentUser);
     if (
       currentUser !== undefined &&
       currentUser !== null &&
