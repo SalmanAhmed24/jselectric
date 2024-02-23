@@ -25,8 +25,6 @@ const ChatList = ({ currentUser, currentChatId }) => {
     ) {
       pusherClient.subscribe(currentUser.userInfo.id);
       const handleUpdatedChat = (updatedChat) => {
-        console.log("updatedChat", updatedChat);
-        console.log("this is chat", allChats);
         setAllChats((allChats) =>
           allChats.map((chat) => {
             if (chat._id === updatedChat.id) {
@@ -38,8 +36,6 @@ const ChatList = ({ currentUser, currentChatId }) => {
         );
       };
       const handleNewChat = (newChat) => {
-        console.log("this is chat", allChats);
-        console.log("this is new chat", newChat);
         setAllChats((allChats) => [...allChats, newChat]);
       };
       pusherClient.bind("update-chat", handleUpdatedChat);

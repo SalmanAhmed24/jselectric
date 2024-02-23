@@ -222,6 +222,15 @@ export default function Settings() {
             >
               Phase
             </li>
+            <li
+              className={
+                activeLink == "Reimbursal Type"
+                  ? "activeLink simpleLink"
+                  : "simpleLink"
+              }
+            >
+              Reimbursal Type
+            </li>
           </ul>
         ) : null}
       </section>
@@ -280,6 +289,9 @@ export default function Settings() {
           <PicklistComp picklistName={"Job Type"} />
         ) : null}
         {activeLink == "Phase" ? <PicklistComp picklistName={"Phase"} /> : null}
+        {activeLink == "Reimbursal Type" ? (
+          <PicklistComp picklistName={"Reimbursal Type"} />
+        ) : null}
       </section>
     </main>
   );

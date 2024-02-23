@@ -93,3 +93,51 @@
     width: 100% !important;
     height: 100% !important;
 }
+.toolModal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.modal-tool-wrap{
+    width: 90vw;
+    height: auto;
+    padding: 30px;
+    align-self: center;
+    background-color: #fff;
+    h1{
+        font-weight: bold;
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .close{
+        text-align: right;
+        font-size: 22px;
+        font-weight: bold;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+.row{
+    background-color: antiquewhite;
+    display: flex;
+    margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 10px;
+            
+    flex-wrap: wrap;
+        .single-item{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            margin-right: 20px;
+            label{
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+        }
+}
+.swal2-container{
+    z-index: 33333333;
+}

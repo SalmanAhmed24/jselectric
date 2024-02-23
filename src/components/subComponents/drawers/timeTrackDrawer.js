@@ -8,6 +8,7 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Select from "react-select";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
@@ -27,7 +28,27 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
   const [lunchEndTime, setLunchEndTime] = useState("");
   const [loggedInUser, setLoggedInUser] = useState("");
   const [notes, setNotes] = useState("");
-
+  const [reimbursalCheckbox, setReimbursalCheckbox] = useState([]);
+  const [reimbursalOpt, setReimbursalOpt] = useState("");
+  const [reimbursalArr, setReimbursalArr] = useState([
+    {
+      id: uuidv4(),
+      reimbursalType: "",
+      note: "",
+      amount: "",
+    },
+  ]);
+  const addNewForm = () => {
+    const newForm = {
+      id: uuidv4(),
+      reimbursalType: "",
+      amount: "",
+      note: "",
+    };
+    setReimbursalArr((arr) => {
+      return [...arr, newForm];
+    });
+  };
   const options = [
     { value: "spectrum", label: "Spectrum", disabled: false },
     { value: "lunch", label: "Lunch", disabled: false },
@@ -58,6 +79,18 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       })
       .catch((err) => console.log(err));
     axios
+      .get(`${apiPath.prodPath}/api/reimbursalType/`)
+      .then((res) => {
+        setReimbursalOpt(
+          res.data.reimbursalTypes
+            .map((i) => {
+              return { label: i.name, value: i.name };
+            })
+            .sort((a, b) => a.label.localeCompare(b.label))
+        );
+      })
+      .catch((err) => console.log(err));
+    axios
       .get(`${apiPath.prodPath}/api/phase`)
       .then((res) => {
         setPhaseOpt(
@@ -74,7 +107,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       label: timeTrackData.employee,
       value: timeTrackData.employee,
     });
-    setJobDescription(timeTrackData.job);
+    setJobDescription(timeTrackData.jobDescription);
     setPhase({ label: timeTrackData.phase, value: timeTrackData.phase });
     setDate(timeTrackData.date);
     setStartTime(timeTrackData.startTime);
@@ -91,6 +124,32 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
     );
     setLunchStartTime(timeTrackData.lunch ? timeTrackData.lunchStartTime : "");
     setLunchEndTime(timeTrackData.lunch ? timeTrackData.lunchEndTime : "");
+    setReimbursalCheckbox(
+      timeTrackData.reimbursalFlag == "reimbursal" ? ["reimbursal"] : []
+    );
+    const modifiedValues =
+      timeTrackData.reimbursal && timeTrackData.reimbursal.length
+        ? timeTrackData.reimbursal.map((i) => {
+            return {
+              id: i._id,
+              reimbursalType: {
+                label: i.reimbursalType,
+                value: i.reimbursalType,
+              },
+              amount: i.amount,
+              note: i.note,
+            };
+          })
+        : [
+            {
+              id: uuidv4(),
+              reimbursalType: "",
+              note: "",
+              amount: "",
+            },
+          ];
+    console.log("wow modified", modifiedValues);
+    setReimbursalArr(modifiedValues);
   }, [open]);
   const handleEditTimeTrack = (e) => {
     e.preventDefault();
@@ -114,6 +173,13 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
         });
       }
     }
+    const filteredData = reimbursalArr.map((i) => {
+      return {
+        reimbursalType: i.reimbursalType.value,
+        amount: i.amount,
+        note: i.note,
+      };
+    });
     const dataObj = {
       employee: employee.value,
       jobDescription: jobDescription,
@@ -128,6 +194,8 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       lunchEndTime,
       lunchStartTime,
       user: loggedInUser,
+      reimbursalFlag: reimbursalCheckbox[0] == "reimbursal" ? "reimbursal" : "",
+      reimbursal: filteredData,
     };
 
     editTimeTrackData(dataObj, timeTrackData._id);
@@ -145,6 +213,15 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
     setLunchStartTime("");
     setCheckbox([]);
     setNotes("");
+    setReimbursalArr([
+      {
+        id: uuidv4(),
+        reimbursalType: "",
+        note: "",
+        amount: "",
+      },
+    ]);
+    setReimbursalCheckbox([]);
   };
   const handleCheckbox = (value) => {
     const isLunch = value.filter((i) => i == "lunch");
@@ -154,6 +231,42 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
     }
     setCheckbox(value);
   };
+  const handleReimCheckbox = (value) => {
+    setReimbursalCheckbox(value);
+  };
+  const handleReimbursalType = (e, i) => {
+    const result = reimbursalArr.map((el) => {
+      if (el.id == i.id) {
+        el.reimbursalType = e;
+      }
+      return el;
+    });
+    console.log("###", result);
+    setReimbursalArr(result);
+  };
+  const handleReimbursalAmount = (e, i) => {
+    const result = reimbursalArr.map((el) => {
+      if (el.id == i.id) {
+        el.amount = e.target.value;
+      }
+      return el;
+    });
+    setReimbursalArr(result);
+  };
+  const handleReimbursalNote = (e, i) => {
+    const result = reimbursalArr.map((el) => {
+      if (el.id == i.id) {
+        el.note = e.target.value;
+      }
+      return el;
+    });
+    console.log("###", result);
+    setReimbursalArr(result);
+  };
+  const handleRemoveEl = (i) => {
+    const filteredArr = reimbursalArr.filter((el) => el.id !== i.id);
+    setReimbursalArr(filteredArr);
+  };
   return (
     <Drawer
       anchor={"right"}
@@ -161,7 +274,10 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       onClose={onClose}
       className="employeeDrawer"
     >
-      <div className={`${poppins.className} innerDrawerCon`}>
+      <div
+        className={`${poppins.className} innerDrawerCon`}
+        style={{ width: "100%" }}
+      >
         <p className="close-modal" onClick={onClose}>
           &#10005;
         </p>
@@ -303,6 +419,81 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
               className={poppins.className}
             />
           </div>
+          <div className="input-wrap">
+            <CheckboxGroup
+              id="checkbox-group-2"
+              options={[
+                { value: "reimbursal", label: "Reimbursal", disabled: false },
+              ]}
+              value={reimbursalCheckbox}
+              onChange={handleReimCheckbox}
+            />
+          </div>
+          {reimbursalCheckbox[0] == "reimbursal" ? (
+            <span
+              className={`${poppins.className} btn-add`}
+              onClick={addNewForm}
+            >
+              Add Another Reimbursal
+            </span>
+          ) : null}
+          {reimbursalCheckbox[0] == "reimbursal"
+            ? reimbursalArr.map((i) => {
+                return (
+                  <div key={i.id} style={{ width: "100%", display: "flex" }}>
+                    <div className="input-wrap">
+                      <label className={poppins.className}>
+                        Reimbursal Type
+                      </label>
+                      <Select
+                        name={`reimbursalType${i.id}`}
+                        options={reimbursalOpt}
+                        value={i.reimbursalType}
+                        onChange={(e) => {
+                          handleReimbursalType(e, i);
+                        }}
+                        className={poppins.className}
+                        required={true}
+                      />
+                    </div>
+                    <div className="input-wrap">
+                      <label className={poppins.className}>Amount</label>
+                      <input
+                        name={`amount${i.id}`}
+                        placeholder="Enter Amount"
+                        value={i.amount}
+                        onChange={(e) => {
+                          handleReimbursalAmount(e, i);
+                        }}
+                        className={poppins.className}
+                        required={true}
+                      />
+                    </div>
+                    <div className="input-wrap">
+                      <label className={poppins.className}>Note</label>
+                      <textarea
+                        name={`note${i.id}`}
+                        placeholder="Enter Note"
+                        value={i.note}
+                        onChange={(e) => {
+                          handleReimbursalNote(e, i);
+                        }}
+                        className={poppins.className}
+                      />
+                    </div>
+                    {reimbursalArr.length > 1 ? (
+                      <span
+                        className="minus"
+                        style={{ fontSize: "22px" }}
+                        onClick={() => handleRemoveEl(i)}
+                      >
+                        &#9866;
+                      </span>
+                    ) : null}
+                  </div>
+                );
+              })
+            : null}
           <div className="sub-btn-wrap">
             <input
               className={`${poppins.className} addEmp`}

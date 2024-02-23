@@ -94,6 +94,9 @@ export default function PicklistTable({
     if (picklistName == "Phase") {
       apiUrl = `${apiPath.prodPath}/api/phase/${id}`;
     }
+    if (picklistName == "Reimbursal Type") {
+      apiUrl = `${apiPath.prodPath}/api/reimbursalType/${id}`;
+    }
     axios
       .patch(apiUrl, data)
       .then((res) => {
@@ -166,6 +169,12 @@ export default function PicklistTable({
         }
         if (picklistName == "Phase") {
           apiUrl = `${apiPath.prodPath}/api/phase/${id}`;
+        }
+        if (picklistName == "Phase") {
+          apiUrl = `${apiPath.prodPath}/api/phase/${id}`;
+        }
+        if (picklistName == "Reimbursal Type") {
+          apiUrl = `${apiPath.prodPath}/api/reimbursalType/${id}`;
         }
         axios
           .delete(apiUrl)

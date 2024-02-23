@@ -71,6 +71,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Phase") {
       apiUrl = `${apiPath.prodPath}/api/phase/`;
     }
+    if (picklistName == "Reimbursal Type") {
+      apiUrl = `${apiPath.prodPath}/api/reimbursalType/`;
+    }
     setLoading(true);
     axios
       .get(apiUrl)
@@ -128,6 +131,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Phase") {
           setPicklistData(res.data.phases);
+        }
+        if (picklistName == "Reimbursal Type") {
+          setPicklistData(res.data.reimbursalTypes);
         }
         setLoading(false);
       })
@@ -194,6 +200,9 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Phase") {
       url = `${apiPath.prodPath}/api/phase/addphase`;
+    }
+    if (picklistName == "Reimbursal Type") {
+      url = `${apiPath.prodPath}/api/reimbursalType/addReimbursalType`;
     }
     axios
       .post(url, data)
@@ -267,6 +276,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Phase") {
       url = `${apiPath.prodPath}/api/phase/`;
     }
+    if (picklistName == "Reimbursal Type") {
+      url = `${apiPath.prodPath}/api/reimbursalType/`;
+    }
     setLoading(true);
     axios
       .get(url)
@@ -324,6 +336,9 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Phase") {
           setPicklistData(res.data.phases);
+        }
+        if (picklistName == "Reimbursal Type") {
+          setPicklistData(res.data.reimbursalTypes);
         }
         setLoading(false);
       })

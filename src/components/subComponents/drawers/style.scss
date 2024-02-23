@@ -179,3 +179,24 @@
         width: fit-content;
     }
 }
+.rainbow-time-picker_input-container{
+    label{
+        align-self: flex-start;
+    }
+}
+.btn-add{
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px solid #000;
+    align-self: center;
+    &:hover{
+        cursor: pointer;
+    }
+}
+.minus{
+    &:hover{
+        cursor: pointer;
+    }
+}

@@ -12,6 +12,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import ReimbursalModal from "../modal/reimbursalModal";
 import moment from "moment";
 import "./table.scss";
 function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
@@ -19,12 +20,20 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openFlag, setOpenFlag] = useState(false);
   const [history, setHistory] = useState([]);
+  const [id, setId] = useState("");
+  const [modalFlag, setModalFlag] = useState(false);
+  const [modalData, setModalData] = useState([]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+  const handleReimModal = (id, reim) => {
+    setModalData(reim);
+    setId(id);
+    setModalFlag(!modalFlag);
   };
   function tConvert(time) {
     // Check correct time format and split into components
@@ -59,6 +68,8 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
               <TableCell style={{ minWidth: 150 }}>Spectrum</TableCell>
               <TableCell style={{ minWidth: 150 }}>Notes</TableCell>
               <TableCell style={{ minWidth: 150 }}>User</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Reimbursal Flag</TableCell>
+              <TableCell style={{ minWidth: 150 }}>Reimbursals</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -91,6 +102,29 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
                       </TableCell>
                       <TableCell>{row.notes}</TableCell>
                       <TableCell>{row.user}</TableCell>
+                      <TableCell>
+                        {row.reimbursalFlag == "reimbursal" ? "true" : "false"}
+                      </TableCell>
+                      <TableCell>
+                        {row.reimbursal && row.reimbursal.length ? (
+                          <button
+                            onClick={() =>
+                              handleReimModal(row.id, row.reimbursal)
+                            }
+                          >
+                            View
+                          </button>
+                        ) : (
+                          "none"
+                        )}
+                      </TableCell>
+                      {modalFlag && id == row._id ? (
+                        <ReimbursalModal
+                          openFlag={modalFlag}
+                          data={modalData}
+                          handleClose={() => setModalFlag(!modalFlag)}
+                        />
+                      ) : null}
                     </TableRow>
                   );
                 })}
