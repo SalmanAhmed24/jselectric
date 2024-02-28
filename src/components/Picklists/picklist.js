@@ -20,6 +20,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "User Type") {
       apiUrl = `${apiPath.prodPath}/api/userType/`;
     }
+    if (picklistName == "Checked Out") {
+      apiUrl = `${apiPath.prodPath}/api/checkedOut/`;
+    }
     if (picklistName == "Position") {
       apiUrl = `${apiPath.prodPath}/api/position/`;
     }
@@ -80,6 +83,9 @@ function PicklistComp({ picklistName }) {
       .then((res) => {
         if (picklistName == "User Type") {
           setPicklistData(res.data.userTypes);
+        }
+        if (picklistName == "Checked Out") {
+          setPicklistData(res.data.checkedOut);
         }
         if (picklistName == "Position") {
           setPicklistData(res.data.positions);
@@ -149,6 +155,9 @@ function PicklistComp({ picklistName }) {
     let url;
     if (picklistName == "User Type") {
       url = `${apiPath.prodPath}/api/userType/addUserType`;
+    }
+    if (picklistName == "Checked Out") {
+      url = `${apiPath.prodPath}/api/checkedOut/addCheckedOut`;
     }
     if (picklistName == "Position") {
       url = `${apiPath.prodPath}/api/position/addposition`;
@@ -225,6 +234,9 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "User Type") {
       url = `${apiPath.prodPath}/api/userType/`;
     }
+    if (picklistName == "Checked Out") {
+      url = `${apiPath.prodPath}/api/checkedOut/`;
+    }
     if (picklistName == "Position") {
       url = `${apiPath.prodPath}/api/position/`;
     }
@@ -285,6 +297,9 @@ function PicklistComp({ picklistName }) {
       .then((res) => {
         if (picklistName == "User Type") {
           setPicklistData(res.data.userTypes);
+        }
+        if (picklistName == "Checked Out") {
+          setPicklistData(res.data.checkedOut);
         }
         if (picklistName == "Position") {
           setPicklistData(res.data.positions);

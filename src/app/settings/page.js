@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Employees from "../../components/employees";
 import TimeTrack from "../../components/timeTrack";
+import TaskNotification from "../../components/taskNotification";
 
 import PicklistComp from "../../components/Picklists/picklist";
 import "./style.scss";
@@ -18,6 +19,7 @@ export default function Settings() {
   const [activeLink, setActiveLink] = useState("Employee");
   const [showPick, setShowPick] = useState(false);
   const [showEmp, setShowEmp] = useState(true);
+  const [showNot, setShowNot] = useState(false);
   useEffect(() => {
     if (user.user == null || user.user.error) {
       router.push("/login");
@@ -54,6 +56,23 @@ export default function Settings() {
               }
             >
               Time Track
+            </li>
+          </ul>
+        ) : null}
+        <p onClick={() => setShowNot(!showNot)}>
+          Notifications {showNot ? "-" : "+"}
+        </p>
+        {showNot ? (
+          <ul
+            onClick={handleLinks}
+            className={`${poppins.className} inner-links`}
+          >
+            <li
+              className={
+                activeLink == "Tasks" ? "activeLink simpleLink" : "simpleLink"
+              }
+            >
+              Tasks
             </li>
           </ul>
         ) : null}
@@ -236,6 +255,7 @@ export default function Settings() {
       </section>
       <section className={`${poppins.className} content-wrap`}>
         {activeLink == "Employee" ? <Employees /> : null}
+        {activeLink == "Tasks" ? <TaskNotification user={user.user} /> : null}
         {activeLink == "Time Track" ? <TimeTrack /> : null}
         {activeLink == "User Type" ? (
           <PicklistComp picklistName={"User Type"} />

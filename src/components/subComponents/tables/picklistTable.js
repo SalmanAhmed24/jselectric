@@ -43,6 +43,9 @@ export default function PicklistTable({
     if (picklistName == "User Type") {
       apiUrl = `${apiPath.prodPath}/api/userType/${id}`;
     }
+    if (picklistName == "Checked Out") {
+      apiUrl = `${apiPath.prodPath}/api/checkedOut/${id}`;
+    }
     if (picklistName == "Position") {
       apiUrl = `${apiPath.prodPath}/api/position/${id}`;
     }
@@ -118,6 +121,9 @@ export default function PicklistTable({
         let apiUrl;
         if (picklistName == "User Type") {
           apiUrl = `${apiPath.prodPath}/api/userType/${id}`;
+        }
+        if (picklistName == "Checked Out") {
+          apiUrl = `${apiPath.prodPath}/api/checkedOut/${id}`;
         }
         if (picklistName == "Position") {
           apiUrl = `${apiPath.prodPath}/api/position/${id}`;
