@@ -155,26 +155,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
   }, [open]);
   const handleEditTimeTrack = (e) => {
     e.preventDefault();
-    if (startTime == "") {
-      Swal.fire({
-        icon: "error",
-        text: "Please select the Start Time",
-      });
-    }
-    if (endTime == "") {
-      Swal.fire({
-        icon: "error",
-        text: "Please select the End Time",
-      });
-    }
-    if (checkbox[0] == "lunch" || checkbox[1] == "lunch") {
-      if (lunchEndTime == "" || lunchStartTime == "") {
-        Swal.fire({
-          icon: "error",
-          text: "Please Fill Both Start and End time for lunch",
-        });
-      }
-    }
     const filteredData = reimbursalArr.map((i) => {
       return {
         reimbursalType: i.reimbursalType.value,
@@ -199,10 +179,22 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       reimbursalFlag: reimbursalCheckbox[0] == "reimbursal" ? "reimbursal" : "",
       reimbursal: filteredData,
     };
-
-    editTimeTrackData(dataObj, timeTrackData._id);
-    handleReset();
-    onClose();
+    if (checkbox[0] == "lunch" || checkbox[1] == "lunch") {
+      if (lunchEndTime == "" || lunchStartTime == "") {
+        Swal.fire({
+          icon: "error",
+          text: "Please Fill Both Start and End time for lunch",
+        });
+      } else {
+        editTimeTrackData(dataObj, timeTrackData._id);
+        handleReset();
+        onClose();
+      }
+    } else {
+      editTimeTrackData(dataObj, timeTrackData._id);
+      handleReset();
+      onClose();
+    }
   };
   const handleReset = () => {
     setEmployee("");
@@ -325,11 +317,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
           </div>
           <div className="input-wrap">
             <label className={poppins.className}>Date</label>
-            <DatePicker
-              value={date}
-              required={true}
-              onChange={(value) => setDate(value)}
-            />
+            <DatePicker value={date} onChange={(value) => setDate(value)} />
 
             {date !== "" ? (
               <p className={poppins.className} onClick={() => setDate("")}>
@@ -343,7 +331,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
               value={startTime}
               onChange={(e) => setStartTime(e)}
               className={poppins.className}
-              required={true}
             />
             {startTime !== "" ? (
               <p className={poppins.className} onClick={() => setStartTime("")}>
@@ -357,7 +344,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
               value={endTime}
               onChange={(e) => setEndTime(e)}
               className={poppins.className}
-              required={true}
             />
             {endTime !== "" ? (
               <p className={poppins.className} onClick={() => setEndTime("")}>
@@ -380,7 +366,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
                 value={lunchStartTime}
                 onChange={(e) => setLunchStartTime(e)}
                 className={poppins.className}
-                required={true}
               />
               {startTime !== "" ? (
                 <p
@@ -399,7 +384,6 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
                 value={lunchEndTime}
                 onChange={(e) => setLunchEndTime(e)}
                 className={poppins.className}
-                required={true}
               />
               {lunchEndTime !== "" ? (
                 <p

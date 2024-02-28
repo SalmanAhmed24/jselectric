@@ -106,7 +106,7 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
                         {row.reimbursalFlag == "reimbursal" ? "true" : "false"}
                       </TableCell>
                       <TableCell>
-                        {row.reimbursal && row.reimbursal.length ? (
+                        {row.reimbursal && row.reimbursal.length > 0 ? (
                           <button
                             onClick={() =>
                               handleReimModal(row.id, row.reimbursal)
