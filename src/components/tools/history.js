@@ -23,6 +23,12 @@ function HistoryTab({ history }) {
                 <p>{i.techAssigned}</p>
               </div>
               <div className="single-item">
+                <label>Checked Out For</label>
+                <p>
+                  {i.checkedOut !== undefined ? `${i.checkedOut} days` : "none"}
+                </p>
+              </div>
+              <div className="single-item">
                 <label>Notes</label>
                 <p>{i.note}</p>
               </div>
