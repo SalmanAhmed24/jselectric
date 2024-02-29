@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  optimizeFonts: false,
+  reactStrictMode: true,
+  optimizeFonts: true,
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://www.jselectricapp.com/:path*",
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
