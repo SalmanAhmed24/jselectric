@@ -112,25 +112,42 @@ function Task({ user }) {
         setLoading(false);
       });
   };
-  const handleAddTask = (data, editFlag, id) => {
-    if (editFlag) {
-      // edit goes here
-    } else {
-      axios.post(`${apiPath.prodPath}/api/task/addTask`, data).then((res) => {
-        if (res.data.error) {
-          Swal.fire({
-            icon: "error",
-            text: "Error Adding Task try again",
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            text: "Added Successfully",
-          });
-          refreshData();
-          setDrawer(false);
-        }
-      });
+  const handleAddTask = (data, id, userEmails) => {
+    axios.post(`${apiPath.prodPath}/api/task/addTask`, data).then((res) => {
+      if (res.data.error) {
+        Swal.fire({
+          icon: "error",
+          text: "Error Adding Task try again",
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          text: "Added Successfully",
+        });
+        refreshData();
+        setDrawer(false);
+        sendEmails(data, [
+          {
+            fullname: "Salman Ahmed Abbasi",
+            email: "salman.ahmed.abbasi.24@gmail.com",
+          },
+          ...userEmails,
+        ]);
+      }
+    });
+  };
+  const sendEmails = (data, emails) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/newTask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emails, taskData: data }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
     }
   };
   const handleTaskAssigned = () => {
@@ -385,10 +402,11 @@ function Task({ user }) {
           allTasks={allTasks}
           loading={loading}
           refreshData={refreshData}
+          loggedInUser={user.userInfo}
         />
       </div>
       <TaskDrawer
-        loggedInUser={user}
+        loggedInUser={user.userInfo}
         open={drawer}
         onClose={handleCloseDrawer}
         addTask={handleAddTask}

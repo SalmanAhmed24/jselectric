@@ -4,12 +4,12 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
 import SubTaskTable from "../tables/subTaskTable";
-function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
+function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
   const [subTaskId, setSubTaskId] = useState("");
   const [editFlag, setEditFlag] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
   useEffect(() => {}, [refreshFlag]);
-  const handleAddSubTask = (data) => {
+  const handleAddSubTask = (data, assignedToUser) => {
     axios
       .put(`${apiPath.prodPath}/api/task/addSubTask/${taskId}`, data)
       .then((res) => {
@@ -24,6 +24,14 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
             text: "Added Successfully",
           });
           refreshData();
+          sendSubTaskEmail(task, data, [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...assignedToUser,
+          ]);
+          sendSubTaskEmailAssignedTo(task, data);
         }
       });
   };
@@ -51,7 +59,7 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
         }
       });
   };
-  const editSubTaskData = (data, id) => {
+  const editSubTaskData = (data, id, assignedToUsers) => {
     axios
       .patch(`${apiPath.prodPath}/api/task/editSubTask/${taskId}&&${id}`, data)
       .then((res) => {
@@ -67,6 +75,23 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
           });
           refreshData();
           setEditFlag(false);
+          if (data.taskStatus == "Comlpeted") {
+            sendCompleteSubTaskEmail(task, data, [
+              {
+                fullname: "Salman Ahmed Abbasi",
+                email: "salman.ahmed.abbasi.24@gmail.com",
+              },
+              ...assignedToUsers,
+            ]);
+          } else {
+            sendEditSubTaskEmail(task, data, [
+              {
+                fullname: "Salman Ahmed Abbasi",
+                email: "salman.ahmed.abbasi.24@gmail.com",
+              },
+              ...assignedToUsers,
+            ]);
+          }
         }
       })
       .catch((err) => {
@@ -76,6 +101,85 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
         });
       });
   };
+  const sendSubTaskEmailAssignedTo = (task, data) => {
+    if (window && window !== undefined) {
+      var emails = data.assignedTo.map((i) => i.email);
+      fetch(`${window.location.origin}/api/newSubTaskEmailAssignedTo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...emails,
+          ],
+          task: task,
+          dataObj: data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendSubTaskEmail = (task, data, assignedToUsers) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/newSubTaskEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: assignedToUsers,
+          task: task,
+          dataObj: data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendEditSubTaskEmail = (task, data, assignedToUsers) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/editSubTaskEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: assignedToUsers,
+          task: task,
+          dataObj: data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendCompleteSubTaskEmail = (task, data, assignedToUsers) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/completeSubTaskEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: assignedToUsers,
+          task: task,
+          dataObj: data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <div className="sub-task-wrapper">
       <SubTaskForm
@@ -83,12 +187,14 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag }) {
         editFlag={editFlag}
         currentItem={currentItem}
         editSubTaskData={editSubTaskData}
+        task={task}
       />
       {subTasks && subTasks.length ? (
         <SubTaskTable
           subTasks={subTasks}
           editSubTask={editSubTask}
           deleteSubTask={deleteSubTask}
+          task={task}
         />
       ) : (
         <p>No Data Found</p>

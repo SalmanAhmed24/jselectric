@@ -1,6 +1,6 @@
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import { DatePicker } from "react-rainbow-components";
+import DatePicker from "react-datepicker";
 import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
@@ -11,7 +11,14 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
-function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
+import "react-datepicker/dist/react-datepicker.css";
+function SubTaskForm({
+  handleForm,
+  editFlag,
+  currentItem,
+  editSubTaskData,
+  task,
+}) {
   const currentUser = useSelector((state) => state.user.user);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dueDate, setDueDate] = useState("");
@@ -54,14 +61,14 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
       .then((res) => {
         setAssignedToOpt(
           res.data.allUsers.map((i) => {
-            return { label: i.fullname, value: i.fullname };
+            return { label: i.fullname, value: i.fullname, email: i.email };
           })
         );
       })
       .catch((err) => console.log(err));
     if (editFlag) {
-      setCurrentDate(moment(currentItem.currentDate).format());
-      setDueDate(moment(currentItem.dueDate).format());
+      setCurrentDate(new Date(currentItem.currentDate));
+      setDueDate(new Date(currentItem.dueDate));
       setUser(currentItem.user);
       setDescription(currentItem.description);
       setTaskCategory({
@@ -93,10 +100,32 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
       }),
     };
     if (editFlag) {
-      editSubTaskData(dataObj, currentItem.id);
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        task.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      editSubTaskData(dataObj, currentItem.id, assignedToUsers);
       dataEntryRefresh();
     } else {
-      handleForm(dataObj);
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        task.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      handleForm(dataObj, assignedToUsers);
       dataEntryRefresh();
     }
   };
@@ -111,7 +140,7 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
     <form className="input-wraps" onSubmit={handleFormInner}>
       <div className="single-inp">
         <label>Current Date</label>
-        <DatePicker disabled value={currentDate} />
+        <DatePicker disabled selected={currentDate} locale="es" />
       </div>
       <div className="single-inp">
         <label>User</label>
@@ -129,16 +158,30 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
           options={taskCategoryOpt}
           value={taskCategory}
           onChange={(value) => setTaskCategory(value)}
+          isDisabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
       </div>
       <div className="single-inp">
         <label>Due Date</label>
         <DatePicker
-          id="datePicker-1"
-          value={dueDate}
+          selected={dueDate}
           onChange={(value) => setDueDate(value)}
-          locale={"en-US"}
+          locale="es"
+          disabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
+
         {dueDate !== "" ? (
           <p onClick={() => setDueDate("")} className="clear-value">
             Clear
@@ -152,6 +195,13 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
           className={poppins.className}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          disabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
       </div>
       <div className="single-inp">
@@ -161,6 +211,13 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
           options={taskStatusOpt}
           value={taskStatus}
           onChange={(value) => setTaskStatus(value)}
+          isDisabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
       </div>
       <div className="single-inp">
@@ -171,6 +228,13 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
           className={poppins.className}
           options={assignedToOpt}
           onChange={(v) => setAssignedTo(v)}
+          isDisabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
       </div>
       <div className="sub-btn-wrap">
@@ -178,6 +242,13 @@ function SubTaskForm({ handleForm, editFlag, currentItem, editSubTaskData }) {
           className={`${poppins.className} add-task`}
           type="submit"
           value={editFlag ? "Edit Task" : "Add Task"}
+          disabled={
+            editFlag
+              ? currentItem.taskStatus == "Completed"
+                ? true
+                : false
+              : false
+          }
         />
       </div>
     </form>

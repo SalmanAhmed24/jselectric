@@ -1,7 +1,7 @@
 import { Drawer } from "@mui/material";
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import { DatePicker } from "react-rainbow-components";
+import DatePicker from "react-datepicker";
 import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
@@ -11,6 +11,7 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
+import "react-datepicker/dist/react-datepicker.css";
 function TaskDrawer({
   open,
   onClose,
@@ -45,9 +46,7 @@ function TaskDrawer({
   const [vehicle, setVehicle] = useState([]);
   const [taskPriority, setTaskPriority] = useState("");
   const [taskPriorityOpt, setTaskPriorityOpt] = useState("");
-  const [user, setUser] = useState(
-    loggedInUser && loggedInUser.userInfo ? loggedInUser.userInfo.fullname : ""
-  );
+  const [user, setUser] = useState(loggedInUser ? loggedInUser.fullname : "");
 
   useEffect(() => {
     axios
@@ -191,14 +190,14 @@ function TaskDrawer({
       .then((res) => {
         setAssignedToOpt(
           res.data.allUsers.map((i) => {
-            return { label: i.fullname, value: i.fullname };
+            return { label: i.fullname, value: i.fullname, email: i.email };
           })
         );
       })
       .catch((err) => console.log(err));
     if (edit) {
-      setCurrentDate(moment(data.currentDate).format());
-      setDueDate(moment(data.dueDate).format());
+      setCurrentDate(new Date(data.currentDate));
+      setDueDate(new Date(data.dueDate));
       setUser(data.user);
       setTaskPriority({ label: data.taskPriority, value: data.taskPriority });
       setDescription(data.description);
@@ -286,10 +285,34 @@ function TaskDrawer({
       }),
     };
     if (edit) {
-      editTask(dataObj, id);
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        dataObj.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      editTask(dataObj, id, assignedToUsers);
       dataEntryRefresh();
     } else {
-      addTask(dataObj, edit, (id = null));
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        dataObj.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      console.log("assignedToUser", assignedToUsers);
+
+      addTask(dataObj, (id = null), assignedToUsers);
       dataEntryRefresh();
     }
   };
@@ -334,7 +357,7 @@ function TaskDrawer({
         <form onSubmit={handleAddDevice}>
           <div className="input-wrap">
             <label>Current Date</label>
-            <DatePicker disabled value={currentDate} />
+            <DatePicker disabled selected={currentDate} />
           </div>
           <div className="input-wrap">
             <label>User</label>
@@ -352,15 +375,20 @@ function TaskDrawer({
               options={taskCategoryOpt}
               value={taskCategory}
               onChange={(value) => setTaskCategory(value)}
+              isDisabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           <div className="input-wrap">
             <label>Due Date</label>
             <DatePicker
               id="datePicker-1"
-              value={dueDate}
+              selected={dueDate}
               onChange={(value) => setDueDate(value)}
-              locale={"en-US"}
+              disabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
             {dueDate !== "" ? (
               <p onClick={() => setDueDate("")} className="clear-value">
@@ -377,6 +405,9 @@ function TaskDrawer({
               className={poppins.className}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              disabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           <div className="input-wrap">
@@ -386,6 +417,9 @@ function TaskDrawer({
               options={taskStatusOpt}
               value={taskStatus}
               onChange={(value) => setTaskStatus(value)}
+              isDisabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           <div className="input-wrap">
@@ -395,6 +429,9 @@ function TaskDrawer({
               options={taskPriorityOpt}
               value={taskPriority}
               onChange={(v) => setTaskPriority(v)}
+              isDisabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           <div className="input-wrap" style={{ width: "100%" }}>
@@ -405,6 +442,9 @@ function TaskDrawer({
               className={poppins.className}
               options={assignedToOpt}
               onChange={(v) => setAssignedTo(v)}
+              isDisabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           <div className="input-wrap" style={{ width: "100%" }}>
@@ -415,6 +455,9 @@ function TaskDrawer({
               value={selectedModule}
               isMulti={true}
               onChange={handleModuleSelection}
+              isDisabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
           {selectedModule.length
@@ -429,6 +472,13 @@ function TaskDrawer({
                         options={allDevices}
                         value={devices}
                         onChange={(value) => setDevices(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -446,6 +496,13 @@ function TaskDrawer({
                         options={allClients}
                         value={clients}
                         onChange={(value) => setClients(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -463,6 +520,13 @@ function TaskDrawer({
                         options={allEmp}
                         value={emp}
                         onChange={(value) => setEmp(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -480,6 +544,13 @@ function TaskDrawer({
                         options={allJob}
                         value={job}
                         onChange={(value) => setJob(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -497,6 +568,13 @@ function TaskDrawer({
                         options={allTools}
                         value={tool}
                         onChange={(value) => setTool(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -514,6 +592,13 @@ function TaskDrawer({
                         options={allVehicles}
                         value={vehicle}
                         onChange={(value) => setVehicle(value)}
+                        isDisabled={
+                          edit
+                            ? data.taskStatus == "Completed"
+                              ? true
+                              : false
+                            : false
+                        }
                       />
                     </div>
                   );
@@ -524,6 +609,9 @@ function TaskDrawer({
               className={`${poppins.className} addEmp`}
               type="submit"
               value={edit ? "Edit Task" : "Add Task"}
+              disabled={
+                edit ? (data.taskStatus == "Completed" ? true : false) : false
+              }
             />
           </div>
         </form>

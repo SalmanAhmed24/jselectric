@@ -152,6 +152,7 @@ function TaskInfo({ open, onClose, item }) {
             taskId={item.id}
             subTasks={subTask}
             refreshFlag={refreshFlag}
+            task={item}
           />
         ) : null}
         {activeTab == "Notes" ? (

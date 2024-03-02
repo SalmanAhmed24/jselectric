@@ -48,15 +48,78 @@ export default function TaskTable({
     setActionFlag(false);
     setInfoModal(!infoModal);
   };
-  const editTask = (data, id) => {
+  const editTask = (data, id, assignedToUsers) => {
     axios
       .patch(`${apiPath.prodPath}/api/task/${id}`, data)
       .then((res) => {
         refreshData();
         openEmpModal();
         setActionFlag(false);
+        if (data.taskStatus == "Completed") {
+          sendCompEmails(data, [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...assignedToUsers,
+          ]);
+          sendAssignByCompEmails([
+            "salman.ahmed.abbasi.24@gmail.com",
+            loggedInUser.email,
+          ]);
+        } else {
+          sendUpdatedEmails(data, [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...assignedToUsers,
+          ]);
+        }
       })
       .catch((err) => console.log(err));
+  };
+  const sendUpdatedEmails = (data, emails) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/updateTask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emails, taskData: data }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendCompEmails = (data, emails) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/completeTask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emails, taskData: data }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendAssignByCompEmails = (emails) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/assignByComplete`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emails }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
   };
   const deleteTasks = (id) => {
     Swal.fire({
