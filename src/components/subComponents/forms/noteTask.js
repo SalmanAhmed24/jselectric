@@ -1,6 +1,7 @@
 import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
-import { DatePicker } from "react-rainbow-components";
+import DatePicker from "react-datepicker";
+
 import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
@@ -11,7 +12,15 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
 });
-function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
+import "react-datepicker/dist/react-datepicker.css";
+
+function NoteTaskForm({
+  handleForm,
+  editFlag,
+  currentItem,
+  editNoteTaskData,
+  task,
+}) {
   const currentUser = useSelector((state) => state.user.user);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dueDate, setDueDate] = useState("");
@@ -54,14 +63,14 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
       .then((res) => {
         setAssignedToOpt(
           res.data.allUsers.map((i) => {
-            return { label: i.fullname, value: i.fullname };
+            return { label: i.fullname, value: i.fullname, email: i.email };
           })
         );
       })
       .catch((err) => console.log(err));
     if (editFlag) {
-      setCurrentDate(moment(currentItem.currentDate).format());
-      setDueDate(moment(currentItem.dueDate).format());
+      setCurrentDate(new Date(currentItem.currentDate));
+      setDueDate(new Date(currentItem.dueDate));
       setUser(currentItem.user);
       setDescription(currentItem.description);
       setNoteCategory({
@@ -93,10 +102,32 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
       // }),
     };
     if (editFlag) {
-      editNoteTaskData(dataObj, currentItem.id);
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        task.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      editNoteTaskData(dataObj, currentItem.id, assignedToUsers);
       dataEntryRefresh();
     } else {
-      handleForm(dataObj);
+      var assignedToUsers = [];
+      assignedToOpt.forEach((item) => {
+        task.assignedTo.forEach((el) => {
+          if (el.fullname == item.label) {
+            assignedToUsers = [
+              ...assignedToUsers,
+              { fullname: item.label, email: item.email },
+            ];
+          }
+        });
+      });
+      handleForm(dataObj, assignedToUsers);
       dataEntryRefresh();
     }
   };
@@ -111,7 +142,7 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
     <form className="input-wraps" onSubmit={handleFormInner}>
       <div className="single-inp">
         <label>Current Date</label>
-        <DatePicker disabled value={currentDate} />
+        <DatePicker disabled selected={currentDate} />
       </div>
       <div className="single-inp">
         <label>User</label>
@@ -125,7 +156,7 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
       <div className="single-inp">
         <label>Note Category</label>
         <Select
-          className={poppins.className}
+          className={`${poppins.className} select-cus`}
           options={noteCategoryOpt}
           value={noteCategory}
           onChange={(value) => setNoteCategory(value)}
@@ -135,9 +166,8 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
         <label>Due Date</label>
         <DatePicker
           id="datePicker-1"
-          value={dueDate}
+          selected={dueDate}
           onChange={(value) => setDueDate(value)}
-          locale={"en-US"}
         />
         {dueDate !== "" ? (
           <p onClick={() => setDueDate("")} className="clear-value">
@@ -157,7 +187,7 @@ function NoteTaskForm({ handleForm, editFlag, currentItem, editNoteTaskData }) {
       <div className="single-inp">
         <label>Note Status</label>
         <Select
-          className={poppins.className}
+          className={`${poppins.className} select-cus`}
           options={noteStatusOpt}
           value={noteStatus}
           onChange={(value) => setNoteStatus(value)}

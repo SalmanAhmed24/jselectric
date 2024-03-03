@@ -140,7 +140,7 @@ function SubTaskForm({
     <form className="input-wraps" onSubmit={handleFormInner}>
       <div className="single-inp">
         <label>Current Date</label>
-        <DatePicker disabled selected={currentDate} locale="es" />
+        <DatePicker disabled selected={currentDate} />
       </div>
       <div className="single-inp">
         <label>User</label>
@@ -154,7 +154,7 @@ function SubTaskForm({
       <div className="single-inp">
         <label>Task Category</label>
         <Select
-          className={poppins.className}
+          className={`${poppins.className} select-cus`}
           options={taskCategoryOpt}
           value={taskCategory}
           onChange={(value) => setTaskCategory(value)}
@@ -172,7 +172,6 @@ function SubTaskForm({
         <DatePicker
           selected={dueDate}
           onChange={(value) => setDueDate(value)}
-          locale="es"
           disabled={
             editFlag
               ? currentItem.taskStatus == "Completed"
@@ -207,7 +206,7 @@ function SubTaskForm({
       <div className="single-inp">
         <label>Task Status</label>
         <Select
-          className={poppins.className}
+          className={`${poppins.className} select-cus`}
           options={taskStatusOpt}
           value={taskStatus}
           onChange={(value) => setTaskStatus(value)}
@@ -225,7 +224,7 @@ function SubTaskForm({
         <Select
           isMulti
           value={assignedTo}
-          className={poppins.className}
+          className={`${poppins.className} select-cus`}
           options={assignedToOpt}
           onChange={(v) => setAssignedTo(v)}
           isDisabled={

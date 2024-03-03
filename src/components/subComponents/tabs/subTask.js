@@ -8,7 +8,20 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
   const [subTaskId, setSubTaskId] = useState("");
   const [editFlag, setEditFlag] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
-  useEffect(() => {}, [refreshFlag]);
+  const [assignedToOpt, setAssignedToOpt] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${apiPath.prodPath}/api/users`)
+      .then((res) => {
+        setAssignedToOpt(
+          res.data.allUsers.map((i) => {
+            return { label: i.fullname, value: i.fullname, email: i.email };
+          })
+        );
+      })
+      .catch((err) => console.log(err));
+  }, [refreshFlag]);
   const handleAddSubTask = (data, assignedToUser) => {
     axios
       .put(`${apiPath.prodPath}/api/task/addSubTask/${taskId}`, data)
@@ -75,7 +88,9 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
           });
           refreshData();
           setEditFlag(false);
-          if (data.taskStatus == "Comlpeted") {
+          console.log("before ^^^^", data.taskStatus);
+          if (data.taskStatus == "Completed") {
+            console.log("here ^^^^", data.taskStatus);
             sendCompleteSubTaskEmail(task, data, [
               {
                 fullname: "Salman Ahmed Abbasi",
@@ -83,6 +98,7 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
               },
               ...assignedToUsers,
             ]);
+            sendSubTaskEmailCompAssignedBy(task, data);
           } else {
             sendEditSubTaskEmail(task, data, [
               {
@@ -100,6 +116,33 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
           text: "Enable to edit the sub task",
         });
       });
+  };
+  const sendSubTaskEmailCompAssignedBy = (task, data) => {
+    console.log("here ^^^^", task, assignedToOpt);
+    if (window && window !== undefined) {
+      const taskUserEmail = assignedToOpt.find((i) => i.label == task.user);
+      console.log("emails", email);
+      fetch(`${window.location.origin}/api/assignBySubTaskComplete`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            { fullname: taskUserEmail.label, email: taskUserEmail.email },
+          ],
+          task: task,
+          dataObj: data,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
   };
   const sendSubTaskEmailAssignedTo = (task, data) => {
     if (window && window !== undefined) {

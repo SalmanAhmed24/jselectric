@@ -4,12 +4,12 @@ import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
 import NoteTaskTable from "../tables/noteTaskTable";
-function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
+function NotesTask({ refreshData, taskId, noteTasks, refreshFlag, task }) {
   const [noteTaskId, setNoteTaskId] = useState("");
   const [editFlag, setEditFlag] = useState(false);
   const [currentItem, setCurrentItem] = useState("");
   useEffect(() => {}, [refreshFlag]);
-  const handleAddNoteTask = (data) => {
+  const handleAddNoteTask = (data, assignedToUsers) => {
     axios
       .put(`${apiPath.prodPath}/api/task/addTaskNote/${taskId}`, data)
       .then((res) => {
@@ -24,6 +24,13 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
             text: "Added Successfully",
           });
           refreshData();
+          sendNewNotesEmail(task, data, [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...assignedToUsers,
+          ]);
         }
       });
   };
@@ -50,7 +57,7 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
         }
       });
   };
-  const editNoteTaskData = (data, id) => {
+  const editNoteTaskData = (data, id, assignedToUsers) => {
     axios
       .patch(`${apiPath.prodPath}/api/task/editTaskNote/${taskId}&&${id}`, data)
       .then((res) => {
@@ -66,6 +73,13 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
           });
           refreshData();
           setEditFlag(false);
+          sendEditNoteEmail(task, data, [
+            {
+              fullname: "Salman Ahmed Abbasi",
+              email: "salman.ahmed.abbasi.24@gmail.com",
+            },
+            ...assignedToUsers,
+          ]);
         }
       })
       .catch((err) => {
@@ -75,6 +89,42 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
         });
       });
   };
+  const sendNewNotesEmail = (task, data, assignedToUsers) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/newNotesEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: task,
+          dataObj: data,
+          email: assignedToUsers,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
+  const sendEditNoteEmail = (task, data, assignedToUsers) => {
+    if (window && window !== undefined) {
+      fetch(`${window.location.origin}/api/editNotesEmail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: task,
+          dataObj: data,
+          email: assignedToUsers,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <div className="sub-task-wrapper">
       <NoteTaskForm
@@ -82,6 +132,7 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag }) {
         editFlag={editFlag}
         currentItem={currentItem}
         editNoteTaskData={editNoteTaskData}
+        task={task}
       />
       {noteTasks && noteTasks.length ? (
         <NoteTaskTable

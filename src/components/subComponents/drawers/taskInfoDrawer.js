@@ -161,6 +161,7 @@ function TaskInfo({ open, onClose, item }) {
             taskId={item.id}
             noteTasks={noteTask}
             refreshFlag={refreshFlag}
+            task={item}
           />
         ) : null}
         {activeTab == "Attachments" ? (
