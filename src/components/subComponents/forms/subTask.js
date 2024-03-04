@@ -98,6 +98,11 @@ function SubTaskForm({
       assignedTo: assignedTo.map((i) => {
         return { fullname: i.label };
       }),
+      updated: editFlag
+        ? taskStatus.value == "Completed"
+          ? false
+          : true
+        : false,
     };
     if (editFlag) {
       var assignedToUsers = [];

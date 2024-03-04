@@ -256,6 +256,7 @@ function TaskDrawer({
       taskCategory: taskCategory.value,
       dueDate,
       description,
+      updated: edit ? (taskStatus.value !== "Completed" ? true : false) : false,
       taskStatus: taskStatus.value,
       taskPriority: taskPriority.value,
       assignedTo: assignedTo.map((i) => {

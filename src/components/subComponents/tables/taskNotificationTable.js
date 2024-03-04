@@ -92,15 +92,17 @@ export default function TaskNotificationTable({ allTasks, loading }) {
       console.log("#### New", filteredData);
       setFilteredTaskData(filteredData);
     }
+    if (tab == "Updated") {
+      const filteredData = allTasks.filter((i) => i.updated == "true");
+      console.log("here in updated", filteredData);
+      setFilteredTaskData(filteredData);
+    }
     if (tab == "In Progress") {
       const filteredData = allTasks.filter(
         (i) => i.taskStatus == "In Progress"
       );
       console.log("#### In Progress", filteredData);
       setFilteredTaskData(filteredData);
-    }
-    if (tab == "Updated") {
-      console.log("here");
     }
   };
   const sortedTasks =
