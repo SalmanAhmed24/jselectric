@@ -105,7 +105,7 @@ export default function TaskNotificationTable({ allTasks, loading }) {
   };
   const sortedTasks =
     filteredTaskData &&
-    filteredTaskData.sort((a, b) => a.currentDate.localeCompare(b.currentDate));
+    filteredTaskData.sort((a, b) => a.lastUpdated.localeCompare(b.lastUpdated));
   return (
     <Paper
       className={poppins.className}
@@ -173,8 +173,9 @@ export default function TaskNotificationTable({ allTasks, loading }) {
             <TableHead>
               <TableRow>
                 {/* <TableCell style={{ minWidth: 150 }}>Actions</TableCell> */}
-                <TableCell style={{ minWidth: 150 }}>Current Date</TableCell>
+                <TableCell style={{ minWidth: 200 }}>Last Updated</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Assigned To</TableCell>
+                <TableCell style={{ minWidth: 150 }}>Current Date</TableCell>
                 <TableCell style={{ minWidth: 150 }}>User</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Task Category</TableCell>
                 <TableCell style={{ minWidth: 120 }}>Task Status</TableCell>
@@ -272,7 +273,7 @@ export default function TaskNotificationTable({ allTasks, loading }) {
                               : "blue"
                           }
                         ></span>
-                        {moment(i.currentDate).format("MM-DD-YYYY")}
+                        {moment(i.lastUpdated).format("MM-DD-YYYY hh:mm a")}
                       </TableCell>
                       <TableCell>
                         {i.assignedTo &&
@@ -281,6 +282,9 @@ export default function TaskNotificationTable({ allTasks, loading }) {
                               ? `${inner.fullname}`
                               : `${inner.fullname},`;
                           })}
+                      </TableCell>
+                      <TableCell>
+                        {moment(i.currentDate).format("MM-DD-YYYY")}
                       </TableCell>
                       <TableCell>{i.user}</TableCell>
                       <TableCell>{i.taskCategory}</TableCell>

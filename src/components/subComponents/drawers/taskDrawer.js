@@ -12,6 +12,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 function TaskDrawer({
   open,
   onClose,
@@ -342,6 +343,37 @@ function TaskDrawer({
   const handleModuleSelection = (value) => {
     setSelectedModule(value);
   };
+  const handleTaskStatus = (value) => {
+    if (edit) {
+      console.log("here in edit");
+      if (value.value == "Completed") {
+        console.log("check start");
+        if (data.subTasks.length) {
+          console.log("sub task check");
+          const checkArr = data.subTasks.map((el) => {
+            if (el.taskStatus == "Completed") {
+              return true;
+            } else {
+              return false;
+            }
+          });
+          if (checkArr.filter((i) => i == true).length == 0) {
+            console.log("here is error");
+            Swal.fire({
+              icon: "error",
+              text: "Cannot mark the main Task Completed if sub Tasks are still pending",
+            });
+          } else {
+            setTaskStatus(value);
+          }
+        }
+      } else {
+        setTaskStatus(value);
+      }
+    } else {
+      setTaskStatus(value);
+    }
+  };
   console.log("options", allClients);
   return (
     <Drawer
@@ -416,7 +448,9 @@ function TaskDrawer({
               className={poppins.className}
               options={taskStatusOpt}
               value={taskStatus}
-              onChange={(value) => setTaskStatus(value)}
+              onChange={(value) => {
+                handleTaskStatus(value);
+              }}
               isDisabled={
                 edit ? (data.taskStatus == "Completed" ? true : false) : false
               }

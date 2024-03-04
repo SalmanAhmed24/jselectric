@@ -170,6 +170,7 @@ function SubTaskForm({
       <div className="single-inp">
         <label>Due Date</label>
         <DatePicker
+          id="date-cus"
           selected={dueDate}
           onChange={(value) => setDueDate(value)}
           disabled={

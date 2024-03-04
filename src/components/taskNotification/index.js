@@ -26,7 +26,10 @@ function TaskNotification({ user }) {
       .get(`${apiPath.prodPath}/api/task`)
       .then((res) => {
         setLoading(false);
-        setTaskNotification(res.data.allTasks);
+        const sortedByDate = res.data.allTasks.sort((a, b) =>
+          a.lastUpdated.localeCompare(b.lastUpdated)
+        );
+        setTaskNotification(sortedByDate);
       })
       .catch((err) => console.log(err));
   };

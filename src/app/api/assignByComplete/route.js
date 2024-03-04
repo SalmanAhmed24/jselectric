@@ -12,6 +12,23 @@ export async function POST(request) {
       subject: "Task Completed",
       html: `<div>
       <p>The Task that was assigned by you has been marked as completed. Please login to the app and see the details of the task</p>
+      <p>The Task that was assigned to you has been marked as completed. Please login to the app and see the details of the task</p>
+      <p><strong>Task Category</strong></p>
+      <p>${dataObj.taskData.taskCategory}</p>
+      <p><strong>Task Status</strong></p>
+      <p>${dataObj.taskData.taskStatus}</p>
+      <p><strong>Task Priority</strong></p>
+      <p>${dataObj.taskData.taskPriority}</p>
+      <p><strong>Due Date</strong></p>
+      <p>${moment(dataObj.taskData.dueDate).format("MM/DD/YYYY")}</p>
+      <p><strong>Task Description</strong></p>
+      <p>${dataObj.taskData.description}</p>
+      <p><strong>Selected Module</strong></p>
+      <p>${dataObj.taskData.selectedModule.map((i) => i)}</p>
+      <p><strong>Assigned By</strong></p>
+      <p>${dataObj.taskData.user}</p>
+      <p><strong>Assigned To</strong></p>
+      <p>${dataObj.taskData.assignedTo.map((i) => i.fullname)}</p>
       </div>`,
     });
     if (error) {

@@ -63,7 +63,7 @@ export default function TaskTable({
             },
             ...assignedToUsers,
           ]);
-          sendAssignByCompEmails([
+          sendAssignByCompEmails(data, [
             "salman.ahmed.abbasi.24@gmail.com",
             loggedInUser.email,
           ]);

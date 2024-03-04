@@ -72,11 +72,13 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
         }
       });
   };
-  const editSubTaskData = (data, id, assignedToUsers) => {
-    axios
+  const editSubTaskData = async (data, id, assignedToUsers) => {
+    console.log(data, id, assignedToUsers);
+    await axios
       .patch(`${apiPath.prodPath}/api/task/editSubTask/${taskId}&&${id}`, data)
       .then((res) => {
         if (res.data.error) {
+          console.log("here is error", res.data.error);
           Swal.fire({
             icon: "error",
             text: "Enable to edit the sub task",
@@ -88,9 +90,7 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
           });
           refreshData();
           setEditFlag(false);
-          console.log("before ^^^^", data.taskStatus);
           if (data.taskStatus == "Completed") {
-            console.log("here ^^^^", data.taskStatus);
             sendCompleteSubTaskEmail(task, data, [
               {
                 fullname: "Salman Ahmed Abbasi",
@@ -111,6 +111,7 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
         }
       })
       .catch((err) => {
+        console.log("here in catch", err);
         Swal.fire({
           icon: "error",
           text: "Enable to edit the sub task",
@@ -118,10 +119,8 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
       });
   };
   const sendSubTaskEmailCompAssignedBy = (task, data) => {
-    console.log("here ^^^^", task, assignedToOpt);
     if (window && window !== undefined) {
       const taskUserEmail = assignedToOpt.find((i) => i.label == task.user);
-      console.log("emails", email);
       fetch(`${window.location.origin}/api/assignBySubTaskComplete`, {
         method: "POST",
         headers: {
