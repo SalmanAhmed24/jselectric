@@ -5,8 +5,7 @@ const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 export async function POST(request) {
   try {
     let dataObj = await request.json();
-    console.log(dataObj.email);
-    console.log(dataObj.email);
+
     const { data, error } = await resend.emails.send({
       from: "JsElectric <jselectric@resend.dev>",
       to: dataObj.email.map((i) => {
@@ -34,12 +33,10 @@ export async function POST(request) {
       </div>`,
     });
     if (error) {
-      console.log(error);
       return NextResponse.json({ error });
     }
-    return NextResponse.json({ data });
+    return NextResponse.json({ dataEmail });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error });
   }
 }

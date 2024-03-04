@@ -9,9 +9,21 @@ export async function POST(request) {
     const { data, error } = await resend.emails.send({
       from: "JsElectric <jselectric@resend.dev>",
       to: dataObj.email.map((i) => `${i}`),
-      subject: "Task Completed",
+      subject: "Sub Task Completed",
       html: `<div>
-      <p>The Task that was assigned by you has been marked as completed. Please login to the app and see the details of the task</p>
+      <p>The Sub Task that was assigned by you has been marked as completed. Please login to the app and see the details of the sub task</p>
+      <p><strong>Task Category</strong></p>
+        <p>${result.dataObj.taskCategory}</p>
+        <p><strong>Task Status</strong></p>
+        <p>${result.dataObj.taskStatus}</p>
+        <p><strong>Due Date</strong></p>
+        <p>${moment(result.dataObj.dueDate).format("MM/DD/YYYY")}</p>
+        <p><strong>Task Description</strong></p>
+        <p>${result.dataObj.description}</p>
+        <p><strong>Assigned By</strong></p>
+        <p>${result.dataObj.user}</p>
+        <p><strong>Assigned To</strong></p>
+        <p>${result.dataObj.assignedTo.map((i) => i.fullname)}</p>
       </div>`,
     });
     if (error) {

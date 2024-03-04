@@ -42,7 +42,7 @@ export async function POST(request) {
       <p><strong>Assigned By</strong></p>
       <p>${result.task.user}</p>
       <p><strong>Assigned To</strong></p>
-      <p>${result.email.map((i) => i.fullname)}</p>
+      <p>${result.task.assignedTo.map((i) => i.fullname)}</p>
         </div>`,
     });
     if (error) {
