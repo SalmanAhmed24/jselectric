@@ -36,19 +36,27 @@ function Task({ user }) {
       axios
         .get(`${apiPath.prodPath}/api/task/`)
         .then((res) => {
-          var tasks = [];
-          res.data.allTasks.forEach((element) => {
-            element.assignedTo.forEach((innerEl) => {
-              if (innerEl.fullname == user.userInfo.fullname) {
-                tasks = [element, ...tasks];
-                return tasks;
-              }
+          if (
+            user.userInfo.fullname == "Kevin Baumhover" ||
+            user.userInfo.fullname == "Jamie Schmidt" ||
+            user.userInfo.fullname == "Ralph Macias	"
+          ) {
+            setAllTasks(res.data.allTasks);
+          } else {
+            var tasks = [];
+            res.data.allTasks.forEach((element) => {
+              element.assignedTo.forEach((innerEl) => {
+                if (innerEl.fullname == user.userInfo.fullname) {
+                  tasks = [element, ...tasks];
+                  return tasks;
+                }
+              });
             });
-          });
-          const taskWithoutComp = tasks.filter(
-            (i) => i.taskStatus !== "Completed"
-          );
-          setAllTasks(taskWithoutComp);
+            const taskWithoutComp = tasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(taskWithoutComp);
+          }
           setLoading(false);
         })
         .catch((err) => {
@@ -75,36 +83,47 @@ function Task({ user }) {
     axios
       .get(`${apiPath.prodPath}/api/task/`)
       .then((res) => {
-        if (activeTab == "Task Assigned") {
-          var tasks = [];
-          res.data.allTasks.forEach((element) => {
-            element.assignedTo.forEach((innerEl) => {
-              if (innerEl.fullname == user.userInfo.fullname) {
-                tasks = [element, ...tasks];
-                return tasks;
-              }
-            });
-          });
-          const taskWithoutComp = tasks.filter(
-            (i) => i.taskStatus !== "Completed"
-          );
-          setAllTasks(taskWithoutComp);
-          setLoading(false);
-        } else if (activeTab == "Task Created") {
-          const filteredTasks = res.data.allTasks.filter(
-            (inner) => inner.user == user.userInfo.fullname
-          );
-          const taskCreatedWithoutComp = filteredTasks.filter(
-            (i) => i.taskStatus !== "Completed"
-          );
-          setAllTasks(taskCreatedWithoutComp);
+        if (
+          user !== null &&
+          user.userInfo !== undefined &&
+          (user.userInfo.fullname == "Kevin Baumhover" ||
+            user.userInfo.fullname == "Jamie Schmidt" ||
+            user.userInfo.fullname == "Ralph Macias")
+        ) {
+          setAllTasks(res.data.allTasks);
           setLoading(false);
         } else {
-          const filteredTasks = res.data.allTasks
-            .filter((inner) => inner.taskStatus == "Completed")
-            .filter((inner) => inner.user == user.userInfo.fullname);
-          setAllTasks(filteredTasks);
-          setLoading(false);
+          if (activeTab == "Task Assigned") {
+            var tasks = [];
+            res.data.allTasks.forEach((element) => {
+              element.assignedTo.forEach((innerEl) => {
+                if (innerEl.fullname == user.userInfo.fullname) {
+                  tasks = [element, ...tasks];
+                  return tasks;
+                }
+              });
+            });
+            const taskWithoutComp = tasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(taskWithoutComp);
+            setLoading(false);
+          } else if (activeTab == "Task Created") {
+            const filteredTasks = res.data.allTasks.filter(
+              (inner) => inner.user == user.userInfo.fullname
+            );
+            const taskCreatedWithoutComp = filteredTasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(taskCreatedWithoutComp);
+            setLoading(false);
+          } else {
+            const filteredTasks = res.data.allTasks
+              .filter((inner) => inner.taskStatus == "Completed")
+              .filter((inner) => inner.user == user.userInfo.fullname);
+            setAllTasks(filteredTasks);
+            setLoading(false);
+          }
         }
       })
       .catch((err) => {
@@ -219,36 +238,47 @@ function Task({ user }) {
         }&description=${searchForm.description}`
       )
       .then((res) => {
-        if (activeTab == "Task Assigned") {
-          var tasks = [];
-          res.data.allTasks.forEach((element) => {
-            element.assignedTo.forEach((innerEl) => {
-              if (innerEl.fullname == user.userInfo.fullname) {
-                tasks = [element, ...tasks];
-                return tasks;
-              }
-            });
-          });
-          const taskWithoutComp = tasks.filter(
-            (i) => i.taskStatus !== "Completed"
-          );
-          setAllTasks(taskWithoutComp);
-          setLoading(false);
-        } else if (activeTab == "Task Created") {
-          const filteredTasks = res.data.allTasks.filter(
-            (inner) => inner.user == user.userInfo.fullname
-          );
-          const taskCreatedWithoutComp = filteredTasks.filter(
-            (i) => i.taskStatus !== "Completed"
-          );
-          setAllTasks(taskCreatedWithoutComp);
+        if (
+          user !== null &&
+          user.userInfo !== undefined &&
+          (user.userInfo.fullname == "Kevin Baumhover" ||
+            user.userInfo.fullname == "Jamie Schmidt" ||
+            user.userInfo.fullname == "Ralph Macias")
+        ) {
+          setAllTasks(res.data.allTasks);
           setLoading(false);
         } else {
-          const filteredTasks = res.data.allTasks
-            .filter((inner) => inner.taskStatus == "Completed")
-            .filter((inner) => inner.user == user.userInfo.fullname);
-          setAllTasks(filteredTasks);
-          setLoading(false);
+          if (activeTab == "Task Assigned") {
+            var tasks = [];
+            res.data.allTasks.forEach((element) => {
+              element.assignedTo.forEach((innerEl) => {
+                if (innerEl.fullname == user.userInfo.fullname) {
+                  tasks = [element, ...tasks];
+                  return tasks;
+                }
+              });
+            });
+            const taskWithoutComp = tasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(taskWithoutComp);
+            setLoading(false);
+          } else if (activeTab == "Task Created") {
+            const filteredTasks = res.data.allTasks.filter(
+              (inner) => inner.user == user.userInfo.fullname
+            );
+            const taskCreatedWithoutComp = filteredTasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(taskCreatedWithoutComp);
+            setLoading(false);
+          } else {
+            const filteredTasks = res.data.allTasks
+              .filter((inner) => inner.taskStatus == "Completed")
+              .filter((inner) => inner.user == user.userInfo.fullname);
+            setAllTasks(filteredTasks);
+            setLoading(false);
+          }
         }
       })
       .catch((err) => console.log(err));
@@ -305,38 +335,44 @@ function Task({ user }) {
           Add Task
         </button>
       </div>
-      <div className="tabs-cus-wrap">
-        <span
-          onClick={handleTaskAssigned}
-          className={
-            activeTab == "Task Assigned"
-              ? `${poppins.className} activeTab simpleTab`
-              : `${poppins.className} simpleTab`
-          }
-        >
-          Tasks assigned to user
-        </span>
-        <span
-          onClick={handleTaskCreated}
-          className={
-            activeTab == "Task Created"
-              ? `${poppins.className} activeTab simpleTab`
-              : `${poppins.className} simpleTab`
-          }
-        >
-          Tasks created by user
-        </span>
-        <span
-          onClick={handleTaskCompleted}
-          className={
-            activeTab == "Task Completed"
-              ? `${poppins.className} activeTab simpleTab`
-              : `${poppins.className} simpleTab`
-          }
-        >
-          Tasks Completed
-        </span>
-      </div>
+      {user !== null &&
+      user.userInfo !== undefined &&
+      (user.userInfo.fullname == "Kevin Baumhover" ||
+        user.userInfo.fullname == "Jamie Schmidt" ||
+        user.userInfo.fullname == "Ralph Macias") ? null : (
+        <div className="tabs-cus-wrap">
+          <span
+            onClick={handleTaskAssigned}
+            className={
+              activeTab == "Task Assigned"
+                ? `${poppins.className} activeTab simpleTab`
+                : `${poppins.className} simpleTab`
+            }
+          >
+            Tasks assigned to user
+          </span>
+          <span
+            onClick={handleTaskCreated}
+            className={
+              activeTab == "Task Created"
+                ? `${poppins.className} activeTab simpleTab`
+                : `${poppins.className} simpleTab`
+            }
+          >
+            Tasks created by user
+          </span>
+          <span
+            onClick={handleTaskCompleted}
+            className={
+              activeTab == "Task Completed"
+                ? `${poppins.className} activeTab simpleTab`
+                : `${poppins.className} simpleTab`
+            }
+          >
+            Tasks Completed
+          </span>
+        </div>
+      )}
       {filterFlag ? null : (
         <span
           className={`${poppins.className} filter-btn`}
@@ -402,11 +438,11 @@ function Task({ user }) {
           allTasks={allTasks}
           loading={loading}
           refreshData={refreshData}
-          loggedInUser={user.userInfo}
+          loggedInUser={user !== null && user.userInfo}
         />
       </div>
       <TaskDrawer
-        loggedInUser={user.userInfo}
+        loggedInUser={user !== null && user.userInfo}
         open={drawer}
         onClose={handleCloseDrawer}
         addTask={handleAddTask}

@@ -48,7 +48,7 @@ function TaskNotification({ user }) {
     });
   });
   return (
-    <section className={`${poppins.className} employee-wrap`}>
+    <section className={`${poppins.className}`}>
       <div className="add-btn-wrap">
         <h2 className={poppins.className}>Task Notifications</h2>
       </div>
