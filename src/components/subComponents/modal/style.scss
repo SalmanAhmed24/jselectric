@@ -141,3 +141,20 @@
 .swal2-container{
     z-index: 33333333;
 }
+.flex-row{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 18px;
+    .notification-btn{
+        background-color: #000;
+        color: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}

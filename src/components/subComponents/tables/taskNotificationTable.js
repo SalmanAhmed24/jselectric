@@ -33,7 +33,8 @@ export default function TaskNotificationTable({ allTasks, loading }) {
   const [filteredTaskData, setFilteredTaskData] = useState([]);
   useEffect(() => {
     if (activeLink == "Completed") {
-      const filteredData = allTasks.filter((i) => i.taskStatus == "Completed");
+      const filteredData =
+        allTasks && allTasks.filter((i) => i.taskStatus == "Completed");
       console.log("yeeeh", filteredData, allTasks);
       setFilteredTaskData(filteredData);
     }

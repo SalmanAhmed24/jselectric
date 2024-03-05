@@ -35,12 +35,13 @@ function TaskNotification({ user }) {
   };
   const taskAssignedByMe =
     taskNotification &&
+    user !== null &&
     user.userInfo !== undefined &&
     taskNotification.filter((i) => i.user == user.userInfo.fullname);
   var taskAssignedToMe = [];
   taskNotification.forEach((element) => {
     element.assignedTo.forEach((innerEl) => {
-      if (innerEl.fullname == user.userInfo.fullname) {
+      if (user !== null && innerEl.fullname == user.userInfo.fullname) {
         taskAssignedToMe = [element, ...taskAssignedToMe];
         return taskAssignedToMe;
       }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Employees from "../../components/employees";
 import TimeTrack from "../../components/timeTrack";
-import TaskNotification from "../../components/taskNotification";
+import TaskNotificationModal from "../../components/subComponents/modal/taskNotificationModal";
 
 import PicklistComp from "../../components/Picklists/picklist";
 import "./style.scss";
@@ -20,6 +20,8 @@ export default function Settings() {
   const [showPick, setShowPick] = useState(false);
   const [showEmp, setShowEmp] = useState(true);
   const [showNot, setShowNot] = useState(false);
+  const [taskModalNotificationModal, setTaskModalNotificationModal] =
+    useState(false);
   useEffect(() => {
     if (user.user == null || user.user.error) {
       router.push("/login");
@@ -68,6 +70,9 @@ export default function Settings() {
             className={`${poppins.className} inner-links`}
           >
             <li
+              onClick={() =>
+                setTaskModalNotificationModal(!taskModalNotificationModal)
+              }
               className={
                 activeLink == "Tasks" ? "activeLink simpleLink" : "simpleLink"
               }
@@ -255,7 +260,15 @@ export default function Settings() {
       </section>
       <section className={`${poppins.className} content-wrap`}>
         {activeLink == "Employee" ? <Employees /> : null}
-        {activeLink == "Tasks" ? <TaskNotification user={user.user} /> : null}
+        {activeLink == "Tasks" ? (
+          <TaskNotificationModal
+            user={user.user}
+            open={taskModalNotificationModal}
+            onClose={() =>
+              setTaskModalNotificationModal(!taskModalNotificationModal)
+            }
+          />
+        ) : null}
         {activeLink == "Time Track" ? <TimeTrack /> : null}
         {activeLink == "User Type" ? (
           <PicklistComp picklistName={"User Type"} />
