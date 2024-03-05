@@ -97,6 +97,7 @@ function NoteTaskForm({
       dueDate,
       description,
       noteStatus: noteStatus.value,
+      updated: editFlag ? true : false,
       // assignedTo: assignedTo.map((i) => {
       //   return { fullname: i.label };
       // }),
