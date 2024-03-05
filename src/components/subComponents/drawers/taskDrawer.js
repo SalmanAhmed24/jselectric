@@ -348,8 +348,8 @@ function TaskDrawer({
     if (edit) {
       console.log("here in edit");
       if (value.value == "Completed") {
-        console.log("check start");
-        if (data.subTasks.length) {
+        console.log("check start", data.subTasks.length);
+        if (data.subTasks.length > 0) {
           console.log("sub task check");
           const checkArr = data.subTasks.map((el) => {
             if (el.taskStatus == "Completed") {
@@ -367,6 +367,8 @@ function TaskDrawer({
           } else {
             setTaskStatus(value);
           }
+        } else {
+          setTaskStatus(value);
         }
       } else {
         setTaskStatus(value);

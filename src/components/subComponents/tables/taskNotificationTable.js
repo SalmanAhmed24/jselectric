@@ -107,7 +107,9 @@ export default function TaskNotificationTable({ allTasks, loading }) {
   };
   const sortedTasks =
     filteredTaskData &&
-    filteredTaskData.sort((a, b) => a.lastUpdated.localeCompare(b.lastUpdated));
+    filteredTaskData.sort(
+      (a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated)
+    );
   return (
     <Paper
       className={poppins.className}
