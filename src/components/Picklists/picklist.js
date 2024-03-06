@@ -71,6 +71,15 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Job Type") {
       apiUrl = `${apiPath.prodPath}/api/jobType/`;
     }
+    if (picklistName == "Job Tag") {
+      apiUrl = `${apiPath.prodPath}/api/jobTag/`;
+    }
+    if (picklistName == "Job PM") {
+      apiUrl = `${apiPath.prodPath}/api/jobPM/`;
+    }
+    if (picklistName == "Job CTM") {
+      apiUrl = `${apiPath.prodPath}/api/jobCTM/`;
+    }
     if (picklistName == "Phase") {
       apiUrl = `${apiPath.prodPath}/api/phase/`;
     }
@@ -134,6 +143,15 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Job Type") {
           setPicklistData(res.data.jobTypes);
+        }
+        if (picklistName == "Job Tag") {
+          setPicklistData(res.data.jobTags);
+        }
+        if (picklistName == "Job PM") {
+          setPicklistData(res.data.jobPMs);
+        }
+        if (picklistName == "Job CTM") {
+          setPicklistData(res.data.jobCTMs);
         }
         if (picklistName == "Phase") {
           setPicklistData(res.data.phases);
@@ -206,6 +224,15 @@ function PicklistComp({ picklistName }) {
     }
     if (picklistName == "Job Type") {
       url = `${apiPath.prodPath}/api/jobType/addJobType`;
+    }
+    if (picklistName == "Job Tag") {
+      url = `${apiPath.prodPath}/api/jobTag/addJobTag`;
+    }
+    if (picklistName == "Job PM") {
+      url = `${apiPath.prodPath}/api/jobPM/addJobPM`;
+    }
+    if (picklistName == "Job CTM") {
+      url = `${apiPath.prodPath}/api/jobCTM/addJobCTM`;
     }
     if (picklistName == "Phase") {
       url = `${apiPath.prodPath}/api/phase/addphase`;
@@ -285,6 +312,15 @@ function PicklistComp({ picklistName }) {
     if (picklistName == "Job Type") {
       url = `${apiPath.prodPath}/api/jobType/`;
     }
+    if (picklistName == "Job Tag") {
+      url = `${apiPath.prodPath}/api/jobTag/`;
+    }
+    if (picklistName == "Job PM") {
+      url = `${apiPath.prodPath}/api/jobPM/`;
+    }
+    if (picklistName == "Job CTM") {
+      url = `${apiPath.prodPath}/api/jobCTM/`;
+    }
     if (picklistName == "Phase") {
       url = `${apiPath.prodPath}/api/phase/`;
     }
@@ -348,6 +384,15 @@ function PicklistComp({ picklistName }) {
         }
         if (picklistName == "Job Type") {
           setPicklistData(res.data.jobTypes);
+        }
+        if (picklistName == "Job Tag") {
+          setPicklistData(res.data.jobTags);
+        }
+        if (picklistName == "Job PM") {
+          setPicklistData(res.data.jobPMs);
+        }
+        if (picklistName == "Job CTM") {
+          setPicklistData(res.data.jobCTMs);
         }
         if (picklistName == "Phase") {
           setPicklistData(res.data.phases);

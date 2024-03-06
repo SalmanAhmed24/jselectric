@@ -94,6 +94,15 @@ export default function PicklistTable({
     if (picklistName == "Job Type") {
       apiUrl = `${apiPath.prodPath}/api/jobType/${id}`;
     }
+    if (picklistName == "Job Tag") {
+      apiUrl = `${apiPath.prodPath}/api/jobTag/${id}`;
+    }
+    if (picklistName == "Job PM") {
+      apiUrl = `${apiPath.prodPath}/api/jobPM/${id}`;
+    }
+    if (picklistName == "Job CTM") {
+      apiUrl = `${apiPath.prodPath}/api/jobCTM/${id}`;
+    }
     if (picklistName == "Phase") {
       apiUrl = `${apiPath.prodPath}/api/phase/${id}`;
     }
@@ -172,6 +181,15 @@ export default function PicklistTable({
         }
         if (picklistName == "Job Type") {
           apiUrl = `${apiPath.prodPath}/api/jobType/${id}`;
+        }
+        if (picklistName == "Job Tag") {
+          apiUrl = `${apiPath.prodPath}/api/jobTag/${id}`;
+        }
+        if (picklistName == "Job PM") {
+          apiUrl = `${apiPath.prodPath}/api/jobPM/${id}`;
+        }
+        if (picklistName == "Job CTM") {
+          apiUrl = `${apiPath.prodPath}/api/jobCTM/${id}`;
         }
         if (picklistName == "Phase") {
           apiUrl = `${apiPath.prodPath}/api/phase/${id}`;

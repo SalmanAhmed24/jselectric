@@ -241,6 +241,27 @@ export default function Settings() {
             </li>
             <li
               className={
+                activeLink == "Job Tag" ? "activeLink simpleLink" : "simpleLink"
+              }
+            >
+              Job Tag
+            </li>
+            <li
+              className={
+                activeLink == "Job PM" ? "activeLink simpleLink" : "simpleLink"
+              }
+            >
+              Job PM
+            </li>
+            <li
+              className={
+                activeLink == "Job CTM" ? "activeLink simpleLink" : "simpleLink"
+              }
+            >
+              Job CTM
+            </li>
+            <li
+              className={
                 activeLink == "Phase" ? "activeLink simpleLink" : "simpleLink"
               }
             >
@@ -320,6 +341,15 @@ export default function Settings() {
         ) : null}
         {activeLink == "Job Type" ? (
           <PicklistComp picklistName={"Job Type"} />
+        ) : null}
+        {activeLink == "Job Tag" ? (
+          <PicklistComp picklistName={"Job Tag"} />
+        ) : null}
+        {activeLink == "Job PM" ? (
+          <PicklistComp picklistName={"Job PM"} />
+        ) : null}
+        {activeLink == "Job CTM" ? (
+          <PicklistComp picklistName={"Job CTM"} />
         ) : null}
         {activeLink == "Phase" ? <PicklistComp picklistName={"Phase"} /> : null}
         {activeLink == "Reimbursal Type" ? (

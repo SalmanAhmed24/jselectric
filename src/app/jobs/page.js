@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Job from "../../components/job/job";
+import JobNumber from "../../components/jobNumber/index";
 
 import "./job.scss";
 const poppins = Poppins({
@@ -33,9 +34,19 @@ export default function JobPage() {
           >
             Jobs
           </li>
+          <li
+            className={
+              activeLink == "Job Numbers"
+                ? "activeLink simpleLink"
+                : "simpleLink"
+            }
+          >
+            Job Numbers
+          </li>
         </ul>
       </section>
       {activeLink == "Jobs" ? <Job /> : null}
+      {activeLink == "Job Numbers" ? <JobNumber /> : null}
     </main>
   );
 }
