@@ -7,6 +7,8 @@ import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
+import Select from "react-select";
+
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],
@@ -15,6 +17,15 @@ function JobNumber() {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [allJobNumbers, setAllJobNumbers] = useState([]);
+  const [filterFlag, setFilterFlag] = useState(false);
+  const [jobTagOpt, setJobTagOpt] = useState("");
+  const [clientsOpt, setClientsOpt] = useState("");
+  const [jobPMOpt, setJobPMOpt] = useState("");
+  const [searchForm, setSearchForm] = useState({
+    jobTag: "",
+    jobPM: "",
+    client: "",
+  });
   useEffect(() => {
     setLoading(true);
     axios
@@ -27,6 +38,33 @@ function JobNumber() {
         console.log(err);
         setLoading(false);
       });
+    axios
+      .get(`${apiPath.prodPath}/api/clients/`)
+      .then((res) => {
+        setClientsOpt(
+          res.data.clients.map((i) => ({
+            label: i.customerName,
+            value: i.customerName,
+          }))
+        );
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`${apiPath.prodPath}/api/jobTag`)
+      .then((res) => {
+        setJobTagOpt(
+          res.data.jobTags.map((i) => ({ label: i.name, value: i.name }))
+        );
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`${apiPath.prodPath}/api/jobPM`)
+      .then((res) => {
+        setJobPMOpt(
+          res.data.jobPMs.map((i) => ({ label: i.name, value: i.name }))
+        );
+      })
+      .catch((err) => console.log(err));
   }, []);
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
@@ -53,6 +91,53 @@ function JobNumber() {
         setLoading(false);
       });
   };
+  const handleJobTag = (value) => {
+    setSearchForm((prev) => {
+      return {
+        ...prev,
+        jobTag: value,
+      };
+    });
+  };
+  const handleJobPM = (value) => {
+    setSearchForm((prev) => {
+      return {
+        ...prev,
+        jobPM: value,
+      };
+    });
+  };
+  const handleClient = (value) => {
+    setSearchForm((prev) => {
+      return {
+        ...prev,
+        client: value,
+      };
+    });
+  };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    axios
+      .get(
+        `${apiPath.prodPath}/api/jobNumber/?jobTag=${
+          searchForm.jobTag.value == undefined ? "" : searchForm.jobTag.value
+        }&jobPM=${
+          searchForm.jobPM == "" ? "" : searchForm.jobPM.value
+        }&client=${searchForm.client == "" ? "" : searchForm.client.value}`
+      )
+      .then((res) => {
+        setAllJobNumbers(res.data.jobNumbers);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+  const handleClear = () => {
+    setSearchForm({
+      jobTag: "",
+      jobPM: "",
+    });
+    refreshData();
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -64,6 +149,62 @@ function JobNumber() {
           Add Job Number
         </button>
       </div>
+      {filterFlag ? null : (
+        <span
+          className={`${poppins.className} filter-btn`}
+          onClick={() => setFilterFlag(true)}
+        >
+          Filters
+        </span>
+      )}
+      {filterFlag ? (
+        <div className="filters-wrap">
+          <p
+            className="close-icon"
+            onClick={() => setFilterFlag(false)}
+            style={{ textAlign: "right", marginBottom: "10px" }}
+          >
+            &#10005;
+          </p>
+          <form onSubmit={handleSearch}>
+            <Select
+              className={`${poppins.className} taskOpt-cus`}
+              options={jobTagOpt}
+              placeholder="Job Tag"
+              onChange={handleJobTag}
+              value={searchForm.jobTag}
+            />
+            <Select
+              className={`${poppins.className} taskOpt-cus`}
+              options={jobPMOpt}
+              placeholder="Job PM"
+              onChange={handleJobPM}
+              value={searchForm.jobPM}
+            />
+            <Select
+              className={`${poppins.className} taskOpt-cus`}
+              options={clientsOpt}
+              placeholder="Client"
+              onChange={handleClient}
+              value={searchForm.client}
+            />
+            <input
+              type="submit"
+              className={`${poppins.className} search-btn`}
+              value={"Search"}
+            />
+          </form>
+          {searchForm.jobTag !== "" || searchForm.jobPM !== "" ? (
+            <p
+              onClick={handleClear}
+              className={`${poppins.className} filter-btn`}
+            >
+              Clear Filter
+            </p>
+          ) : null}
+          <p></p>
+        </div>
+      ) : null}
       <div className="table-wrap">
         <JobNumberTable
           loading={loading}
