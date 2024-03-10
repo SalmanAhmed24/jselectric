@@ -219,12 +219,44 @@ function ClientDrawer({
     };
     if (edit) {
       editClient(dataObj, id);
+      dataEntryRefresh();
     } else {
       addClient(dataObj);
       dataEntryRefresh();
     }
   };
-  const dataEntryRefresh = () => {};
+  const dataEntryRefresh = () => {
+    setCustomerCode("");
+    setCustomerName("");
+    setAlphaCode("");
+    setAddress("");
+    setCity("");
+    setCusState("");
+    setZipCode("");
+    setPhone("");
+    setFax("");
+    setPrimaryContact("");
+    setCustomerType("");
+    setBalance("");
+    setTaxable("");
+    setStatus("");
+    setCustomerTerm("");
+    setTaxCode("");
+    setRetailCertificate("");
+    setResaleExpDate("");
+    setSalesPersonCode("");
+    setReceiveStatements("");
+    setFinanceCharge("");
+    setRetention("");
+    setLastDateBilled("");
+    setLastDatePaid("");
+    setDateEstablished("");
+    setPrimaryEmail("");
+    setSecondaryEmail("");
+    setCreditLimit("");
+    setMaterialLevel("");
+    setLaborLevel("");
+  };
   return (
     <Drawer
       anchor={"right"}
