@@ -27,7 +27,6 @@ function Login() {
     axios
       .post(`${apiPath.prodPath}/api/users/login`, objData)
       .then((res) => {
-        console.log("here in login", res.data);
         dipatch(storeUser(res.data));
         router.push("/");
       })

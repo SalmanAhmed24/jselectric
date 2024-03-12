@@ -52,7 +52,6 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
     setCurrentItem(data);
     setSubTaskId(id);
     setEditFlag(true);
-    console.log("here", data, id);
   };
   const deleteSubTask = (id) => {
     axios
@@ -73,12 +72,10 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
       });
   };
   const editSubTaskData = async (data, id, assignedToUsers) => {
-    console.log(data, id, assignedToUsers);
     await axios
       .patch(`${apiPath.prodPath}/api/task/editSubTask/${taskId}&&${id}`, data)
       .then((res) => {
         if (res.data.error) {
-          console.log("here is error", res.data.error);
           Swal.fire({
             icon: "error",
             text: "Enable to edit the sub task",
@@ -111,7 +108,6 @@ function SubTask({ refreshData, taskId, subTasks, refreshFlag, task }) {
         }
       })
       .catch((err) => {
-        console.log("here in catch", err);
         Swal.fire({
           icon: "error",
           text: "Enable to edit the sub task",

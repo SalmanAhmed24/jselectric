@@ -312,7 +312,6 @@ function TaskDrawer({
           }
         });
       });
-      console.log("assignedToUser", assignedToUsers);
 
       addTask(dataObj, (id = null), assignedToUsers);
       dataEntryRefresh();
@@ -346,11 +345,8 @@ function TaskDrawer({
   };
   const handleTaskStatus = (value) => {
     if (edit) {
-      console.log("here in edit");
       if (value.value == "Completed") {
-        console.log("check start", data.subTasks.length);
         if (data.subTasks.length > 0) {
-          console.log("sub task check");
           const checkArr = data.subTasks.map((el) => {
             if (el.taskStatus == "Completed") {
               return true;
@@ -359,7 +355,6 @@ function TaskDrawer({
             }
           });
           if (checkArr.filter((i) => i == true).length == 0) {
-            console.log("here is error");
             Swal.fire({
               icon: "error",
               text: "Cannot mark the main Task Completed if sub Tasks are still pending",
@@ -377,7 +372,7 @@ function TaskDrawer({
       setTaskStatus(value);
     }
   };
-  console.log("options", allClients);
+
   return (
     <Drawer
       anchor={"right"}

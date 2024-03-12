@@ -35,7 +35,7 @@ export default function Home() {
       }
     });
   };
-  console.log("taskNotification", taskNotificationFlag);
+
   return (
     <section className={`${poppins.className} wrap-main-dashboard`}>
       {taskNotificationFlag && user !== null ? (

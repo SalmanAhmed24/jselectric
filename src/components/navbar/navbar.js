@@ -63,7 +63,7 @@ function Navbar() {
           : false
         : false
       : false;
-  console.log("test", test);
+
   const clearNotification = () => {
     dispatch(storeNotification([]));
   };

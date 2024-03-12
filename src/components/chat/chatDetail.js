@@ -36,9 +36,7 @@ function ChatDetailComp({ chatId, currentUser }) {
   useEffect(() => {
     pusherClient.subscribe(chatId);
     const handleMessage = async (newMessage) => {
-      console.log("this is new message", newMessage);
       setChat((prevChat) => {
-        console.log("this is prev chat", prevChat);
         return {
           ...prevChat,
           messages: [...prevChat.messages, newMessage],

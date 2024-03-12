@@ -39,9 +39,7 @@ function NeedTagComp({ userInfo }) {
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
   };
-  const addNeedTag = (data) => {
-    console.log(data);
-  };
+
   return (
     <section className="employee-wrap">
       <div className="add-btn-wrap">

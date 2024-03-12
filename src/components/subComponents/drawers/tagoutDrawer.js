@@ -49,7 +49,7 @@ function TagoutDrawer({
   }, []);
   const handleAddTagout = (e) => {
     e.preventDefault();
-    console.log("yeah", formData);
+
     if (edit) {
       editTagout(formData, id);
     } else {

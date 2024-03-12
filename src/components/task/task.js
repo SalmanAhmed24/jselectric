@@ -27,6 +27,15 @@ function Task({ user }) {
     currentDate: "",
     description: "",
   });
+  const [usersOpt, setUserOpt] = useState([]);
+  const [userFilter, setUserFilter] = useState(false);
+  const [userValue, setUserValue] = useState("");
+  const [assignToValue, setAssignToValue] = useState("");
+  const assignToOpt = [
+    { label: "Assigned To", value: "Assigned To" },
+    { label: "Assigned By", value: "Assigned By" },
+    { label: "Completed", value: "Completed" },
+  ];
   const router = useRouter();
   useEffect(() => {
     if (user == undefined || user == null) {
@@ -63,6 +72,16 @@ function Task({ user }) {
           console.log(err);
           setLoading(false);
         });
+      axios
+        .get(`${apiPath.prodPath}/api/users/`)
+        .then((res) => {
+          setUserOpt(
+            res.data.allUsers.map((i) => {
+              return { label: i.fullname, value: i.fullname };
+            })
+          );
+        })
+        .catch((err) => console.log(err));
       axios
         .get(`${apiPath.prodPath}/api/taskCategory/`)
         .then((res) => {
@@ -307,6 +326,11 @@ function Task({ user }) {
     });
     refreshData();
   };
+  const handleUserClear = () => {
+    setUserValue("");
+    setAssignToValue("");
+    refreshData();
+  };
   const handleTaskCompleted = () => {
     setActiveTab("Task Completed");
     setLoading(true);
@@ -324,6 +348,42 @@ function Task({ user }) {
         setLoading(false);
       });
   };
+  const handleUserFilter = (e) => {
+    e.preventDefault();
+    if (
+      userValue.value !== "" &&
+      userValue.value !== undefined &&
+      assignToValue.value !== undefined &&
+      assignToValue.value !== ""
+    ) {
+      if (assignToValue.value == "Assigned By") {
+        const filteredUser = allTasks.filter((i) => i.user == userValue.value);
+        setAllTasks(filteredUser);
+      }
+      if (assignToValue.value == "Completed") {
+        const filteredTask = allTasks.filter(
+          (i) => i.taskStatus == assignToValue.value
+        );
+        setAllTasks(filteredTask);
+      }
+      if (assignToValue.value == "Assigned To") {
+        var tasks = [];
+        allTasks.forEach((el) => {
+          el.assignedTo.forEach((inner) => {
+            if (inner.fullname == userValue.value) {
+              tasks = [el, ...tasks];
+            }
+          });
+        });
+        setAllTasks(tasks);
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        text: "Select both the values to get results",
+      });
+    }
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -335,6 +395,50 @@ function Task({ user }) {
           Add Task
         </button>
       </div>
+      {userFilter ? (
+        <div className="filters-wrap">
+          <p
+            className="close-icon"
+            onClick={() => {
+              setUserFilter(false);
+              handleUserClear();
+            }}
+            style={{ textAlign: "right", marginBottom: "10px" }}
+          >
+            &#10005;
+          </p>
+          <form onSubmit={handleUserFilter}>
+            <Select
+              className={`${poppins.className} taskOpt-cus`}
+              options={usersOpt}
+              placeholder="User"
+              onChange={(value) => setUserValue(value)}
+              value={userValue}
+            />
+            <Select
+              className={`${poppins.className} taskOpt-cus`}
+              options={assignToOpt}
+              placeholder="Assigned"
+              onChange={(value) => setAssignToValue(value)}
+              value={assignToValue}
+            />
+            <input
+              type="submit"
+              className={`${poppins.className} search-btn`}
+              value={"Search"}
+            />
+          </form>
+          {assignToValue !== "" || userValue !== "" ? (
+            <p
+              onClick={handleUserClear}
+              className={`${poppins.className} filter-btn`}
+            >
+              Clear Filter
+            </p>
+          ) : null}
+          <p></p>
+        </div>
+      ) : null}
       {user !== null &&
       user.userInfo !== undefined &&
       (user.userInfo.fullname == "Kevin Baumhover" ||
@@ -376,16 +480,36 @@ function Task({ user }) {
       {filterFlag ? null : (
         <span
           className={`${poppins.className} filter-btn`}
-          onClick={() => setFilterFlag(true)}
+          onClick={() => {
+            setFilterFlag(true);
+            setUserFilter(false);
+            handleUserClear();
+          }}
         >
-          Filters
+          Filter By Task
+        </span>
+      )}
+      {userFilter ? null : (
+        <span
+          style={{ marginLeft: "10px" }}
+          className={`${poppins.className} filter-btn`}
+          onClick={() => {
+            setUserFilter(true);
+            setFilterFlag(false);
+            handleClear();
+          }}
+        >
+          Filter By User
         </span>
       )}
       {filterFlag ? (
         <div className="filters-wrap">
           <p
             className="close-icon"
-            onClick={() => setFilterFlag(false)}
+            onClick={() => {
+              setFilterFlag(false);
+              handleClear();
+            }}
             style={{ textAlign: "right", marginBottom: "10px" }}
           >
             &#10005;

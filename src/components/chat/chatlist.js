@@ -17,7 +17,6 @@ const ChatList = ({ currentUser, currentChatId }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    console.log("crrrr@@@@", currentUser);
     if (
       currentUser !== undefined &&
       currentUser !== null &&
@@ -58,7 +57,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
         .get(`${apiPath.prodPath}/api/chat/${currentUser.userInfo.id}`)
         .then((res) => {
           setAllChats(res.data.chat);
-          console.log("called", res.data.chat);
+
           setLoader(false);
         })
         .catch((err) => {

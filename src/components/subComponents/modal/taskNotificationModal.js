@@ -6,7 +6,6 @@ import { apiPath } from "@/utils/routes";
 import { useDispatch } from "react-redux";
 import { storeUser } from "@/store/slices/userSlice";
 function TaskNotificationModal({ open, onClose, user }) {
-  console.log("##$$$", user && user.userInfo);
   const dispatch = useDispatch();
   const handleTaskNotification = (flag) => {
     axios

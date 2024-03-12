@@ -150,7 +150,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
               amount: "",
             },
           ];
-    console.log("wow modified", modifiedValues);
+
     setReimbursalArr(modifiedValues);
   }, [open]);
   const handleEditTimeTrack = (e) => {
@@ -235,7 +235,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       }
       return el;
     });
-    console.log("###", result);
+
     setReimbursalArr(result);
   };
   const handleReimbursalAmount = (e, i) => {
@@ -254,7 +254,7 @@ function TimeTrackDrawer({ open, onClose, timeTrackData, editTimeTrackData }) {
       }
       return el;
     });
-    console.log("###", result);
+
     setReimbursalArr(result);
   };
   const handleRemoveEl = (i) => {

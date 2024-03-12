@@ -46,7 +46,6 @@ function Clients() {
       .catch((err) => console.log(err));
   };
   const addClient = (data) => {
-    console.log("data", data);
     axios
       .post(`${apiPath.prodPath}/api/clients/addClient`, data)
       .then((res) => {

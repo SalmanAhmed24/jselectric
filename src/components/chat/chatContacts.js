@@ -38,7 +38,6 @@ const ChatContacts = ({ usersList, loggedInUser }) => {
         }
       })
       .catch((err) => {
-        console.log("here");
         console.log(err);
       });
   };

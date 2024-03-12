@@ -35,7 +35,7 @@ export default function TaskNotificationTable({ allTasks, loading }) {
     if (activeLink == "Completed") {
       const filteredData =
         allTasks && allTasks.filter((i) => i.taskStatus == "Completed");
-      console.log("yeeeh", filteredData, allTasks);
+
       setFilteredTaskData(filteredData);
     }
   }, [activeLink, allTasks]);
@@ -85,24 +85,24 @@ export default function TaskNotificationTable({ allTasks, loading }) {
   const handleTaskTabs = (tab) => {
     if (tab == "Completed") {
       const filteredData = allTasks.filter((i) => i.taskStatus == "Completed");
-      console.log("#### Completed", filteredData);
+
       setFilteredTaskData(filteredData);
     }
     if (tab == "New") {
       const filteredData = allTasks.filter((i) => i.taskStatus == "New");
-      console.log("#### New", filteredData);
+
       setFilteredTaskData(filteredData);
     }
     if (tab == "Updated") {
       const filteredData = allTasks.filter((i) => i.updated == "true");
-      console.log("here in updated", filteredData);
+
       setFilteredTaskData(filteredData);
     }
     if (tab == "In Progress") {
       const filteredData = allTasks.filter(
         (i) => i.taskStatus == "In Progress"
       );
-      console.log("#### In Progress", filteredData);
+
       setFilteredTaskData(filteredData);
     }
   };
