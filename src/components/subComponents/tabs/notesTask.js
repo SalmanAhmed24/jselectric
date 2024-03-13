@@ -16,7 +16,7 @@ function NotesTask({ refreshData, taskId, noteTasks, refreshFlag, task }) {
         if (res.data.error) {
           Swal.fire({
             icon: "error",
-            text: "Error adding the sub task",
+            text: "Error adding the notes",
           });
         } else {
           Swal.fire({
