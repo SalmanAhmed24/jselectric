@@ -216,24 +216,52 @@ function TaskDrawer({
       );
       data.selectedModule.forEach((element) => {
         if (element == "Clients") {
-          setClients(data.moduleArr.find((i) => i.selectedModule == "Clients"));
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setClients(
+              data.moduleArr.find((i) => i.selectedModule == "Clients")
+            );
+          } else {
+            setClients("");
+          }
         }
         if (element == "Devices") {
-          setDevices(data.moduleArr.find((i) => i.selectedModule == "Devices"));
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setDevices(
+              data.moduleArr.find((i) => i.selectedModule == "Devices")
+            );
+          } else {
+            setDevices("");
+          }
         }
         if (element == "Employees") {
-          setEmp(data.moduleArr.find((i) => i.selectedModule == "Employees"));
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setEmp(data.moduleArr.find((i) => i.selectedModule == "Employees"));
+          } else {
+            setEmp("");
+          }
         }
         if (element == "Jobs") {
-          setJob(data.moduleArr.find((i) => i.selectedModule == "Jobs"));
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setJob(data.moduleArr.find((i) => i.selectedModule == "Jobs"));
+          } else {
+            setJob("");
+          }
         }
         if (element == "Tools") {
-          setTool(data.moduleArr.find((i) => i.selectedModule == "Tools"));
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setTool(data.moduleArr.find((i) => i.selectedModule == "Tools"));
+          } else {
+            setTool("");
+          }
         }
         if (element == "Vehicles") {
-          setVehicle(
-            data.moduleArr.find((i) => i.selectedModule == "Vehicles")
-          );
+          if (data.moduleArr.filter((i) => i !== null).length) {
+            setVehicle(
+              data.moduleArr.find((i) => i.selectedModule == "Vehicles")
+            );
+          } else {
+            setVehicle("");
+          }
         }
       });
     }

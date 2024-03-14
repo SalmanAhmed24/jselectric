@@ -72,9 +72,11 @@ table {
 }
 .dropdown-div{
     position: absolute;
-    top: 70px;
+    top: 0px;
+    bottom: 0px;
     width: 100px;
-    height: auto;
+    height: 80px;
+    margin: auto auto;
     background: #1F3F49;
     box-shadow: 0 0 5px #a2a2a2;
     padding: 10px;

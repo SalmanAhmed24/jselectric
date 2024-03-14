@@ -1,12 +1,12 @@
-@mixin for-device-morethan-1400{
-    @media screen and (min-width:1400px) and (max-width:4000px) {
+@mixin for-device-morethan-1800{
+    @media screen and (min-width:1800px) and (max-width:4000px) {
         @content;
     }
 }
 .employee-wrap{
     padding: 20px;
     width: 80%;
-    @include for-device-morethan-1400{
+    @include for-device-morethan-1800{
         width: 100% !important;
     }
 }
