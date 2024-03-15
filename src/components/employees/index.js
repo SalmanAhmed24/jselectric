@@ -91,7 +91,7 @@ function Employees() {
       });
   };
   return (
-    <section className={`${poppins.className} employee-wrap`}>
+    <section className={`${poppins.className} employee-wrap cus-emp-wrap`}>
       <div className="add-btn-wrap">
         <h2 className={poppins.className}>Employees</h2>
         <button
