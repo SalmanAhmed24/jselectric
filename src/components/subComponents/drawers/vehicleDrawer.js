@@ -125,6 +125,9 @@ function VehicleDrawer({
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         <form onSubmit={handleAddVehicle}>
           <div className="input-wrap">
             <label>Vehicle No</label>

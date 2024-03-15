@@ -35,7 +35,7 @@ function SubTaskTable({ subTasks, deleteSubTask, editSubTask }) {
       className={poppins.className}
       sx={{ width: "100%", overflow: "hidden" }}
     >
-      <TableContainer sx={{ height: 440 }}>
+      <TableContainer sx={{ height: 600 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

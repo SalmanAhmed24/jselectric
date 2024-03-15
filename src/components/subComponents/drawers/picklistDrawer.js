@@ -136,6 +136,9 @@ function PicklistDrawer({
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         {picklistName == "Customer Type" ||
         picklistName == "Material Level" ||
         picklistName == "Labor Level" ||

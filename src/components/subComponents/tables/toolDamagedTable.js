@@ -62,7 +62,7 @@ function ToolDamagedTable({ allToolDamaged, refreshData, userInfo }) {
   };
   return (
     <section>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

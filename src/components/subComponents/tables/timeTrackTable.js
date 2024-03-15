@@ -53,7 +53,7 @@ function TimeTrackTable({ allTimeTrack, loading, deleteData, handleEdit }) {
     <p className={poppins.className}>Loading...</p>
   ) : (
     <section>
-      <TableContainer className={poppins.className} sx={{ maxHeight: 440 }}>
+      <TableContainer className={poppins.className} sx={{ maxHeight: 600 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

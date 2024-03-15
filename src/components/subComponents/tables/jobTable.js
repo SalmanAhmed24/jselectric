@@ -85,7 +85,7 @@ export default function JobTable({ allJobs, loading, refreshData }) {
       {loading ? (
         <h1 className={`${poppins.className} loading-h`}>Loading...</h1>
       ) : (
-        <TableContainer sx={{ height: 440 }}>
+        <TableContainer sx={{ height: 600 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

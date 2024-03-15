@@ -304,6 +304,9 @@ function ToolsDrawer({ open, onClose, addTool, editTool, id, edit, data }) {
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         <form onSubmit={handleAddTool}>
           <div className="input-wrap">
             <label>Tool #</label>

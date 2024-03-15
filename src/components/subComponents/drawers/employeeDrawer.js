@@ -150,6 +150,9 @@ function EmployeeDrawer({ open, onClose, addEmp, editEmp, id, edit, data }) {
       className="employeeDrawer"
     >
       <div className={`${poppins.className} innerDrawerCon`}>
+        <p className="close-modal" onClick={onClose}>
+          &#10005;
+        </p>
         <form onSubmit={handleAddEmployee}>
           <div className="input-wrap">
             <label>User Type</label>
