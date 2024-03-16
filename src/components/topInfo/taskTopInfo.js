@@ -1,6 +1,7 @@
 import moment from "moment";
 
 function TaskTopInfo({ item }) {
+  console.log("this is item", item);
   return (
     <div className="employeeInfo">
       <div className="singleInfo">
@@ -30,7 +31,8 @@ function TaskTopInfo({ item }) {
       <div className="singleInfo">
         <label>Modules</label>
         <p>
-          {item.selectedModule &&
+          {item.selectedModule !== null &&
+            item.selectedModule &&
             item.selectedModule.map((inner, ind) => {
               return item.selectedModule.length - 1 == ind
                 ? `${inner}`
@@ -49,11 +51,11 @@ function TaskTopInfo({ item }) {
             })}
         </p>
       </div>
-      {item.moduleArr.map((i) => {
-        return (
-          <div key={`${i.label}-${i.selectedModule}`} className="singleInfo">
+      {item.moduleArr.map((i, index) => {
+        return i == null ? null : (
+          <div key={`${index}`} className="singleInfo">
             <label>{i.selectedModule}</label>
-            <p>{i.label}</p>
+            <p>{i.selectedModule}</p>
           </div>
         );
       })}
