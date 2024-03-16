@@ -75,6 +75,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
   //     .catch((err) => console.log(err));
   // };
   const router = useRouter();
+  console.log("this is allChats", allChats);
   return loader ? (
     <p>Loading...</p>
   ) : (

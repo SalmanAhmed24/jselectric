@@ -36,6 +36,7 @@ function ChatBox({ chat, user, index, currentChatId }) {
       ? true
       : false
     : false;
+  console.log("$$$$$", filteredChatUser, user.userInfo, chat);
   return (
     <div
       className="chatbox-inner-wrap"
@@ -45,7 +46,9 @@ function ChatBox({ chat, user, index, currentChatId }) {
         {chat?.isGroup ? (
           <span className="name">{chat?.name}</span>
         ) : (
-          <span className="name">{filteredChatUser[0].fullname}</span>
+          <span className="name">
+            {filteredChatUser.length ? filteredChatUser[0].fullname : ""}
+          </span>
         )}
         <span className="time">
           {!lastMessage

@@ -19,27 +19,74 @@ const ChatContacts = ({ usersList, loggedInUser }) => {
     setContacts(value);
   };
   const handleAddContact = async () => {
-    const dataObj = {
-      currentUserId: loggedInUser.id,
-      members: contacts.map((i) => i.id),
-      isGroup: contacts.length <= 1 ? false : true,
-      name: contacts.length <= 1 ? "" : groupName,
-    };
-    await axios
-      .post(`${apiPath.prodPath}/api/chat/addChat`, dataObj)
-      .then((res) => {
-        if (res.data.error == false) {
-          router.push(`/chat/${res.data.chat._id}`);
-        } else if (res.data.error) {
+    if (contacts.length == 0) {
+      Swal.fire({
+        icon: "error",
+        text: "Select a contact to start chating",
+      });
+    } else {
+      const dataObj = {
+        currentUserId: loggedInUser.id,
+        members: contacts.map((i) => i.id),
+        isGroup: contacts.length <= 1 ? false : true,
+        name: contacts.length <= 1 ? "" : groupName,
+      };
+      if (contacts.length > 1) {
+        if (dataObj.name == "") {
           Swal.fire({
             icon: "error",
-            text: "Cannot Add Chat",
+            text: "Please add a group name",
           });
+        } else {
+          await axios
+            .post(`${apiPath.prodPath}/api/chat/addChat`, dataObj)
+            .then((res) => {
+              if (res.data.error == false) {
+                router.push(`/chat/${res.data.chat._id}`);
+              } else if (res.data.error) {
+                Swal.fire({
+                  icon: "error",
+                  text: "Cannot Add Chat",
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      } else {
+        await axios
+          .post(`${apiPath.prodPath}/api/chat/addChat`, dataObj)
+          .then((res) => {
+            if (res.data.error == false) {
+              router.push(`/chat/${res.data.chat._id}`);
+            } else if (res.data.error) {
+              Swal.fire({
+                icon: "error",
+                text: "Cannot Add Chat",
+              });
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      // await axios
+      //   .post(`${apiPath.prodPath}/api/chat/addChat`, dataObj)
+      //   .then((res) => {
+      //     if (res.data.error == false) {
+      //       router.push(`/chat/${res.data.chat._id}`);
+      //     } else if (res.data.error) {
+      //       Swal.fire({
+      //         icon: "error",
+      //         text: "Cannot Add Chat",
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    }
   };
   return (
     <div className={`${poppins.className} main-contact-list-con`}>

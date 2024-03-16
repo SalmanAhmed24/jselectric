@@ -91,3 +91,11 @@
     color: #1F3F49;
     font-size: 14px;
 }
+#modal-create-chat{
+    section{
+        .rainbow-modal_content{
+            height: 400px !important;
+            max-height: 400px !important;
+        }
+    }
+}

@@ -5,7 +5,11 @@ const MessageBox = ({ message, currentUser }) => {
     <div className="sender">
       <span>{moment(message.createdAt).format("hh:mm a")}</span>
       <p>{message.text}</p>
-      <span style={{ marginTop: "5px" }}>{message.sender.fullname}</span>
+      <span style={{ marginTop: "5px" }}>
+        {message !== null && message.sender !== null
+          ? message.sender.fullname
+          : ""}
+      </span>
     </div>
   ) : (
     <div className="receiver">

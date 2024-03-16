@@ -92,7 +92,9 @@ function ChatDetailComp({ chatId, currentUser }) {
               chat.length == 0 ||
               chat.members == undefined
                 ? ""
-                : filteredChatUser[0].fullname}
+                : filteredChatUser.length
+                ? filteredChatUser[0].fullname
+                : ""}
             </p>
           )}
         </div>
