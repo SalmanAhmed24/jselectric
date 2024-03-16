@@ -489,7 +489,11 @@ function Task({ user }) {
           Filter By Task
         </span>
       )}
-      {userFilter ? null : (
+      {userFilter ? null : user !== null &&
+        user.userInfo !== undefined &&
+        (user.userInfo.fullname == "Kevin Baumhover" ||
+          user.userInfo.fullname == "Jamie Schmidt" ||
+          user.userInfo.fullname == "Ralph Macias") ? (
         <span
           style={{ marginLeft: "10px" }}
           className={`${poppins.className} filter-btn`}
@@ -501,7 +505,7 @@ function Task({ user }) {
         >
           Filter By User
         </span>
-      )}
+      ) : null}
       {filterFlag ? (
         <div className="filters-wrap">
           <p

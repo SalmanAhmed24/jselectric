@@ -141,9 +141,9 @@ export default function TaskTable({
       }
     });
   };
-  const sortedTasks = allTasks.sort((a, b) =>
-    a.currentDate.localeCompare(b.currentDate)
-  );
+  const sortedTasks =
+    allTasks &&
+    allTasks.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
   return (
     <Paper
       className={poppins.className}
@@ -157,6 +157,7 @@ export default function TaskTable({
             <TableHead>
               <TableRow>
                 <TableCell style={{ minWidth: 150 }}>Actions</TableCell>
+                <TableCell style={{ minWidth: 200 }}>Last Updated</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Current Date</TableCell>
                 <TableCell style={{ minWidth: 150 }}>Assigned To</TableCell>
                 <TableCell style={{ minWidth: 150 }}>User</TableCell>
@@ -174,9 +175,16 @@ export default function TaskTable({
                   <p className={poppins.className}>No Tasks Data Found</p>
                 </TableRow>
               ) : (
-                sortedTasks.map((i) => {
+                sortedTasks.map((i, index) => {
                   return (
-                    <TableRow key={i.id}>
+                    <TableRow
+                      key={i.id}
+                      style={
+                        index == 0
+                          ? { background: "#ffd6d6" }
+                          : { background: "#fff" }
+                      }
+                    >
                       <TableCell style={{ position: "relative" }}>
                         <Image
                           onClick={() => handleActions(i.id, i)}
@@ -215,6 +223,9 @@ export default function TaskTable({
                             </p>
                           </div>
                         ) : null}
+                      </TableCell>
+                      <TableCell>
+                        {moment(i.lastUpdated).format("MM-DD-YYYY hh:mm a")}
                       </TableCell>
                       <TableCell>
                         {moment(i.currentDate).format("MM-DD-YYYY")}

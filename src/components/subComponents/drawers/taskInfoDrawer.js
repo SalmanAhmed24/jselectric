@@ -18,30 +18,36 @@ function TaskInfo({ open, onClose, item }) {
   const [noteTask, setNoteTask] = useState([]);
   const [taskAttachments, setTaskAttachments] = useState([]);
   const [refreshFlag, setRefreshFlag] = useState(false);
+  const [loader, setLoader] = useState(false);
   useEffect(() => {
     if (activeTab == "Sub-Tasks") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
           const allSubTasks = res.data.allTasks.find((i) => i.id == item.id);
           setSubTask(allSubTasks && allSubTasks.subTasks);
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
     if (activeTab == "Notes") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
           const allNoteTasks = res.data.allTasks.find((i) => i.id == item.id);
           setNoteTask(allNoteTasks && allNoteTasks.notes);
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
     if (activeTab == "Attachments") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
@@ -51,6 +57,7 @@ function TaskInfo({ open, onClose, item }) {
           setTaskAttachments(
             allTaskAttachments && allTaskAttachments.attachments
           );
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
@@ -62,30 +69,35 @@ function TaskInfo({ open, onClose, item }) {
   };
   const refreshData = () => {
     if (activeTab == "Sub-Tasks") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
           const allSubTasks = res.data.allTasks.find((i) => i.id == item.id);
           setSubTask(allSubTasks && allSubTasks.subTasks);
           controlRefreshData();
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
     if (activeTab == "Notes") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
           const allNoteTasks = res.data.allTasks.find((i) => i.id == item.id);
           setNoteTask(allNoteTasks && allNoteTasks.notes);
           controlRefreshData();
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
         });
     }
     if (activeTab == "Attachments") {
+      setLoader(true);
       axios
         .get(`${apiPath.prodPath}/api/task`)
         .then((res) => {
@@ -95,6 +107,7 @@ function TaskInfo({ open, onClose, item }) {
           setTaskAttachments(
             allTaskAttachments && allTaskAttachments.attachments
           );
+          setLoader(false);
         })
         .catch((err) => {
           console.log(err);
@@ -112,7 +125,13 @@ function TaskInfo({ open, onClose, item }) {
       className="employeeDrawer"
     >
       <div className={`${poppins.className} info-modal`}>
-        <p className="close" onClick={() => onClose()}>
+        <p
+          className="close"
+          onClick={() => {
+            onClose();
+            refreshData();
+          }}
+        >
           x
         </p>
         <TaskTopInfo item={item} />
@@ -145,8 +164,9 @@ function TaskInfo({ open, onClose, item }) {
           </li>
         </ul>
       </div>
+      {}
       <div className={`${poppins.className} innerTabsWrap`}>
-        {activeTab == "Sub-Tasks" ? (
+        {activeTab == "Sub-Tasks" && loader == false ? (
           <SubTask
             refreshData={refreshData}
             taskId={item.id}
@@ -155,7 +175,7 @@ function TaskInfo({ open, onClose, item }) {
             task={item}
           />
         ) : null}
-        {activeTab == "Notes" ? (
+        {activeTab == "Notes" && loader == false ? (
           <NotesTask
             refreshData={refreshData}
             taskId={item.id}
@@ -164,7 +184,7 @@ function TaskInfo({ open, onClose, item }) {
             task={item}
           />
         ) : null}
-        {activeTab == "Attachments" ? (
+        {activeTab == "Attachments" && loader == false ? (
           <TaskAttachment
             refreshData={refreshData}
             taskId={item.id}
