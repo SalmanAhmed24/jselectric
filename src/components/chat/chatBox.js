@@ -9,9 +9,7 @@ function ChatBox({ chat, user, index, currentChatId }) {
     dispatch(storeNotification(chat));
   }, [chat]);
   const router = useRouter();
-  const otherMembers = chat?.members?.filter(
-    (member) => member._id !== user.id
-  );
+
   function tConvert(time) {
     // Check correct time format and split into components
     time = time

@@ -3,16 +3,19 @@ import { Poppins } from "next/font/google";
 import React, { useState, useEffect } from "react";
 import TimeTrackTable from "../subComponents/tables/timeTrackTable";
 import TimeTrackDrawer from "../subComponents/drawers/timeTrackDrawer";
+import DatePicker from "react-datepicker";
 import "./style.scss";
 import axios from "axios";
 import { apiPath } from "@/utils/routes";
 import Swal from "sweetalert2";
 import Select from "react-select";
+import "react-datepicker/dist/react-datepicker.css";
 const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],
 });
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 function TimeTrack() {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -21,6 +24,9 @@ function TimeTrack() {
   const [search, setSearch] = useState("");
   const [activeSpecFlag, setActiveSpecFlag] = useState(true);
   const [currentItem, setCurrentItem] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [dateFilter, setDateFilter] = useState(false);
   useEffect(() => {
     setLoading(true);
     axios
@@ -134,8 +140,41 @@ function TimeTrack() {
       }
     });
   };
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.autoTable({
+      theme: "striped",
+      html: "#time-track-report",
+      styles: { fontSize: 5 },
+    });
+    doc.save("report.pdf");
+  };
+  const handleDateSearch = () => {
+    if (startDate !== "" && endDate !== "") {
+      setLoading(true);
+      axios
+        .get(
+          `${apiPath.prodPath}/api/timeTrack/?startDate=${startDate}&&endDate=${endDate}`
+        )
+        .then((res) => {
+          setTimeTrack(res.data.timeTracks);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      Swal.fire({
+        icon: "warning",
+        text: "Please Select both start and end Date",
+      });
+    }
+  };
   return (
-    <section className={`${poppins.className} employee-wrap`}>
+    <section
+      className={`${poppins.className} employee-wrap cus-timeTrack-wrap`}
+    >
       <div className="add-btn-wrap">
         <h2 className={poppins.className}>Time Track</h2>
         {/* <button
@@ -144,6 +183,11 @@ function TimeTrack() {
         >
           Add Employee
         </button> */}
+        {dateFilter ? null : (
+          <button className="dateFilterBtn" onClick={() => setDateFilter(true)}>
+            Time Track Report
+          </button>
+        )}
       </div>
       <div className="search-wrap">
         <form onSubmit={handleSearch}>
@@ -170,6 +214,43 @@ function TimeTrack() {
           )}
         </form>
       </div>
+
+      {dateFilter ? (
+        <div className="date-filter">
+          <div className="close-date">
+            <span
+              onClick={() => {
+                refreshData();
+                setDateFilter(false);
+              }}
+            >
+              &#10005;
+            </span>
+          </div>
+          <div className="input-wraps">
+            <div className="cus-date-inp">
+              <label className={poppins.className}>Start Date</label>
+              <DatePicker
+                id="datePicker-1"
+                selected={startDate}
+                onChange={(value) => setStartDate(value)}
+              />
+            </div>
+            <div className="cus-date-inp">
+              <label className={poppins.className}>End Date</label>
+              <DatePicker
+                id="datePicker-1"
+                selected={endDate}
+                onChange={(value) => setEndDate(value)}
+              />
+            </div>
+            <button className={poppins.className} onClick={handleDateSearch}>
+              Search
+            </button>
+          </div>
+          <button onClick={downloadPDF}>Generate Report</button>
+        </div>
+      ) : null}
       <div className="table-wrap">
         {/* <p>table comes here</p> */}
         <span

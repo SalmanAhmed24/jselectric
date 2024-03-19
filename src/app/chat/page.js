@@ -22,6 +22,7 @@ function ChatPage() {
 
   useEffect(() => {
     if (currentUser && currentUser.userInfo && currentUser.userInfo == null) {
+      console.log("here");
       router.push("/login");
     }
     getUsers();
