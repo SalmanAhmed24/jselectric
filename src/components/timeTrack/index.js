@@ -27,6 +27,7 @@ function TimeTrack() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [dateFilter, setDateFilter] = useState(false);
+  const [dateSearch, setDateSearch] = useState(false);
   useEffect(() => {
     setLoading(true);
     axios
@@ -52,7 +53,7 @@ function TimeTrack() {
         console.log(err);
         setLoading(false);
       });
-  }, []);
+  }, [dateFilter, dateSearch]);
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
   };
@@ -80,6 +81,7 @@ function TimeTrack() {
       .then((res) => {
         setTimeTrack(res.data.timeTracks);
         setLoading(false);
+        setActiveSpecFlag(true);
       })
       .catch((err) => {
         console.log(err);
@@ -148,6 +150,8 @@ function TimeTrack() {
       styles: { fontSize: 5 },
     });
     doc.save("report.pdf");
+    setStartDate("");
+    setEndDate("");
   };
   const handleDateSearch = () => {
     if (startDate !== "" && endDate !== "") {
@@ -155,6 +159,30 @@ function TimeTrack() {
       axios
         .get(
           `${apiPath.prodPath}/api/timeTrack/?startDate=${startDate}&&endDate=${endDate}`
+        )
+        .then((res) => {
+          setTimeTrack(res.data.timeTracks);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      Swal.fire({
+        icon: "warning",
+        text: "Please Select both start and end Date",
+      });
+    }
+  };
+  const dateSearchRes = () => {
+    if (startDate !== "" || endDate !== "") {
+      setLoading(true);
+      axios
+        .get(
+          `${apiPath.prodPath}/api/timeTrack/?startDate=${
+            startDate == "" ? "" : startDate
+          }&&endDate=${endDate == "" ? "" : endDate}`
         )
         .then((res) => {
           setTimeTrack(res.data.timeTracks);
@@ -214,7 +242,50 @@ function TimeTrack() {
           )}
         </form>
       </div>
-
+      <button
+        onClick={() => {
+          setDateSearch(true);
+          setDateFilter(false);
+        }}
+        className={`${poppins.className} btn-search-date`}
+      >
+        Date Filters
+      </button>
+      {dateSearch ? (
+        <div className="date-filter">
+          <div className="close-date">
+            <span
+              onClick={() => {
+                refreshData();
+                setDateSearch(false);
+              }}
+            >
+              &#10005;
+            </span>
+          </div>
+          <div className="input-wraps">
+            <div className="cus-date-inp">
+              <label className={poppins.className}>Start Date</label>
+              <DatePicker
+                id="datePicker-1"
+                selected={startDate}
+                onChange={(value) => setStartDate(value)}
+              />
+            </div>
+            <div className="cus-date-inp">
+              <label className={poppins.className}>End Date</label>
+              <DatePicker
+                id="datePicker-1"
+                selected={endDate}
+                onChange={(value) => setEndDate(value)}
+              />
+            </div>
+            <button className={poppins.className} onClick={dateSearchRes}>
+              Search
+            </button>
+          </div>
+        </div>
+      ) : null}
       {dateFilter ? (
         <div className="date-filter">
           <div className="close-date">
@@ -271,7 +342,13 @@ function TimeTrack() {
         </span>
         <TimeTrackTable
           loading={loading}
-          allTimeTrack={activeSpecFlag ? specTrackData : noSpecTrackData}
+          allTimeTrack={
+            dateFilter
+              ? timeTrack
+              : activeSpecFlag
+              ? specTrackData
+              : noSpecTrackData
+          }
           refreshData={refreshData}
           handleEdit={editTimeTrackModal}
         />
