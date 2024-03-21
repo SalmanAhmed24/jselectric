@@ -72,6 +72,9 @@ function Task({ user }) {
           console.log(err);
           setLoading(false);
         });
+      const intervalRefresh = setInterval(() => {
+        dataRefreshInterval();
+      }, 60000);
       axios
         .get(`${apiPath.prodPath}/api/users/`)
         .then((res) => {
@@ -92,10 +95,44 @@ function Task({ user }) {
           );
         })
         .catch((err) => console.log(err));
+      return () => clearInterval(intervalRefresh);
     }
   }, []);
   const handleCloseDrawer = () => {
     setDrawer(!drawer);
+  };
+  const dataRefreshInterval = () => {
+    setLoading(true);
+    axios
+      .get(`${apiPath.prodPath}/api/task/`)
+      .then((res) => {
+        if (
+          user.userInfo.fullname == "Kevin Baumhover" ||
+          user.userInfo.fullname == "Jamie Schmidt" ||
+          user.userInfo.fullname == "Ralph Macias	"
+        ) {
+          setAllTasks(res.data.allTasks);
+        } else {
+          var tasks = [];
+          res.data.allTasks.forEach((element) => {
+            element.assignedTo.forEach((innerEl) => {
+              if (innerEl.fullname == user.userInfo.fullname) {
+                tasks = [element, ...tasks];
+                return tasks;
+              }
+            });
+          });
+          const taskWithoutComp = tasks.filter(
+            (i) => i.taskStatus !== "Completed"
+          );
+          setAllTasks(taskWithoutComp);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
   const refreshData = () => {
     setLoading(true);

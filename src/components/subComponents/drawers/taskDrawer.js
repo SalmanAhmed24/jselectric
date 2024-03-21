@@ -217,48 +217,114 @@ function TaskDrawer({
       data.selectedModule.forEach((element) => {
         if (element == "Clients") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setClients(
-              data.moduleArr.find((i) => i.selectedModule == "Clients")
-            );
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Clients") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setClients(arr);
           } else {
             setClients("");
           }
         }
         if (element == "Devices") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setDevices(
-              data.moduleArr.find((i) => i.selectedModule == "Devices")
-            );
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Devices") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setDevices(arr);
           } else {
             setDevices("");
           }
         }
         if (element == "Employees") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setEmp(data.moduleArr.find((i) => i.selectedModule == "Employees"));
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Employees") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setEmp(arr);
           } else {
             setEmp("");
           }
         }
         if (element == "Jobs") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setJob(data.moduleArr.find((i) => i.selectedModule == "Jobs"));
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Jobs") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setJob(arr);
           } else {
             setJob("");
           }
         }
         if (element == "Tools") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setTool(data.moduleArr.find((i) => i.selectedModule == "Tools"));
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Tools") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setTool(arr);
           } else {
             setTool("");
           }
         }
         if (element == "Vehicles") {
           if (data.moduleArr.filter((i) => i !== null).length) {
-            setVehicle(
-              data.moduleArr.find((i) => i.selectedModule == "Vehicles")
-            );
+            let arr = [];
+            data.moduleArr.forEach((outer) => {
+              if (outer.length) {
+                outer.forEach((inner) => {
+                  if (inner.selectedModule == "Vehicles") {
+                    arr = [inner, ...arr];
+                  }
+                });
+              } else {
+                arr = [outer, ...arr];
+              }
+            });
+            setVehicle(arr);
           } else {
             setVehicle("");
           }
@@ -400,7 +466,7 @@ function TaskDrawer({
       setTaskStatus(value);
     }
   };
-
+  console.log("clients", clients);
   return (
     <Drawer
       anchor={"right"}
@@ -528,6 +594,7 @@ function TaskDrawer({
                     <div key={i} className="input-wrap">
                       <label>{i.label}</label>
                       <Select
+                        isMulti={true}
                         className={poppins.className}
                         options={allDevices}
                         value={devices}
@@ -553,6 +620,7 @@ function TaskDrawer({
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
+                        isMulti={true}
                         options={allClients}
                         value={clients}
                         onChange={(value) => setClients(value)}
@@ -577,6 +645,7 @@ function TaskDrawer({
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
+                        isMulti={true}
                         options={allEmp}
                         value={emp}
                         onChange={(value) => setEmp(value)}
@@ -601,6 +670,7 @@ function TaskDrawer({
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
+                        isMulti={true}
                         options={allJob}
                         value={job}
                         onChange={(value) => setJob(value)}
@@ -625,6 +695,7 @@ function TaskDrawer({
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
+                        isMulti={true}
                         options={allTools}
                         value={tool}
                         onChange={(value) => setTool(value)}
@@ -649,6 +720,7 @@ function TaskDrawer({
                       <label>{i.label}</label>
                       <Select
                         className={poppins.className}
+                        isMulti={true}
                         options={allVehicles}
                         value={vehicle}
                         onChange={(value) => setVehicle(value)}

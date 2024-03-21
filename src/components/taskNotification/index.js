@@ -19,6 +19,12 @@ function TaskNotification({ user }) {
   const [activeLinkFlag, setActiveLinkFlag] = useState("Assigned By");
   useEffect(() => {
     getTasks();
+    const taskInterval = setInterval(() => {
+      getTasks();
+    }, 60000);
+    return () => {
+      clearInterval(taskInterval);
+    };
   }, [activeLinkFlag, user]);
   const getTasks = () => {
     setLoading(true);
