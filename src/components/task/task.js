@@ -36,6 +36,7 @@ function Task({ user }) {
     { label: "Assigned By", value: "Assigned By" },
     { label: "Completed", value: "Completed" },
   ];
+  const [superComp, setSuperComp] = useState("all");
   const router = useRouter();
   useEffect(() => {
     if (user == undefined || user == null) {
@@ -421,6 +422,51 @@ function Task({ user }) {
       });
     }
   };
+  const handleSuperCompTask = () => {
+    setSuperComp("completed");
+    axios
+      .get(`${apiPath.prodPath}/api/task/`)
+      .then((res) => {
+        const filteredTasks = res.data.allTasks.filter(
+          (inner) => inner.taskStatus == "Completed"
+        );
+        setAllTasks(filteredTasks);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+  const handleSuperAllTask = () => {
+    setSuperComp("all");
+    axios
+      .get(`${apiPath.prodPath}/api/task/`)
+      .then((res) => {
+        setAllTasks(res.data.allTasks);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+  const handleSuperInpTask = () => {
+    setSuperComp("inprogress");
+    axios
+      .get(`${apiPath.prodPath}/api/task/`)
+      .then((res) => {
+        const filteredTasks = res.data.allTasks.filter(
+          (inner) => inner.taskStatus !== "Completed"
+        );
+        setAllTasks(filteredTasks);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
   return (
     <section className={`${poppins.className} employee-wrap`}>
       <div className="add-btn-wrap">
@@ -599,6 +645,44 @@ function Task({ user }) {
         </div>
       ) : null}
       <div className="table-wrap">
+        {user !== null &&
+        user.userInfo !== undefined &&
+        (user.userInfo.fullname == "Kevin Baumhover" ||
+          user.userInfo.fullname == "Jamie Schmidt" ||
+          user.userInfo.fullname == "Ralph Macias") ? (
+          <div className="super-task-wrap">
+            <span
+              className={
+                superComp == "all"
+                  ? `${poppins.className} activeSuper`
+                  : `${poppins.className} simpleSuper`
+              }
+              onClick={handleSuperAllTask}
+            >
+              All
+            </span>
+            <span
+              className={
+                superComp == "completed"
+                  ? `${poppins.className} activeSuper`
+                  : `${poppins.className} simpleSuper`
+              }
+              onClick={handleSuperCompTask}
+            >
+              Completed
+            </span>
+            <span
+              className={
+                superComp == "inprogress"
+                  ? `${poppins.className} activeSuper`
+                  : `${poppins.className} simpleSuper`
+              }
+              onClick={handleSuperInpTask}
+            >
+              Inprogress
+            </span>
+          </div>
+        ) : null}
         <TaskTable
           allTasks={allTasks}
           loading={loading}

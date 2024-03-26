@@ -36,6 +36,7 @@ function ChatDetailComp({ chatId, currentUser }) {
   useEffect(() => {
     pusherClient.subscribe(chatId);
     const handleMessage = async (newMessage) => {
+      console.log("this is new message", newMessage);
       setChat((prevChat) => {
         return {
           ...prevChat,
@@ -48,7 +49,7 @@ function ChatDetailComp({ chatId, currentUser }) {
       pusherClient.unsubscribe(chatId);
       pusherClient.unbind("new-message", handleMessage);
     };
-  }, []);
+  }, [chatId]);
   const bottomRef = useRef(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({

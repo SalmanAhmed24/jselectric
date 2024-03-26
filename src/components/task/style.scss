@@ -102,3 +102,18 @@
         cursor: pointer;
     }
 }
+.super-task-wrap{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+    span{
+        display: inline-block;
+        padding-right: 10px;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .activeSuper{
+        font-weight: bold;
+    }
+}

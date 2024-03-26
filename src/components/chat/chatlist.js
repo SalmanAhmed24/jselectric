@@ -49,7 +49,7 @@ const ChatList = ({ currentUser, currentChatId, listRefresh }) => {
         }
       };
     }
-  }, [currentUser]);
+  }, [currentUser, currentChatId]);
 
   const getChats = async () => {
     setLoader(true);
