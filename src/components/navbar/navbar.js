@@ -11,6 +11,7 @@ const poppins = Poppins({
 });
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { pusherClient } from "@/utils/pusher";
 import { storeUser } from "../../store/slices/userSlice";
 // import Pusher from "pusher-js";
 
@@ -30,19 +31,27 @@ function Navbar() {
     dispatch(storeUser(null));
     router.push("/login");
   };
+
   useEffect(() => {
     if (
-      notification &&
-      notification !== undefined &&
-      notification.length !== 0
+      user.user !== undefined &&
+      user.user !== null &&
+      user.user.userInfo !== undefined
     ) {
-      const filtered = {
-        ...notification,
-        messages: notification.messages[notification.messages.length - 1],
+      pusherClient.subscribe(user.user.userInfo.id);
+      const handleUpdatedChat = (updatedChat) => {
+        console.log("updatedChat", updatedChat);
+        setFilteredNotification(updatedChat);
       };
-      setFilteredNotification(filtered);
+      pusherClient.bind("update-chat", handleUpdatedChat);
+      return () => {
+        if (user.user !== undefined && user.user !== null) {
+          pusherClient.unsubscribe(user.user.userInfo.id);
+          pusherClient.unbind("update-chat", handleUpdatedChat);
+        }
+      };
     }
-  }, [notification]);
+  }, [user]);
   const test =
     filterNotification !== undefined &&
     user !== undefined &&
@@ -50,22 +59,19 @@ function Navbar() {
     user.user !== undefined &&
     user.user.userInfo !== undefined
       ? filterNotification.messages
-        ? filterNotification.messages.sender.id !== user.user.userInfo.id
-          ? filterNotification.members.filter(
-              (i) => i.id == user.user.userInfo.id
-            ).length
-            ? filterNotification.messages.seenBy.filter(
-                (i) => i._id == user.user.userInfo.id
-              ).length
-              ? false
-              : true
-            : false
+        ? filterNotification.messages[filterNotification.messages.length - 1]
+            .sender._id !== user.user.userInfo.id
+          ? filterNotification.messages[
+              filterNotification.messages.length - 1
+            ].seenBy.filter((i) => i._id == user.user.userInfo.id).length
+            ? false
+            : true
           : false
         : false
       : false;
 
   const clearNotification = () => {
-    dispatch(storeNotification([]));
+    setFilteredNotification(undefined);
   };
   return (
     <>

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { pusherClient } from "@/utils/pusher";
 import { useSelector } from "react-redux";
-const ChatList = ({ currentUser, currentChatId }) => {
+const ChatList = ({ currentUser, currentChatId, listRefresh }) => {
   const [allChats, setAllChats] = useState([]);
   const [loader, setLoader] = useState(false);
   const refreshChat = useSelector((state) => state.refreshChat.refreshChat);
@@ -14,7 +14,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
     if (currentUser && currentUser.userInfo && currentUser.userInfo !== null) {
       getChats();
     }
-  }, [currentUser]);
+  }, [currentUser, listRefresh]);
 
   useEffect(() => {
     if (
@@ -24,6 +24,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
     ) {
       pusherClient.subscribe(currentUser.userInfo.id);
       const handleUpdatedChat = (updatedChat) => {
+        console.log("updatedChat", updatedChat);
         setAllChats((allChats) =>
           allChats.map((chat) => {
             if (chat._id === updatedChat.id) {
@@ -35,6 +36,7 @@ const ChatList = ({ currentUser, currentChatId }) => {
         );
       };
       const handleNewChat = (newChat) => {
+        console.log("within new chat", newChat);
         setAllChats((allChats) => [...allChats, newChat]);
       };
       pusherClient.bind("update-chat", handleUpdatedChat);
@@ -75,7 +77,6 @@ const ChatList = ({ currentUser, currentChatId }) => {
   //     .catch((err) => console.log(err));
   // };
   const router = useRouter();
-  console.log("this is allChats", allChats);
   return loader ? (
     <p>Loading...</p>
   ) : (

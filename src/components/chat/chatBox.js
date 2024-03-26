@@ -4,10 +4,7 @@ import { useRouter } from "next/navigation";
 import { storeNotification } from "@/store/slices/notification";
 import { useDispatch, useSelector } from "react-redux";
 function ChatBox({ chat, user, index, currentChatId }) {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(storeNotification(chat));
-  }, [chat]);
+  useEffect(() => {}, [chat]);
   const router = useRouter();
 
   function tConvert(time) {
@@ -34,7 +31,6 @@ function ChatBox({ chat, user, index, currentChatId }) {
       ? true
       : false
     : false;
-  console.log("$$$$$", filteredChatUser, user.userInfo, chat);
   return (
     <div
       className="chatbox-inner-wrap"
@@ -50,8 +46,8 @@ function ChatBox({ chat, user, index, currentChatId }) {
         )}
         <span className="time">
           {!lastMessage
-            ? moment(chat?.createdAt).format("hh:mm a")
-            : moment(chat?.lastMessageAt).format("hh:mm a")}
+            ? moment(chat?.createdAt).format("MM/DD/YYYY hh:mm a")
+            : moment(chat?.lastMessageAt).format("MM/DD/YYYY hh:mm a")}
         </span>
       </div>
       <div className="bottom">
