@@ -48,7 +48,7 @@ function ChatDetailComp({ chatId, currentUser }) {
       pusherClient.unsubscribe(chatId);
       pusherClient.unbind("new-message", handleMessage);
     };
-  }, [chatId]);
+  }, []);
   const bottomRef = useRef(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({

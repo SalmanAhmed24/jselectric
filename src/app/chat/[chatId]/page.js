@@ -21,12 +21,10 @@ function ChatDetails() {
     if (currentUser && currentUser.userInfo && currentUser.userInfo == null) {
       router.push("/login");
     }
-
     if (currentUser && chatId) {
       setSeenBy();
     }
-  }, [currentUser, chatId]);
-
+  }, []);
   const setSeenBy = () => {
     const dataObj = {
       currentUserId: currentUser.userInfo.id,
@@ -36,6 +34,7 @@ function ChatDetails() {
       .then((res) => {})
       .catch((err) => console.log(err));
   };
+
   return (
     <div className={`${poppins.className} chat-detail-con`}>
       <div className="chatlist-wrap">
