@@ -13,8 +13,9 @@ const poppins = Poppins({
   weight: ["300", "400", "600", "800", "900"],
   subsets: ["latin"],
 });
-import { DatePicker } from "react-rainbow-components";
+import DatePicker from "react-datepicker";
 import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 function Task({ user }) {
   const [drawer, setDrawer] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,6 @@ function Task({ user }) {
   const assignToOpt = [
     { label: "Assigned To", value: "Assigned To" },
     { label: "Assigned By", value: "Assigned By" },
-    { label: "Completed", value: "Completed" },
   ];
   const [superComp, setSuperComp] = useState("all");
   const router = useRouter();
@@ -395,25 +395,49 @@ function Task({ user }) {
       assignToValue.value !== ""
     ) {
       if (assignToValue.value == "Assigned By") {
-        const filteredUser = allTasks.filter((i) => i.user == userValue.value);
-        setAllTasks(filteredUser);
+        setLoading(true);
+        axios
+          .get(`${apiPath.prodPath}/api/task/`)
+          .then((res) => {
+            const filteredUser = res.data.allTasks.filter(
+              (i) => i.user == userValue.value
+            );
+            setAllTasks(filteredUser);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
       }
       if (assignToValue.value == "Completed") {
-        const filteredTask = allTasks.filter(
-          (i) => i.taskStatus == assignToValue.value
-        );
-        setAllTasks(filteredTask);
+        setLoading(true);
+        axios
+          .get(`${apiPath.prodPath}/api/task/`)
+          .then((res) => {
+            const filteredTask = allTasks.filter(
+              (i) => i.taskStatus == assignToValue.value
+            );
+            setAllTasks(filteredTask);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
       }
       if (assignToValue.value == "Assigned To") {
-        var tasks = [];
-        allTasks.forEach((el) => {
-          el.assignedTo.forEach((inner) => {
-            if (inner.fullname == userValue.value) {
-              tasks = [el, ...tasks];
-            }
-          });
-        });
-        setAllTasks(tasks);
+        console.log("here", userValue.value);
+        setLoading(true);
+        axios
+          .get(`${apiPath.prodPath}/api/task/`)
+          .then((res) => {
+            var tasks = [];
+            res.data.allTasks.forEach((el) => {
+              el.assignedTo.forEach((inner) => {
+                if (inner.fullname == userValue.value) {
+                  tasks = [el, ...tasks];
+                }
+              });
+            });
+            setAllTasks(tasks);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
       }
     } else {
       Swal.fire({
@@ -424,48 +448,265 @@ function Task({ user }) {
   };
   const handleSuperCompTask = () => {
     setSuperComp("completed");
-    axios
-      .get(`${apiPath.prodPath}/api/task/`)
-      .then((res) => {
-        const filteredTasks = res.data.allTasks.filter(
-          (inner) => inner.taskStatus == "Completed"
-        );
-        setAllTasks(filteredTasks);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    setLoading(true);
+    if (
+      assignToValue.value !== "" &&
+      assignToValue.value !== undefined &&
+      userValue.value !== "" &&
+      userValue.value !== undefined
+    ) {
+      if (assignToValue.value == "Assigned By") {
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            const filteredUser = res.data.allTasks
+              .filter((i) => i.user == userValue.value)
+              .filter((item) => item.taskStatus == "Completed	");
+            setAllTasks(filteredUser);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+      if (assignToValue.value == "Assigned To") {
+        console.log("here", userValue.value);
+        setLoading(true);
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            var tasks = [];
+            res.data.allTasks.forEach((el) => {
+              el.assignedTo.forEach((inner) => {
+                if (inner.fullname == userValue.value) {
+                  tasks = [el, ...tasks];
+                }
+              });
+            });
+            var furtherFiltered = tasks.filter(
+              (i) => i.taskStatus == "Completed"
+            );
+            setAllTasks(furtherFiltered);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+    } else {
+      axios
+        .get(
+          `${apiPath.prodPath}/api/task/?taskCategory=${
+            searchForm.taskCategory.value == undefined
+              ? ""
+              : searchForm.taskCategory.value
+          }&currentDate=${
+            searchForm.currentDate == ""
+              ? ""
+              : moment(searchForm.currentDate).format("YYYY-MM-DD")
+          }&description=${searchForm.description}`
+        )
+        .then((res) => {
+          const filteredTasks = res.data.allTasks.filter(
+            (inner) => inner.taskStatus == "Completed"
+          );
+          setAllTasks(filteredTasks);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
   };
   const handleSuperAllTask = () => {
     setSuperComp("all");
-    axios
-      .get(`${apiPath.prodPath}/api/task/`)
-      .then((res) => {
-        setAllTasks(res.data.allTasks);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    setLoading(true);
+    if (
+      assignToValue.value !== "" &&
+      assignToValue.value !== undefined &&
+      userValue.value !== "" &&
+      userValue.value !== undefined
+    ) {
+      if (assignToValue.value == "Assigned By") {
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            const filteredUser = res.data.allTasks.filter(
+              (i) => i.user == userValue.value
+            );
+            setAllTasks(filteredUser);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+      if (assignToValue.value == "Assigned To") {
+        console.log("here", userValue.value);
+        setLoading(true);
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            var tasks = [];
+            res.data.allTasks.forEach((el) => {
+              el.assignedTo.forEach((inner) => {
+                if (inner.fullname == userValue.value) {
+                  tasks = [el, ...tasks];
+                }
+              });
+            });
+
+            setAllTasks(tasks);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+    } else {
+      axios
+        .get(
+          `${apiPath.prodPath}/api/task/?taskCategory=${
+            searchForm.taskCategory.value == undefined
+              ? ""
+              : searchForm.taskCategory.value
+          }&currentDate=${
+            searchForm.currentDate == ""
+              ? ""
+              : moment(searchForm.currentDate).format("YYYY-MM-DD")
+          }&description=${searchForm.description}`
+        )
+        .then((res) => {
+          setAllTasks(res.data.allTasks);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
   };
   const handleSuperInpTask = () => {
     setSuperComp("inprogress");
-    axios
-      .get(`${apiPath.prodPath}/api/task/`)
-      .then((res) => {
-        const filteredTasks = res.data.allTasks.filter(
-          (inner) => inner.taskStatus !== "Completed"
-        );
-        setAllTasks(filteredTasks);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    setLoading(true);
+    if (
+      assignToValue.value !== "" &&
+      assignToValue.value !== undefined &&
+      userValue.value !== "" &&
+      userValue.value !== undefined
+    ) {
+      if (assignToValue.value == "Assigned By") {
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            const filteredUser = res.data.allTasks
+              .filter((i) => i.user == userValue.value)
+              .filter((item) => item.taskStatus !== "Completed	");
+            setAllTasks(filteredUser);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+      if (assignToValue.value == "Assigned To") {
+        console.log("here", userValue.value);
+        setLoading(true);
+        axios
+          .get(
+            `${apiPath.prodPath}/api/task/?taskCategory=${
+              searchForm.taskCategory.value == undefined
+                ? ""
+                : searchForm.taskCategory.value
+            }&currentDate=${
+              searchForm.currentDate == ""
+                ? ""
+                : moment(searchForm.currentDate).format("YYYY-MM-DD")
+            }&description=${searchForm.description}`
+          )
+          .then((res) => {
+            var tasks = [];
+            res.data.allTasks.forEach((el) => {
+              el.assignedTo.forEach((inner) => {
+                if (inner.fullname == userValue.value) {
+                  tasks = [el, ...tasks];
+                }
+              });
+            });
+            var furtherFiltered = tasks.filter(
+              (i) => i.taskStatus !== "Completed"
+            );
+            setAllTasks(furtherFiltered);
+            setLoading(false);
+          })
+          .catch((err) => console.log(err));
+      }
+    } else {
+      axios
+        .get(
+          `${apiPath.prodPath}/api/task/?taskCategory=${
+            searchForm.taskCategory.value == undefined
+              ? ""
+              : searchForm.taskCategory.value
+          }&currentDate=${
+            searchForm.currentDate == ""
+              ? ""
+              : moment(searchForm.currentDate).format("YYYY-MM-DD")
+          }&description=${searchForm.description}`
+        )
+        .then((res) => {
+          const filteredTasks = res.data.allTasks.filter(
+            (inner) => inner.taskStatus !== "Completed"
+          );
+          setAllTasks(filteredTasks);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
   };
   return (
     <section className={`${poppins.className} employee-wrap`}>
@@ -609,13 +850,16 @@ function Task({ user }) {
               onChange={handleTaskCategory}
               value={searchForm.taskCategory}
             />
-            <DatePicker
-              id="datePicker-1"
-              placeholder="Select Date"
-              value={searchForm.currentDate}
-              onChange={handleDate}
-              locale={"en-US"}
-            />
+            <div>
+              <DatePicker
+                className={poppins.className}
+                id="datePicker-1"
+                placeholderText={"Select a date"}
+                selected={searchForm.currentDate}
+                onChange={handleDate}
+                locale={"en-US"}
+              />
+            </div>
             <textarea
               className={`${poppins.className}`}
               rows={2}
