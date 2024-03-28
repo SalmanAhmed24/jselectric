@@ -206,7 +206,7 @@ function TaskDrawer({
       setTaskStatus({ label: data.taskStatus, value: data.taskStatus });
       setAssignedTo(
         data.assignedTo.map((i) => {
-          return { label: i.fullname, value: i.fullname };
+          return { label: i.fullname, value: i.fullname, email: i.email };
         })
       );
       setSelectedModule(
@@ -354,7 +354,7 @@ function TaskDrawer({
       taskStatus: taskStatus.value,
       taskPriority: taskPriority.value,
       assignedTo: assignedTo.map((i) => {
-        return { fullname: i.label };
+        return { fullname: i.label, email: i.email };
       }),
       selectedModule: selectedModule.map((i) => {
         return i.value;
