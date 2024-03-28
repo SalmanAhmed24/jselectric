@@ -7,7 +7,7 @@ const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  await mongoose.connect(process.env.MONGO_DB_KEY);
+  // await mongoose.connect(process.env.MONGO_DB_KEY);
   try {
     const { data, error } = await resend.emails.send({
       from: "JsElectric <jselectric@resend.dev>",
